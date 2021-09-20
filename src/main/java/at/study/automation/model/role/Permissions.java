@@ -2,7 +2,7 @@ package at.study.automation.model.role;
 
 import lombok.AllArgsConstructor;
 
-import java.util.TreeMap;
+import java.util.ArrayList;
 
 @AllArgsConstructor
 public enum Permissions {
@@ -77,17 +77,18 @@ public enum Permissions {
     
     public boolean permissionValue;
 
-    private static final TreeMap<String, Boolean> VALUES;
+    private static final ArrayList<String> VALUES;
 
     static {
-        VALUES = new TreeMap<>();
+        VALUES = new ArrayList<>();
 
         for (Permissions permission : Permissions.values()) {
-            VALUES.put(permission.name(), permission.permissionValue);
+            if (permission.permissionValue)
+            VALUES.add(permission.name());
         }
     }
 
-    public static TreeMap<String, Boolean> getPermissions() {
+    public static ArrayList<String> getPermissions() {
         return VALUES;
     }
 }

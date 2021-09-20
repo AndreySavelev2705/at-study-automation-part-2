@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class Role extends Entity implements Creatable<Role> {
     private Integer position = 27051995;
     private Boolean assignable = true;
     private Builtin builtin = Builtin.CURRENT_ROLE;
-    private TreeMap<String, Boolean> permissions = Permissions.getPermissions();
+    private ArrayList<String> permissions = Permissions.getPermissions();
     @Description("issuesVisibility")
     private VisibilityOfTasks visibilityOfTasks = VisibilityOfTasks.ALL;
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
