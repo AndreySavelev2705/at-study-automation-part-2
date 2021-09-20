@@ -2,7 +2,7 @@ package at.study.automation.model.role;
 
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.TreeMap;
 
 @AllArgsConstructor
 public enum Settings {
@@ -15,17 +15,17 @@ public enum Settings {
 
     public Integer settingValue;
 
-    private static final ArrayList<String> VALUES;
+    private static final TreeMap<String, Integer> VALUES;
 
     static {
-        VALUES = new ArrayList<>();
+        VALUES = new TreeMap<>();
 
         for (Settings setting : Settings.values()) {
-            VALUES.add(setting.name());
+            VALUES.put(setting.name(), setting.settingValue);
         }
     }
 
-    public static ArrayList<String> getSettings() {
+    public static TreeMap<String, Integer> getSettings() {
         return VALUES;
     }
 }
