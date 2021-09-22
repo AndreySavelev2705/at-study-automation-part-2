@@ -2,13 +2,12 @@ package at.study.automation.model.role;
 
 import at.study.automation.model.Creatable;
 import at.study.automation.model.Entity;
-
 import com.sun.org.glassfish.gmbal.Description;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.ArrayList;
-import java.util.TreeMap;
+import java.util.Map;
 
 @NoArgsConstructor
 @Setter
@@ -24,7 +23,7 @@ public class Role extends Entity implements Creatable<Role> {
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
     private TimeEntriesVisibility timeEntriesVisibility = TimeEntriesVisibility.All;
     private Boolean allRolesManaged = true;
-    private TreeMap<String, Integer> strings = Settings.getSettings();
+    private ArrayList<Map<String, Integer>> strings = Settings.getSettings();
 
     @Override
     public Role create() {
