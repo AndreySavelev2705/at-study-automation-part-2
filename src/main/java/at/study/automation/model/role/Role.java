@@ -2,7 +2,8 @@ package at.study.automation.model.role;
 
 import at.study.automation.model.Creatable;
 import at.study.automation.model.Entity;
-import jdk.jfr.Description;
+
+import com.sun.org.glassfish.gmbal.Description;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,10 +32,5 @@ public class Role extends Entity implements Creatable<Role> {
     public Role create() {
         // TODO: Реализовать с помощью SQL-Запроса
         return null;
-    }
-
-    @Test
-    public void test() {
-        Role role = new Role();
     }
 }
