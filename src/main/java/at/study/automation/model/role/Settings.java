@@ -8,7 +8,6 @@ import java.util.TreeMap;
 
 @AllArgsConstructor
 public enum Settings {
-
     VIEW_ISSUES(1),
     ADD_ISSUES(1),
     EDIT_ISSUES(1),
