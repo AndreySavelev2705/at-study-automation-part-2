@@ -8,10 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.testng.annotations.Test;
 
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @Setter
@@ -20,24 +18,31 @@ import java.util.Map;
 public class Role extends Entity implements Creatable<Role> {
     private String name = "Savelev_default_role" + StringUtils.randomEnglishString(5);
     private Integer position;
-    private Boolean assignable;
-    private Builtin builtin;
+    private Boolean assignable = false;
+    private Builtin builtin = Builtin.CURRENT_ROLE;
     private List<Permission> permissions;
     @Description("issuesVisibility")
     private VisibilityOfTasks visibilityOfTasks = VisibilityOfTasks.ALL;
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
     private TimeEntriesVisibility timeEntriesVisibility = TimeEntriesVisibility.ALL;
     private Boolean allRolesManaged = true;
-    private List<Map<String, Integer>> settings;
+    private String settings = "--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "permissions_all_trackers: !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "  view_issues: '1'\n" +
+            "  add_issues: '1'\n" +
+            "  edit_issues: '1'\n" +
+            "  add_issue_notes: '1'\n" +
+            "  delete_issues: '1'\n" +
+            "permissions_tracker_ids: !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "  view_issues: []\n" +
+            "  add_issues: []\n" +
+            "  edit_issues: []\n" +
+            "  add_issue_notes: []\n" +
+            "  delete_issues: []\n";
 
     @Override
     public Role create() {
         // TODO: Реализовать с помощью SQL-Запроса
         return null;
-    }
-
-    @Test
-    public void test() {
-        Role role = new Role();
     }
 }

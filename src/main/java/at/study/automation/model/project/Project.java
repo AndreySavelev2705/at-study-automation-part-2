@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Getter
 @Accessors(chain = true)
 public class Project extends CreatableEntity implements Creatable<Project> {
-    private String name = "Savelev_default_project_for_testing" + StringUtils.randomEnglishString(5);
+    private String name = "Savelev_project_for_testing" + StringUtils.randomEnglishString(5);
     private String description;
     private String homepage;
     private Boolean isPublic = true;

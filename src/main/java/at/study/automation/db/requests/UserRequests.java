@@ -4,7 +4,7 @@ import at.study.automation.db.connection.PostgresConnection;
 import at.study.automation.model.user.User;
 
 
-public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete {
+public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete<User> {
 
     @Override
     public void create(User user) {
