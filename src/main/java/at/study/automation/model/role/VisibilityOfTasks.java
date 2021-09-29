@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum VisibilityOfTasks {
-    ALL("all"),
-    DEFAULT("default"),
-    OWN("own");
+    ALL("Все задачи"),
+    DEFAULT("Только общие задачи"),
+    OWN("Задачи созданные или назначенные пользоватлею");
 
-    public final String visibilityLevel;
+    public final String databaseValue;
 }

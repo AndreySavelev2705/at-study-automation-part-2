@@ -12,6 +12,7 @@
         <testng.version>7.4.0</testng.version>
         <lombok.version>1.18.20</lombok.version>
         <commons.codec.version>1.15</commons.codec.version>
+        <postgresql.version>42.2.24</postgresql.version>
     </properties>
 
     <dependencies>
@@ -36,6 +37,14 @@
             <artifactId>commons-codec</artifactId>
             <version>${commons.codec.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

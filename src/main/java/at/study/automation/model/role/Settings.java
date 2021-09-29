@@ -1,31 +1,28 @@
 package at.study.automation.model.role;
 
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-import java.util.TreeMap;
-
-@AllArgsConstructor
+@NoArgsConstructor
 public enum Settings {
 
-    VIEW_ISSUES(1),
-    ADD_ISSUES(1),
-    EDIT_ISSUES(1),
-    ADD_ISSUE_NOTES(1),
-    DELETE_ISSUES(1);
+    VIEW_ISSUES(),
+    ADD_ISSUES(),
+    EDIT_ISSUES(),
+    ADD_ISSUE_NOTES(),
+    DELETE_ISSUES();
 
-    public Integer settingValue;
+    public final String settingValue = "--- !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "permissions_all_trackers: !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "  view_issues: '1'\n" +
+            "  add_issues: '1'\n" +
+            "  edit_issues: '1'\n" +
+            "  add_issue_notes: '1'\n" +
+            "  delete_issues: '1'\n" +
+            "permissions_tracker_ids: !ruby/hash:ActiveSupport::HashWithIndifferentAccess\n" +
+            "  view_issues: []\n" +
+            "  add_issues: []\n" +
+            "  edit_issues: []\n" +
+            "  add_issue_notes: []\n" +
+            "  delete_issues: []\n";
 
-    private static final TreeMap<String, Integer> VALUES;
-
-    static {
-        VALUES = new TreeMap<>();
-
-        for (Settings setting : Settings.values()) {
-            VALUES.put(setting.name(), setting.settingValue);
-        }
-    }
-
-    public static TreeMap<String, Integer> getSettings() {
-        return VALUES;
-    }
 }

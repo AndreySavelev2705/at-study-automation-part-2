@@ -1,16 +1,17 @@
 package at.study.automation.model.user;
 
+import at.study.automation.db.requests.TokenRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import static at.study.automation.utils.StringUtils.randomHexString;
 
-@NoArgsConstructor
 @Setter
 @Getter
+@Accessors(chain = true)
 public class Token extends CreatableEntity implements Creatable<Token> {
 
     private Integer userId;
@@ -23,9 +24,14 @@ public class Token extends CreatableEntity implements Creatable<Token> {
         FEEDS
     }
 
+    public Token(User user) {
+        this.userId = user.getId();
+        user.getTokens().add(this);
+    }
+
     @Override
     public Token create() {
-        // TODO: Реализовать с помощью SQL-Запроса
-        throw new UnsupportedOperationException();
+        new TokenRequests().create(this);
+        return this;
     }
 }
