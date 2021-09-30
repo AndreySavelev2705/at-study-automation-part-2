@@ -14,7 +14,9 @@ import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static at.study.automation.utils.StringUtils.randomEnglishString;
 import static at.study.automation.utils.StringUtils.randomHexString;
@@ -44,6 +46,7 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
     private LocalDateTime passwordChangedOn;
     private List<Token> tokens = new ArrayList<>();
     private List<Email> emails = new ArrayList<>();
+    private Map<Project, List<Role>> projectsAndRolesOfUser = new HashMap<>();
 
     /**
      * Создает хэшированный пароль, используя библиотеку "commons-codec", на основе содержимого полей @salt и @password,
@@ -104,5 +107,6 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
 
     public void addProject(Project project, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
+        projectsAndRolesOfUser.put(project, roles);
     }
 }

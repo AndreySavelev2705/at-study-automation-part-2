@@ -1,7 +1,10 @@
 package at.study.automation.model.role;
 
+import at.study.automation.db.requests.RoleRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.Entity;
+import at.study.automation.model.project.Project;
+import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
 import jdk.jfr.Description;
 import lombok.Getter;
@@ -9,7 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @Setter
@@ -40,9 +45,16 @@ public class Role extends Entity implements Creatable<Role> {
             "  add_issue_notes: []\n" +
             "  delete_issues: []\n";
 
+    private Map<Project, List<User>> projectAndUserForRole = new HashMap<>();
+
     @Override
     public Role create() {
+        new RoleRequests().create(this);
+        return this;
+    }
+
+    public void addUser(Project project, List<User> users) {
         // TODO: Реализовать с помощью SQL-Запроса
-        return null;
+        projectAndUserForRole.put(project, users);
     }
 }
