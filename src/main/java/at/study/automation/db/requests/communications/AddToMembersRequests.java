@@ -1,4 +1,4 @@
-package at.study.automation.model.communications;
+package at.study.automation.db.requests.communications;
 
 import at.study.automation.db.connection.PostgresConnection;
 import at.study.automation.model.Addable;
