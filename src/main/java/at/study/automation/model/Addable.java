@@ -1,6 +1,9 @@
 package at.study.automation.model;
 
-public interface Addable<T> {
+import at.study.automation.model.project.Project;
+import at.study.automation.model.user.User;
 
-    T add();
+public interface Addable {
+
+    void add(Project project, User user);
 }
