@@ -7,9 +7,7 @@ import at.study.automation.model.user.User;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RoleTest {
 
@@ -42,7 +40,6 @@ public class RoleTest {
     @Test
     public void addProjectAnUsers() {
         Role role = new Role();
-        Map<Project, List<User>> projectAndUsersForRole = new HashMap<>();
         List<User> usersForRole;
 
         for (int i = 0; i < 5; i++) {
@@ -52,9 +49,8 @@ public class RoleTest {
                 usersForRole.add(new User());
             }
             Project project = new Project();
-            projectAndUsersForRole.put(project, usersForRole);
-            role.addUser(project, usersForRole);
+            //projectAndUsersForRole.put(project, usersForRole);
+            role.addProject(project, usersForRole);
         }
-        Map<Project, List<User>> projectAndUsersForRoleResult = role.getProjectAndUserForRole();
     }
 }

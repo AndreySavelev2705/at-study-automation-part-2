@@ -1,6 +1,7 @@
 package at.study.automation.model.project;
 
 import at.study.automation.db.requests.ProjectRequests;
+import at.study.automation.db.requests.communications.AddToMembersRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
 import at.study.automation.model.role.Role;
@@ -24,24 +25,31 @@ public class Project extends CreatableEntity implements Creatable<Project> {
     private String description;
     private String homepage;
     private Boolean isPublic = true;
-    private Integer parentId = 2705;
+    private Integer parentId;
     private String identifier = name;
     private Status status = Status.OPENED;
-    private Integer lft = 27;
-    private Integer rgt = 5;
+    private Integer lft;
+    private Integer rgt;
     private Boolean inheritMembers = true;
-    private Integer defaultVersionId = 19;
-    private Integer defaultAssignedToId = 95;
-    private Map<User, List<Role>> usersAndRolesOfProject = new HashMap<>();
+    private Integer defaultVersionId;
+    private Integer defaultAssignedToId;
+    private Map<User, List<Role>> members = new HashMap<>();
 
     @Override
     public Project create() {
         new ProjectRequests().create(this);
+        for (User user : members.keySet()) {
+            Integer memberId = new AddToMembersRequests().addMember(user.getId(), this.getId());
+
+            for (List<Role> roles : members.values()) {
+                roles.forEach(role -> new AddToMembersRequests().addMemberRoles(memberId, role.getId()));
+            }
+        }
         return this;
     }
 
     public void addUser(User user, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
-        usersAndRolesOfProject.put(user, roles);
+        members.put(user,roles);
     }
 }

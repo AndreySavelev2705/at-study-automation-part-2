@@ -1,36 +1,35 @@
 package at.study.automation.db.requests.communications;
 
 import at.study.automation.db.connection.PostgresConnection;
-import at.study.automation.model.Addable;
-import at.study.automation.model.project.Project;
-import at.study.automation.model.user.User;
 
 import java.time.LocalDateTime;
 
-public class AddToMembersRequests implements Addable {
+public class AddToMembersRequests {
 
-    @Override
-    public void add(Project project, User user) {
+    public Integer addMember(Integer userId, Integer projectId) {
         String query = "INSERT INTO public.members\n" +
                 "(id, user_id, project_id, created_on, mail_notification)\n" +
                 "VALUES(DEFAULT, ?, ?, ?, ?) RETURNING id;\n";
 
-        PostgresConnection.INSTANCE.executeQuery(
+        return (Integer) PostgresConnection.INSTANCE.executeQuery(
                 query,
-                user.getId(),
-                project.getId(),
+                userId,
+                projectId,
                 LocalDateTime.now(),
-                new Boolean(false)
+                false
         ).get(0).get("id");
     }
 
-    public Integer getMemberId(Project project, User user) {
-        String query = "SELECT id FROM members WHERE user_id = ? AND project_id = ?";
+    public void addMemberRoles(Integer memberId, Integer roleId) {
+        String query = "INSERT INTO public.member_roles\n" +
+                "(id, member_id, role_id, inherited_from)\n" +
+                "VALUES(DEFAULT, ?, ?, ?);\n";
 
-        return (Integer) PostgresConnection.INSTANCE.executeQuery(
+        PostgresConnection.INSTANCE.executeQuery(
                 query,
-                user.getId(),
-                project.getId()
-        ).get(0).get("id");
+                memberId,
+                roleId,
+                null
+        );
     }
 }

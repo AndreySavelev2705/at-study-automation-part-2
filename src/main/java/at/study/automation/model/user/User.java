@@ -46,7 +46,7 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
     private LocalDateTime passwordChangedOn;
     private List<Token> tokens = new ArrayList<>();
     private List<Email> emails = new ArrayList<>();
-    private Map<Project, List<Role>> projectsAndRolesOfUser = new HashMap<>();
+    private Map<Project, List<Role>> projects = new HashMap<>();
 
     /**
      * Создает хэшированный пароль, используя библиотеку "commons-codec", на основе содержимого полей @salt и @password,
@@ -107,6 +107,6 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
 
     public void addProject(Project project, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
-        projectsAndRolesOfUser.put(project, roles);
+        projects.put(project, roles);
     }
 }

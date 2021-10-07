@@ -8,4 +8,14 @@ public enum Language {
     ENGLISH("en");
 
     public final String languageCode;
+
+    public static Language getEnumByLanguageCode(String languageCode) {
+        for (Language language : Language.values()) {
+            if (languageCode.equals(language.languageCode)) {
+                return language;
+            }
+        }
+
+        throw new RuntimeException();
+    }
 }

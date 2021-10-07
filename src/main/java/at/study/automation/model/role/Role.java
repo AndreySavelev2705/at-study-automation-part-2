@@ -6,7 +6,6 @@ import at.study.automation.model.Entity;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
-import jdk.jfr.Description;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +25,6 @@ public class Role extends Entity implements Creatable<Role> {
     private Boolean assignable = false;
     private Builtin builtin = Builtin.CURRENT_ROLE;
     private List<Permission> permissions;
-    @Description("issuesVisibility")
     private VisibilityOfTasks visibilityOfTasks = VisibilityOfTasks.ALL;
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
     private TimeEntriesVisibility timeEntriesVisibility = TimeEntriesVisibility.ALL;
@@ -45,7 +43,7 @@ public class Role extends Entity implements Creatable<Role> {
             "  add_issue_notes: []\n" +
             "  delete_issues: []\n";
 
-    private Map<Project, List<User>> projectAndUserForRole = new HashMap<>();
+    private Map<Project, List<User>> projects = new HashMap<>();
 
     @Override
     public Role create() {
@@ -53,8 +51,8 @@ public class Role extends Entity implements Creatable<Role> {
         return this;
     }
 
-    public void addUser(Project project, List<User> users) {
+    public void addProject(Project project, List<User> users) {
         // TODO: Реализовать с помощью SQL-Запроса
-        projectAndUserForRole.put(project, users);
+        projects.put(project, users);
     }
 }

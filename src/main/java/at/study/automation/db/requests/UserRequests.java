@@ -1,10 +1,16 @@
 package at.study.automation.db.requests;
 
 import at.study.automation.db.connection.PostgresConnection;
+import at.study.automation.model.user.Language;
+import at.study.automation.model.user.MailNotification;
+import at.study.automation.model.user.Status;
 import at.study.automation.model.user.User;
 
+import java.util.List;
+import java.util.Map;
 
-public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete<User> {
+
+public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete<User>, Read<User> {
 
     @Override
     public void create(User user) {
@@ -75,5 +81,33 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
                 user.getPasswordChangedOn(),
                 id
         );
+    }
+
+    @Override
+    public User read(Integer id) {
+        String query = "SELECT * FROM users WHERE id = ?";
+        List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, id);
+        return from(queryResult.get(0));
+    }
+
+    // Делаем из мапы, с результатом запроса из бд, объект класса User и возвращаем его
+    private User from(Map<String, Object> data) {
+        return (User) new User()
+                .setLogin((String)data.get("login"))
+                .setHashedPassword((String)data.get("hashed_password"))
+                .setFirstName((String) data.get("firstname"))
+                .setLastName((String) data.get("lastname"))
+                .setIsAdmin((Boolean) data.get("admin"))
+                .setStatus(Status.getEnumByStatusCode((Integer) data.get("status")))
+                .setLastLoginOn(null)
+                .setLanguage(Language.getEnumByLanguageCode((String) data.get("language")))
+                .setAuthSourceId(null)
+                .setType((String)data.get("type"))
+                .setIdentityUrl(null)
+                .setMailNotification(MailNotification.getEnumByDescription(data.get("mail_notification").toString().toUpperCase()))
+                .setSail((String)data.get("salt"))
+                .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
+                .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp
+                .setId((Integer) data.get("id"));
     }
 }

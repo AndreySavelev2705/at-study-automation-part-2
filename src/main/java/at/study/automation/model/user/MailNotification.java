@@ -11,4 +11,14 @@ public enum MailNotification {
     NONE("Нет событий");
 
     public final String description;
+
+    public static MailNotification getEnumByDescription(String description) {
+        for (MailNotification mailNotification : MailNotification.values()) {
+            if (mailNotification.name().equals(description)) {
+                return mailNotification;
+            }
+        }
+
+        throw new RuntimeException();
+    }
 }
