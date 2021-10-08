@@ -28,8 +28,8 @@ public class Project extends CreatableEntity implements Creatable<Project> {
     private Integer parentId;
     private String identifier = name;
     private Status status = Status.OPENED;
-    private Integer lft;
-    private Integer rgt;
+    private Integer lft = 111;
+    private Integer rgt = 222;
     private Boolean inheritMembers = true;
     private Integer defaultVersionId;
     private Integer defaultAssignedToId;
