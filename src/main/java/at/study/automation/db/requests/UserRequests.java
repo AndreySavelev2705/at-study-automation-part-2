@@ -9,7 +9,6 @@ import at.study.automation.model.user.User;
 import java.util.List;
 import java.util.Map;
 
-
 public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete<User>, Read<User> {
 
     @Override

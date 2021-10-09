@@ -18,6 +18,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+import java.util.Objects;
 
 import static at.study.automation.api.rest_assured.GsonProvider.GSON;
 
@@ -67,15 +68,12 @@ public class CrudUserByAdminTest {
     @Test(description = "Создание, изменение, получение, удаление пользователя. Администратор системы: Шаг 1")
     public void firstStepTest() {
         RestResponse response = apiClient.execute(requestPost);
-
         Assert.assertEquals(response.getStatusCode(), 201);
 
-        // TODO: доработать проверку наличая id в ответе
-
         Integer id = response.getPayload(UserInfoDto.class).getUser().getId();
+        Assert.assertEquals(Objects.nonNull(id), id != null);
 
         User user = new UserRequests().read(id);
-
         Assert.assertEquals(id, user.getId());
     }
 
