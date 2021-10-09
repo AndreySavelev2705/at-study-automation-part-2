@@ -6,19 +6,16 @@ import at.study.automation.api.client.RestRequest;
 import at.study.automation.api.client.RestResponse;
 import at.study.automation.api.dto.users.UserDto;
 import at.study.automation.api.dto.users.UserInfoDto;
-import at.study.automation.api.rest_assured.GsonProvider;
 import at.study.automation.api.rest_assured.RestAssuredClient;
 import at.study.automation.api.rest_assured.RestAssuredRequest;
 import at.study.automation.db.requests.UserRequests;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
 
-import at.study.automation.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static at.study.automation.api.rest_assured.GsonProvider.GSON;
@@ -54,32 +51,32 @@ public class CrudUserByAdminTest {
 
     @Test(description = "Создание, изменение, получение, удаление пользователя. Администратор системы.")
     public void crudTest() {
-        response = apiClient.execute(creationUser(dto));
+        response = apiClient.execute(creationUserByRequest(dto));
         firstStep(response);
 
-        response = apiClient.execute(creationUser(dto));
+        response = apiClient.execute(creationUserByRequest(dto));
         secondStep(response);
 
-        response = apiClient.execute(creationUser(changedDto(dto)));
+        response = apiClient.execute(creationUserByRequest(changedDto(dto)));
         thirdStep(response);
     }
 
-    private RestRequest creationUser(UserInfoDto dto) {
+    private RestRequest creationUserByRequest(UserInfoDto dto) {
         String body = GSON.toJson(dto);
         return new RestAssuredRequest(RestMethod.POST, "users.json", null, null, body);
     }
 
-    private RestRequest getUser(UserInfoDto dto) {
+    private RestRequest getUserByRequest(UserInfoDto dto) {
         String body = GSON.toJson(dto);
         return new RestAssuredRequest(RestMethod.GET, "/users/" + dto.getUser().getId() + ".json", null, null, null);
     }
 
-    private RestRequest updateUser(UserInfoDto dto) {
+    private RestRequest updateUserByRequest(UserInfoDto dto) {
         String body = GSON.toJson(dto);
         return  new RestAssuredRequest(RestMethod.PUT, "/users/" + dto.getUser().getId() + ".json", null, null, null);
     }
 
-    private RestRequest DeleteUser(UserInfoDto dto) {
+    private RestRequest DeleteUserByRequest(UserInfoDto dto) {
         String body = GSON.toJson(dto);
         return new RestAssuredRequest(RestMethod.DELETE, "/users/" + dto.getUser().getId() + ".json", null, null, null);
     }
