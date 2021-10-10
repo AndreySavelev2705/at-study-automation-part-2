@@ -9,10 +9,9 @@ import at.study.automation.api.dto.users.UserInfoDto;
 import at.study.automation.api.rest_assured.RestAssuredClient;
 import at.study.automation.api.rest_assured.RestAssuredRequest;
 import at.study.automation.db.requests.UserRequests;
-import at.study.automation.model.user.Status;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
-import at.study.automation.utils.StringUtils;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -23,60 +22,117 @@ import static at.study.automation.api.rest_assured.GsonProvider.GSON;
 
 public class CrudUserByAdminTest {
     private RestApiClient apiClient;
-    private RestRequest requestPost;
-    private RestRequest requestGet;
-    private RestRequest requestPut;
-    private RestRequest requestDelete;
-    private User admin;
-    private User createdUser;
+    UserInfoDto dto;
+    User userForCreating;
+    RestResponse response;
 
     @BeforeMethod
     public void prepareFixtures() {
 
-        admin = new User() {{
+        User admin = new User() {{
             setIsAdmin(true);
             setTokens(Collections.singletonList(new Token(this)));
         }}.create();
 
-        createdUser = new User() {{
-            setStatus(Status.UNACCEPTED);
-        }}.create();
+        userForCreating = new User();
 
-        apiClient = new RestAssuredClient(admin);
-
-        User userForCreating = new User();
-
-        UserInfoDto dto = new UserInfoDto(
+        dto = new UserInfoDto(
                 new UserDto()
                         .setLogin(userForCreating.getLogin())
                         .setLastName(userForCreating.getLastName())
                         .setFirstName(userForCreating.getFirstName())
-                        .setMail(StringUtils.randomEmail())
+                        .setMail("savtestemail5@mail.ru")
                         .setPassword(userForCreating.getPassword())
                         .setStatus(2)
         );
 
-        String body = GSON.toJson(dto);
-
-        requestPost = new RestAssuredRequest(RestMethod.POST, "users.json", null, null, body);
-        requestGet = new RestAssuredRequest(RestMethod.GET, "/users/" + createdUser.getId() + ".json", null, null, null);
-        requestPut = new RestAssuredRequest(RestMethod.PUT, "/users/" + createdUser.getId() + ".json", null, null, null);
-        requestDelete = new RestAssuredRequest(RestMethod.DELETE, "/users/" + createdUser.getId() + ".json", null, null, null);
+        apiClient = new RestAssuredClient(admin);
     }
 
-    @Test(description = "Создание, изменение, получение, удаление пользователя. Администратор системы: Шаг 1")
-    public void firstStepTest() {
-        RestResponse response = apiClient.execute(requestPost);
+    @Test(description = "Создание, изменение, получение, удаление пользователя. Администратор системы.")
+    public void crudTest() {
+        response = apiClient.execute(creationUserByRequest(dto));
+        firstStep(response);
 
+        response = apiClient.execute(creationUserByRequest(dto));
+        secondStep(response);
+
+        response = apiClient.execute(creationUserByRequest(changedDto(dto)));
+        thirdStep(response);
+    }
+
+    private RestRequest creationUserByRequest(UserInfoDto dto) {
+        String body = GSON.toJson(dto);
+        return new RestAssuredRequest(RestMethod.POST, "users.json", null, null, body);
+    }
+
+    private RestRequest getUserByRequest(UserInfoDto dto) {
+        String body = GSON.toJson(dto);
+        return new RestAssuredRequest(RestMethod.GET, "/users/" + dto.getUser().getId() + ".json", null, null, null);
+    }
+
+    private RestRequest updateUserByRequest(UserInfoDto dto) {
+        String body = GSON.toJson(dto);
+        return  new RestAssuredRequest(RestMethod.PUT, "/users/" + dto.getUser().getId() + ".json", null, null, null);
+    }
+
+    private RestRequest DeleteUserByRequest(UserInfoDto dto) {
+        String body = GSON.toJson(dto);
+        return new RestAssuredRequest(RestMethod.DELETE, "/users/" + dto.getUser().getId() + ".json", null, null, null);
+    }
+
+    private UserDto getUserFromResponse (RestResponse response) {
+        return response.getPayload(UserInfoDto.class).getUser();
+    }
+
+    private UserInfoDto changedDto(UserInfoDto dto) {
+        UserInfoDto newDto = dto;
+
+        newDto.getUser()
+                .setPassword("kjk3");
+
+        return newDto;
+    }
+
+    private void firstStep(RestResponse response) {
         Assert.assertEquals(response.getStatusCode(), 201);
 
-        // TODO: доработать проверку наличая id в ответе
+        Assert.assertNotNull(getUserFromResponse(response).getId());
+        Assert.assertTrue(getUserFromResponse(response).getId() > 0);
 
-        Integer id = response.getPayload(UserInfoDto.class).getUser().getId();
+        Assert.assertNotNull(getUserFromResponse(response).getLogin());
+        Assert.assertEquals(getUserFromResponse(response).getLogin(), dto.getUser().getLogin());
 
-        User user = new UserRequests().read(id);
+        Assert.assertNotNull(getUserFromResponse(response).getIsAdmin());
+        Assert.assertEquals(getUserFromResponse(response).getIsAdmin(), Boolean.FALSE);
 
-        Assert.assertEquals(id, user.getId());
+        Assert.assertNotNull(getUserFromResponse(response).getFirstName());
+        Assert.assertEquals(getUserFromResponse(response).getFirstName(), dto.getUser().getFirstName());
+
+        Assert.assertNotNull(getUserFromResponse(response).getLastName());
+        Assert.assertEquals(getUserFromResponse(response).getLastName(), dto.getUser().getLastName());
+
+        Assert.assertNotNull(getUserFromResponse(response).getMail());
+        Assert.assertEquals(getUserFromResponse(response).getMail(), dto.getUser().getMail());
+
+        Assert.assertNotNull(getUserFromResponse(response).getCreatedOn());
+
+        Assert.assertNull(getUserFromResponse(response).getLastLoginOn());
+
+        Assert.assertNotNull(getUserFromResponse(response).getApiKey());
+
+        Assert.assertNotNull(getUserFromResponse(response).getStatus());
+        Assert.assertEquals(getUserFromResponse(response).getStatus().intValue(), dto.getUser().getStatus().intValue());
+
+        User user = new UserRequests().read(getUserFromResponse(response).getId());
+        Assert.assertEquals(getUserFromResponse(response).getId(), user.getId());
     }
 
+    private void secondStep (RestResponse response) {
+        Assert.assertEquals(response.getStatusCode(), 422);
+    }
+
+    private void thirdStep (RestResponse response) {
+        Assert.assertEquals(response.getStatusCode(), 422);
+    }
 }

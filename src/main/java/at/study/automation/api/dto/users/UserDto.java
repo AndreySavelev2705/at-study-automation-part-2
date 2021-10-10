@@ -18,6 +18,9 @@ public class UserDto {
 
     private String login;
 
+    @SerializedName("admin")
+    private Boolean isAdmin;
+
     @SerializedName("firstname")
     private String firstName;
 
@@ -33,6 +36,9 @@ public class UserDto {
 
     @SerializedName("last_login_on")
     private LocalDateTime lastLoginOn;
+
+    @SerializedName("api_key")
+    private String apiKey;
 
     private Integer status;
 }
