@@ -2,6 +2,7 @@ package at.study.automation.model.role;
 
 import lombok.AllArgsConstructor;
 
+
 @AllArgsConstructor
 public enum VisibilityOfTasks {
     ALL("Все задачи"),

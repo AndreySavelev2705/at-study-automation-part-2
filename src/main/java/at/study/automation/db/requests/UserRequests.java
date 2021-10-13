@@ -86,7 +86,11 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
     public User read(Integer id) {
         String query = "SELECT * FROM users WHERE id = ?";
         List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, id);
-        return from(queryResult.get(0));
+
+        if (queryResult.size() != 0) {
+            return from(queryResult.get(0));
+        }
+        return null;
     }
 
     // Делаем из мапы, с результатом запроса из бд, объект класса User и возвращаем его
@@ -97,13 +101,13 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
                 .setFirstName((String) data.get("firstname"))
                 .setLastName((String) data.get("lastname"))
                 .setIsAdmin((Boolean) data.get("admin"))
-                .setStatus(Status.getEnumByStatusCode((Integer) data.get("status")))
+                .setStatus(Status.getStatusByStatusCode((Integer) data.get("status")))
                 .setLastLoginOn(null)
-                .setLanguage(Language.getEnumByLanguageCode((String) data.get("language")))
+                .setLanguage(Language.getLanguageByLanguageCode((String) data.get("language")))
                 .setAuthSourceId(null)
                 .setType((String)data.get("type"))
                 .setIdentityUrl(null)
-                .setMailNotification(MailNotification.getEnumByDescription(data.get("mail_notification").toString().toUpperCase()))
+                .setMailNotification(MailNotification.getEmailNotificationByDescription(data.get("mail_notification").toString().toUpperCase()))
                 .setSail((String)data.get("salt"))
                 .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
                 .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp

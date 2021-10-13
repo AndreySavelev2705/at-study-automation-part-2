@@ -103,14 +103,13 @@ public class EmailRequests extends BaseRequests implements Create<Email>,ReadAll
         PostgresConnection.INSTANCE.executeQuery(query,id);
     }
 
-    // Делаем из мапы, с результатом запроса из бд, объект класса Email и возвращаем его
     private Email from(Map<String, Object> data, User user) {
        return (Email) new Email(user)
         .setAddress((String)data.get("address"))
         .setIsDefault((Boolean) data.get("is_default"))
         .setNotify((Boolean) data.get("notify"))
-        .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp
-        .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
+        .setUpdatedOn(toLocalDate(data.get("updated_on")))
+        .setCreatedOn(toLocalDate(data.get("created_on")))
         .setId((Integer) data.get("id"));
     }
 }

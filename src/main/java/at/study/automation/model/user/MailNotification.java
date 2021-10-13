@@ -2,6 +2,8 @@ package at.study.automation.model.user;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 public enum MailNotification {
     ALL("О всех событиях в моих проектах"),
@@ -12,13 +14,16 @@ public enum MailNotification {
 
     public final String description;
 
-    public static MailNotification getEnumByDescription(String description) {
+    public static MailNotification getEmailNotificationByDescription(String description) {
         for (MailNotification mailNotification : MailNotification.values()) {
             if (mailNotification.name().equals(description)) {
                 return mailNotification;
             }
         }
 
-        throw new RuntimeException();
+        return Arrays.stream(MailNotification.values())
+                .filter(mailNotification -> description.equals(mailNotification.description))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Такой вариации событий для уведомления не существует."));
     }
 }

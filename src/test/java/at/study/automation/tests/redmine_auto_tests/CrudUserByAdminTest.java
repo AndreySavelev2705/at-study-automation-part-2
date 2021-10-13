@@ -4,6 +4,7 @@ import at.study.automation.api.client.RestApiClient;
 import at.study.automation.api.client.RestMethod;
 import at.study.automation.api.client.RestRequest;
 import at.study.automation.api.client.RestResponse;
+import at.study.automation.api.dto.errors.ErrorInfoDto;
 import at.study.automation.api.dto.users.UserDto;
 import at.study.automation.api.dto.users.UserInfoDto;
 import at.study.automation.api.rest_assured.RestAssuredClient;
@@ -11,7 +12,7 @@ import at.study.automation.api.rest_assured.RestAssuredRequest;
 import at.study.automation.db.requests.UserRequests;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
-
+import at.study.automation.utils.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -21,10 +22,10 @@ import java.util.Collections;
 import static at.study.automation.api.rest_assured.GsonProvider.GSON;
 
 public class CrudUserByAdminTest {
+
     private RestApiClient apiClient;
-    UserInfoDto dto;
-    User userForCreating;
-    RestResponse response;
+    private UserInfoDto dto;
+    private final String userEndpoint = "/users/%d.json";
 
     @BeforeMethod
     public void prepareFixtures() {
@@ -34,15 +35,13 @@ public class CrudUserByAdminTest {
             setTokens(Collections.singletonList(new Token(this)));
         }}.create();
 
-        userForCreating = new User();
-
         dto = new UserInfoDto(
                 new UserDto()
-                        .setLogin(userForCreating.getLogin())
-                        .setLastName(userForCreating.getLastName())
-                        .setFirstName(userForCreating.getFirstName())
-                        .setMail("savtestemail5@mail.ru")
-                        .setPassword(userForCreating.getPassword())
+                        .setLogin("SavelevAutoLogin" + StringUtils.randomEnglishString(10))
+                        .setLastName("SavelevAuto" + StringUtils.randomEnglishString(6))
+                        .setFirstName("SavelevAuto" + StringUtils.randomEnglishString(8))
+                        .setMail(StringUtils.randomEmail())
+                        .setPassword(StringUtils.randomEnglishString(8))
                         .setStatus(2)
         );
 
@@ -50,89 +49,110 @@ public class CrudUserByAdminTest {
     }
 
     @Test(description = "Создание, изменение, получение, удаление пользователя. Администратор системы.")
-    public void crudTest() {
-        response = apiClient.execute(creationUserByRequest(dto));
-        firstStep(response);
+    public void crudUserTest() {
+        Integer createdUserId = createAndValidateUser();
 
-        response = apiClient.execute(creationUserByRequest(dto));
-        secondStep(response);
-
-        response = apiClient.execute(creationUserByRequest(changedDto(dto)));
-        thirdStep(response);
+        createAndValidateDuplicatedUser();
+        createAndValidateUserWithShortPassword();
+        updateAndValidateUserWithNewStatus(createdUserId);
+        getUserFromDbWithNewStatus(createdUserId);
+        deleteUserFromDb(createdUserId);
+        checkUserWasDeleted(createdUserId);
     }
 
-    private RestRequest creationUserByRequest(UserInfoDto dto) {
-        String body = GSON.toJson(dto);
-        return new RestAssuredRequest(RestMethod.POST, "users.json", null, null, body);
-    }
+    private Integer createAndValidateUser() {
+        RestRequest request = new RestAssuredRequest(RestMethod.POST, "users.json", null, null, GSON.toJson(dto));
 
-    private RestRequest getUserByRequest(UserInfoDto dto) {
-        String body = GSON.toJson(dto);
-        return new RestAssuredRequest(RestMethod.GET, "/users/" + dto.getUser().getId() + ".json", null, null, null);
-    }
+        RestResponse response = apiClient.execute(request);
 
-    private RestRequest updateUserByRequest(UserInfoDto dto) {
-        String body = GSON.toJson(dto);
-        return  new RestAssuredRequest(RestMethod.PUT, "/users/" + dto.getUser().getId() + ".json", null, null, null);
-    }
+        UserDto userFromResponse = response.getPayload(UserInfoDto.class).getUser();
 
-    private RestRequest DeleteUserByRequest(UserInfoDto dto) {
-        String body = GSON.toJson(dto);
-        return new RestAssuredRequest(RestMethod.DELETE, "/users/" + dto.getUser().getId() + ".json", null, null, null);
-    }
-
-    private UserDto getUserFromResponse (RestResponse response) {
-        return response.getPayload(UserInfoDto.class).getUser();
-    }
-
-    private UserInfoDto changedDto(UserInfoDto dto) {
-        UserInfoDto newDto = dto;
-
-        newDto.getUser()
-                .setPassword("kjk3");
-
-        return newDto;
-    }
-
-    private void firstStep(RestResponse response) {
         Assert.assertEquals(response.getStatusCode(), 201);
+        Assert.assertTrue(userFromResponse.getId() > 0);
+        Assert.assertEquals(userFromResponse.getLogin(), dto.getUser().getLogin());
+        Assert.assertEquals(userFromResponse.getIsAdmin(), Boolean.FALSE);
+        Assert.assertEquals(userFromResponse.getFirstName(), dto.getUser().getFirstName());
+        Assert.assertEquals(userFromResponse.getLastName(), dto.getUser().getLastName());
+        Assert.assertEquals(userFromResponse.getMail(), dto.getUser().getMail());
+        Assert.assertNotNull(userFromResponse.getCreatedOn());
+        Assert.assertNull(userFromResponse.getLastLoginOn());
+        Assert.assertTrue(userFromResponse.getApiKey().matches("^[0-9a-fA-F]*$"));
+        Assert.assertEquals(userFromResponse.getStatus().intValue(), dto.getUser().getStatus().intValue());
+        User user = new UserRequests().read(userFromResponse.getId());
+        Assert.assertEquals(userFromResponse.getId(), user.getId());
 
-        Assert.assertNotNull(getUserFromResponse(response).getId());
-        Assert.assertTrue(getUserFromResponse(response).getId() > 0);
-
-        Assert.assertNotNull(getUserFromResponse(response).getLogin());
-        Assert.assertEquals(getUserFromResponse(response).getLogin(), dto.getUser().getLogin());
-
-        Assert.assertNotNull(getUserFromResponse(response).getIsAdmin());
-        Assert.assertEquals(getUserFromResponse(response).getIsAdmin(), Boolean.FALSE);
-
-        Assert.assertNotNull(getUserFromResponse(response).getFirstName());
-        Assert.assertEquals(getUserFromResponse(response).getFirstName(), dto.getUser().getFirstName());
-
-        Assert.assertNotNull(getUserFromResponse(response).getLastName());
-        Assert.assertEquals(getUserFromResponse(response).getLastName(), dto.getUser().getLastName());
-
-        Assert.assertNotNull(getUserFromResponse(response).getMail());
-        Assert.assertEquals(getUserFromResponse(response).getMail(), dto.getUser().getMail());
-
-        Assert.assertNotNull(getUserFromResponse(response).getCreatedOn());
-
-        Assert.assertNull(getUserFromResponse(response).getLastLoginOn());
-
-        Assert.assertNotNull(getUserFromResponse(response).getApiKey());
-
-        Assert.assertNotNull(getUserFromResponse(response).getStatus());
-        Assert.assertEquals(getUserFromResponse(response).getStatus().intValue(), dto.getUser().getStatus().intValue());
-
-        User user = new UserRequests().read(getUserFromResponse(response).getId());
-        Assert.assertEquals(getUserFromResponse(response).getId(), user.getId());
+        return userFromResponse.getId();
     }
 
-    private void secondStep (RestResponse response) {
+    private void createAndValidateDuplicatedUser() {
+        RestRequest request = new RestAssuredRequest(RestMethod.POST, "users.json", null, null, GSON.toJson(dto));
+
+        RestResponse response = apiClient.execute(request);
+
         Assert.assertEquals(response.getStatusCode(), 422);
+
+        ErrorInfoDto errorInfoDto = response.getPayload(ErrorInfoDto.class);
+
+        Assert.assertEquals(errorInfoDto.getErrors().get(0), "Email уже существует");
+        Assert.assertEquals(errorInfoDto.getErrors().get(1), "Пользователь уже существует");
     }
 
-    private void thirdStep (RestResponse response) {
+    private void createAndValidateUserWithShortPassword() {
+        String currentPassword = dto.getUser().getPassword();
+
+        dto.getUser().setPassword("kj3k");
+
+        RestRequest request = new RestAssuredRequest(RestMethod.POST, "users.json", null, null, GSON.toJson(dto));
+
+        RestResponse response = apiClient.execute(request);
+        ErrorInfoDto errorInfoDto = response.getPayload(ErrorInfoDto.class);
+
         Assert.assertEquals(response.getStatusCode(), 422);
+        Assert.assertEquals(errorInfoDto.getErrors().get(0), "Email уже существует");
+        Assert.assertEquals(errorInfoDto.getErrors().get(1), "Пользователь уже существует");
+        Assert.assertEquals(errorInfoDto.getErrors().get(2), "Пароль недостаточной длины (не может быть меньше 8 символа)");
+
+        dto.getUser().setPassword(currentPassword);
+    }
+
+    private void updateAndValidateUserWithNewStatus(Integer userId) {
+        dto.getUser().setStatus(1);
+
+        RestRequest request = new RestAssuredRequest(RestMethod.PUT, String.format(userEndpoint, userId), null, null, GSON.toJson(dto));
+
+        RestResponse response = apiClient.execute(request);
+
+        Assert.assertEquals(response.getStatusCode(), 204);
+
+        User user = new UserRequests().read(userId);
+        Assert.assertEquals(user.getStatus().statusCode, dto.getUser().getStatus().intValue());
+    }
+
+    private void getUserFromDbWithNewStatus(Integer userId) {
+        RestRequest request = new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null);
+
+        RestResponse response = apiClient.execute(request);
+
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        User user = new UserRequests().read(userId);
+        Assert.assertEquals(user.getStatus().statusCode, dto.getUser().getStatus().intValue());
+    }
+
+    private void deleteUserFromDb(Integer userId) {
+        RestRequest request = new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null);
+
+        RestResponse response = apiClient.execute(request);
+
+        Assert.assertEquals(response.getStatusCode(), 204);
+        Assert.assertNull(new UserRequests().read(userId));
+    }
+
+    private void checkUserWasDeleted(Integer userId) {
+        RestRequest request= new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null);
+
+        RestResponse response = apiClient.execute(request);
+
+        Assert.assertEquals(response.getStatusCode(), 404);
     }
 }

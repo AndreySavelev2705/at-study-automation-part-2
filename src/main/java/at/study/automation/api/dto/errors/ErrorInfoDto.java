@@ -1,13 +1,15 @@
-package at.study.automation.api.dto.users;
+package at.study.automation.api.dto.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
-public class UserInfoDto{
+public class ErrorInfoDto {
 
-    private UserDto user;
+    List<String> errors;
 }

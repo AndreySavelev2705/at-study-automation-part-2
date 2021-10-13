@@ -3,7 +3,7 @@ package at.study.automation.model.role;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum Permission {
+public enum Permissions {
 
     ADD_PROJECT("Создание проекта"),
     EDIT_PROJECT("Редактирование проектов"),

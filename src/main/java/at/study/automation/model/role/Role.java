@@ -3,17 +3,14 @@ package at.study.automation.model.role;
 import at.study.automation.db.requests.RoleRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.Entity;
-import at.study.automation.model.project.Project;
-import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @Setter
@@ -24,7 +21,7 @@ public class Role extends Entity implements Creatable<Role> {
     private Integer position;
     private Boolean assignable = false;
     private Builtin builtin = Builtin.CURRENT_ROLE;
-    private List<Permission> permissions;
+    private List<Permissions> permissions = new ArrayList<>();
     private VisibilityOfTasks visibilityOfTasks = VisibilityOfTasks.ALL;
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
     private TimeEntriesVisibility timeEntriesVisibility = TimeEntriesVisibility.ALL;
@@ -43,16 +40,9 @@ public class Role extends Entity implements Creatable<Role> {
             "  add_issue_notes: []\n" +
             "  delete_issues: []\n";
 
-    private Map<Project, List<User>> projects = new HashMap<>();
-
     @Override
     public Role create() {
         new RoleRequests().create(this);
         return this;
-    }
-
-    public void addProject(Project project, List<User> users) {
-        // TODO: Реализовать с помощью SQL-Запроса
-        projects.put(project, users);
     }
 }

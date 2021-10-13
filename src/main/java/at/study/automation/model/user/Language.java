@@ -2,6 +2,8 @@ package at.study.automation.model.user;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 public enum Language {
     RUSSIAN("ru"),
@@ -9,13 +11,11 @@ public enum Language {
 
     public final String languageCode;
 
-    public static Language getEnumByLanguageCode(String languageCode) {
-        for (Language language : Language.values()) {
-            if (languageCode.equals(language.languageCode)) {
-                return language;
-            }
-        }
+    public static Language getLanguageByLanguageCode(String languageCode) {
 
-        throw new RuntimeException();
+        return Arrays.stream(Language.values())
+                .filter(language -> languageCode.equals(language.languageCode))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Языка по коду: " + languageCode + " не найдено."));
     }
 }

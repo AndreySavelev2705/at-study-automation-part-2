@@ -49,8 +49,6 @@ public class RoleTest {
                 usersForRole.add(new User());
             }
             Project project = new Project();
-            //projectAndUsersForRole.put(project, usersForRole);
-            role.addProject(project, usersForRole);
         }
     }
 }

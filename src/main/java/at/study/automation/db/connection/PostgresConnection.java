@@ -39,16 +39,11 @@ public class PostgresConnection implements DatabaseConnection {
     @SneakyThrows
     public List<Map<String, Object>> executeQuery(String query, Object... parameters) {
         try {
-
-
             PreparedStatement statement = connection.prepareStatement(query);
-
             // Тут ? заменяется на параметр из массива с параметрами в аргументе метода
             for (int i = 0; i < parameters.length; i++) {
                 statement.setObject(i + 1, parameters[i]);
             }
-
-
             // Содержит курсор для передвижения по строкам вниз результирующей таблицы через метод next();
             ResultSet rs = statement.executeQuery();
 

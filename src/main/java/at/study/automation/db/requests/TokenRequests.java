@@ -18,9 +18,9 @@ public class TokenRequests extends BaseRequests implements Create<Token>, ReadAl
 
     /**
      * Метод создает запись токена в бд в таблице Token, на основе полученного в параметрах
-     * объекта типа Email
+     * объекта типа Token
      *
-     * @param token
+     * @param token - параметр метода типа Token на основе которого создается токен в бд
      */
     @Override
     public void create(Token token) {

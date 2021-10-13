@@ -1,7 +1,10 @@
 package at.study.automation.db.requests;
 
 import at.study.automation.db.connection.PostgresConnection;
+import at.study.automation.model.role.Permissions;
 import at.study.automation.model.role.Role;
+
+import java.util.List;
 
 public class RoleRequests extends BaseRequests implements Create<Role>, Update<Role>, Delete<Role> {
 
@@ -18,7 +21,7 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
                 role.getPosition(),
                 role.getAssignable(),
                 role.getBuiltin().builtinCode,
-                role.getPermissions(),
+                convertPermissionsToString(role.getPermissions()),
                 role.getVisibilityOfTasks().databaseValue,
                 role.getUsersVisibility().visibilityValue,
                 role.getTimeEntriesVisibility().timeEntriesVisibilityValue,
@@ -49,7 +52,7 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
                 role.getPosition(),
                 role.getAssignable(),
                 role.getBuiltin().builtinCode,
-                role.getPermissions(),
+                convertPermissionsToString(role.getPermissions()),
                 role.getVisibilityOfTasks().databaseValue,
                 role.getUsersVisibility().visibilityValue,
                 role.getTimeEntriesVisibility().timeEntriesVisibilityValue,
@@ -57,5 +60,15 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
                 role.getSettings(),
                 id
         );
+    }
+
+    private String convertPermissionsToString(List<Permissions> permissions) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("---\n");
+
+        permissions.forEach(permission -> sb.append("- :").append(permission.name().toLowerCase()).append("\n"));
+
+        return sb.toString();
     }
 }
