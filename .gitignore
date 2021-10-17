@@ -2,3 +2,4 @@
 /.idea/
 at-study-automation3.iml
 /target/
+/src/test/resources/drivers
