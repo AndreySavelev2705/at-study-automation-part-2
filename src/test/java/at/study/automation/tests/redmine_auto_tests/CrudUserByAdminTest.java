@@ -55,8 +55,8 @@ public class CrudUserByAdminTest {
         createAndValidateDuplicatedUser();
         createAndValidateUserWithShortPassword();
         updateAndValidateUserWithNewStatus(createdUserId);
-        getUserFromDbWithNewStatus(createdUserId);
-        deleteUserFromDb(createdUserId);
+        getUserWithNewStatus(createdUserId);
+        deleteUser(createdUserId);
         checkUserWasDeleted(createdUserId);
     }
 
@@ -128,7 +128,7 @@ public class CrudUserByAdminTest {
         Assert.assertEquals(user.getStatus().statusCode, dto.getUser().getStatus().intValue());
     }
 
-    private void getUserFromDbWithNewStatus(Integer userId) {
+    private void getUserWithNewStatus(Integer userId) {
         RestRequest request = new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null);
 
         RestResponse response = apiClient.execute(request);
@@ -139,7 +139,7 @@ public class CrudUserByAdminTest {
         Assert.assertEquals(user.getStatus().statusCode, dto.getUser().getStatus().intValue());
     }
 
-    private void deleteUserFromDb(Integer userId) {
+    private void deleteUser(Integer userId) {
         RestRequest request = new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null);
 
         RestResponse response = apiClient.execute(request);
@@ -149,7 +149,7 @@ public class CrudUserByAdminTest {
     }
 
     private void checkUserWasDeleted(Integer userId) {
-        RestRequest request= new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null);
+        RestRequest request = new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null);
 
         RestResponse response = apiClient.execute(request);
 

@@ -23,7 +23,7 @@ public class CreateUserByNotAdminTest {
 
     private RestApiClient apiClient;
     private UserInfoDto dto;
-    private final String userEndpoint = "users.json";
+    private final String USER_ENDPOINT = "users.json";
 
     @BeforeMethod
     public void prepareFixtures() {
@@ -43,14 +43,10 @@ public class CreateUserByNotAdminTest {
 
         apiClient = new RestAssuredClient(notAdmin);
     }
-    
+
     @Test
     public void createUserTest() {
-        createUser();
-    }
-
-    private void createUser() {
-        RestRequest request = new RestAssuredRequest(RestMethod.POST, userEndpoint, null, null, GSON.toJson(dto));
+        RestRequest request = new RestAssuredRequest(RestMethod.POST, USER_ENDPOINT, null, null, GSON.toJson(dto));
 
         RestResponse response = apiClient.execute(request);
 

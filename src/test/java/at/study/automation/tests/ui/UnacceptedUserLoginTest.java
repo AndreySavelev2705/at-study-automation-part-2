@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 
 public class UnacceptedUserLoginTest extends BaseUiTest {
 
@@ -24,5 +25,8 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
     public void testUnacceptedUserLogin() {
         loginPage.login(unacceptedUser);
         assertEquals(loginPage.errorFlash.getText(), "Ваша учётная запись создана и ожидает подтверждения администратора.");
+        assertFalse(isElementPresent(headerPage.myPage));
+        assertEquals(headerPage.loginButton.getText(), "Войти");
+        assertEquals(headerPage.register.getText(), "Регистрация");
     }
 }

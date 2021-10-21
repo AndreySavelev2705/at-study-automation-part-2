@@ -4,6 +4,8 @@ import at.study.automation.ui.browser.Browser;
 import at.study.automation.ui.browser.BrowserManager;
 import at.study.automation.ui.pages.HeaderPage;
 import at.study.automation.ui.pages.LoginPage;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebElement;
 import org.testng.annotations.AfterMethod;
 
 public class BaseUiTest {
@@ -26,5 +28,14 @@ public class BaseUiTest {
     @AfterMethod
     public void tearDown() {
         BrowserManager.closeBroser();
+    }
+
+    protected boolean isElementPresent(WebElement webElement) {
+        try {
+            webElement.isDisplayed();
+            return true;
+        } catch (NoSuchElementException e) {
+            return false;
+        }
     }
 }
