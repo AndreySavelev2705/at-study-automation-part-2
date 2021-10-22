@@ -15,13 +15,17 @@ public class AdminLoginTest extends BaseUiTest {
             setIsAdmin(true);
         }}.create();
 
-        openBrowser("/login");
+        openBrowser();
     }
 
     @Test
     public void positiveAdminLoginTest() {
+        assertEquals(homePage.homePage.getText(), "Домашняя страница");
+
+        headerPage.loginButton.click();
         loginPage.login(admin);
 
+        assertEquals(homePage.homePage.getText(), "Домашняя страница");
         assertEquals(headerPage.userActive.getText(), "Вошли как " + admin.getLogin());
         assertEquals(headerPage.homePage.getText(), "Домашняя страница");
         assertEquals(headerPage.myPage.getText(), "Моя страница");

@@ -18,12 +18,17 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
             setStatus(Status.UNACCEPTED);
         }}.create();
 
-        openBrowser("/login");
+        openBrowser();
     }
 
     @Test
     public void testUnacceptedUserLogin() {
+        assertEquals(homePage.homePage.getText(), "Домашняя страница");
+
+        headerPage.loginButton.click();
         loginPage.login(unacceptedUser);
+
+
         assertEquals(loginPage.errorFlash.getText(), "Ваша учётная запись создана и ожидает подтверждения администратора.");
         assertFalse(isElementPresent(headerPage.myPage));
         assertEquals(headerPage.loginButton.getText(), "Войти");

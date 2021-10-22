@@ -14,13 +14,17 @@ public class ActiveUserLoginTest extends BaseUiTest {
     public void prepareFixtures() {
         activeUser = new User().create();
 
-        openBrowser("/login");
+        openBrowser();
     }
 
     @Test
     public void testActiveUserLogin() {
+        assertEquals(homePage.homePage.getText(), "Домашняя страница");
+
+        headerPage.loginButton.click();
         loginPage.login(activeUser);
 
+        assertEquals(homePage.homePage.getText(), "Домашняя страница");
         assertEquals(headerPage.userActive.getText(), "Вошли как " + activeUser.getLogin());
         assertEquals(headerPage.homePage.getText(), "Домашняя страница");
         assertEquals(headerPage.myPage.getText(), "Моя страница");
