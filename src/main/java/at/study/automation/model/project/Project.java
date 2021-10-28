@@ -22,7 +22,7 @@ import java.util.Map;
 @Accessors(chain = true)
 public class Project extends CreatableEntity implements Creatable<Project> {
     private String name = "Savelev_project_for_testing" + StringUtils.randomEnglishString(5);
-    private String description;
+    private String description = "Savelev_project_for_testing" + StringUtils.randomEnglishString(5);
     private String homepage;
     private Boolean isPublic = true;
     private Integer parentId;

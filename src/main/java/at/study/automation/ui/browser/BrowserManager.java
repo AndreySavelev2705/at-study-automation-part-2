@@ -19,7 +19,7 @@ public class BrowserManager {
         return browser;
     }
 
-    public static void closeBroser() {
+    public static void closeBrowser() {
         browser.getDriver().quit();
         browser = null;
     }

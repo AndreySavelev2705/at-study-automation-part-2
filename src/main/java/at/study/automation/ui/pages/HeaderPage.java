@@ -1,8 +1,11 @@
 package at.study.automation.ui.pages;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class HeaderPage extends Page {
     @FindBy(xpath = "//div[@id='account']//a[@class='login']")
     public WebElement loginButton;
@@ -26,8 +29,4 @@ public class HeaderPage extends Page {
     public WebElement administration;
     @FindBy(xpath = "//div[@id='quick-search']//input[@class='small']")
     public WebElement search;
-
-    public HeaderPage() {
-        super();
-    }
 }

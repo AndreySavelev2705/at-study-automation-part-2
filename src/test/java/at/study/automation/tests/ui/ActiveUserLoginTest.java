@@ -1,6 +1,7 @@
 package at.study.automation.tests.ui;
 
 import at.study.automation.model.user.User;
+import at.study.automation.ui.browser.BrowserUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -19,12 +20,10 @@ public class ActiveUserLoginTest extends BaseUiTest {
 
     @Test
     public void testActiveUserLogin() {
-        assertEquals(homePage.homePage.getText(), "Домашняя страница");
-
         headerPage.loginButton.click();
         loginPage.login(activeUser);
 
-        assertEquals(homePage.homePage.getText(), "Домашняя страница");
+        assertEquals(homePage.homePageHeader.getText(), "Домашняя страница");
         assertEquals(headerPage.userActive.getText(), "Вошли как " + activeUser.getLogin());
         assertEquals(headerPage.homePage.getText(), "Домашняя страница");
         assertEquals(headerPage.myPage.getText(), "Моя страница");
@@ -32,9 +31,9 @@ public class ActiveUserLoginTest extends BaseUiTest {
         assertEquals(headerPage.help.getText(), "Помощь");
         assertEquals(headerPage.myAccount.getText(), "Моя учётная запись");
         assertEquals(headerPage.logout.getText(), "Выйти");
-        assertFalse(isElementPresent(headerPage.administration));
-        assertFalse(isElementPresent(headerPage.loginButton));
-        assertFalse(isElementPresent(headerPage.register));
-        assertTrue(isElementPresent(headerPage.search));
+        assertFalse(BrowserUtils.isElementPresent(headerPage.administration));
+        assertFalse(BrowserUtils.isElementPresent(headerPage.loginButton));
+        assertFalse(BrowserUtils.isElementPresent(headerPage.register));
+        assertTrue(BrowserUtils.isElementPresent(headerPage.search));
     }
 }

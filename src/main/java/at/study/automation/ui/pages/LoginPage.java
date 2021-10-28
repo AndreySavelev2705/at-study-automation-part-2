@@ -1,9 +1,12 @@
 package at.study.automation.ui.pages;
 
 import at.study.automation.model.user.User;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LoginPage extends Page {
 
     @FindBy(xpath = "//input[@id='username']")
@@ -17,10 +20,6 @@ public class LoginPage extends Page {
 
     @FindBy(xpath = "//div[@id='flash_error']")
     public WebElement errorFlash;
-
-    public LoginPage() {
-        super();
-    }
 
     /**
      * Метод выполняет авторизацию по переданному в его параметры логину и паролю

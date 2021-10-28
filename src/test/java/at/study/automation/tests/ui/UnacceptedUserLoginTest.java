@@ -2,6 +2,7 @@ package at.study.automation.tests.ui;
 
 import at.study.automation.model.user.Status;
 import at.study.automation.model.user.User;
+import at.study.automation.ui.browser.BrowserUtils;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -23,14 +24,12 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
 
     @Test
     public void testUnacceptedUserLogin() {
-        assertEquals(homePage.homePage.getText(), "Домашняя страница");
-
         headerPage.loginButton.click();
         loginPage.login(unacceptedUser);
 
 
         assertEquals(loginPage.errorFlash.getText(), "Ваша учётная запись создана и ожидает подтверждения администратора.");
-        assertFalse(isElementPresent(headerPage.myPage));
+        assertFalse(BrowserUtils.isElementPresent(headerPage.myPage));
         assertEquals(headerPage.loginButton.getText(), "Войти");
         assertEquals(headerPage.register.getText(), "Регистрация");
     }

@@ -93,6 +93,16 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         return null;
     }
 
+    public User read(String login) {
+        String query = "SELECT * FROM users WHERE login = ?";
+        List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, login);
+
+        if (queryResult.size() != 0) {
+            return from(queryResult.get(0));
+        }
+        return null;
+    }
+
     // Делаем из мапы, с результатом запроса из бд, объект класса User и возвращаем его
     private User from(Map<String, Object> data) {
         return (User) new User()

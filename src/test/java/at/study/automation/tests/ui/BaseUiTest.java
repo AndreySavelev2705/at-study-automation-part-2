@@ -2,11 +2,8 @@ package at.study.automation.tests.ui;
 
 import at.study.automation.ui.browser.Browser;
 import at.study.automation.ui.browser.BrowserManager;
-import at.study.automation.ui.pages.HeaderPage;
-import at.study.automation.ui.pages.HomePage;
-import at.study.automation.ui.pages.LoginPage;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import at.study.automation.ui.pages.*;
+import at.study.automation.ui.pages.ProjectsPage;
 import org.testng.annotations.AfterMethod;
 
 public class BaseUiTest {
@@ -14,31 +11,36 @@ public class BaseUiTest {
     protected HeaderPage headerPage;
     protected LoginPage loginPage;
     protected HomePage homePage;
+    protected AdministrationPage administrationPage;
+    protected UserTablePage userTablePage;
+    protected ProjectsPage projectsPage;
+    protected ProjectFilters projectFilters;
+    protected AddNewUser addNewUser;
+
 
     protected void openBrowser() {
         browser = BrowserManager.getBrowser();
-        headerPage = new HeaderPage();
-        loginPage = new LoginPage();
-        homePage = new HomePage();
+        initPages();
     }
 
     protected void openBrowser(String uri) {
         browser = BrowserManager.getBrowser(uri);
-        headerPage = new HeaderPage();
-        loginPage = new LoginPage();
+        initPages();
+    }
+
+    private void initPages() {
+        headerPage = Page.getPages(HeaderPage.class);
+        loginPage = Page.getPages(LoginPage.class);
+        homePage = Page.getPages(HomePage.class);
+        administrationPage = Page.getPages(AdministrationPage.class);
+        userTablePage = Page.getPages(UserTablePage.class);
+        projectsPage = Page.getPages(ProjectsPage.class);
+        projectFilters = Page.getPages(ProjectFilters.class);
+        addNewUser = Page.getPages(AddNewUser.class);
     }
 
     @AfterMethod
     public void tearDown() {
-        BrowserManager.closeBroser();
-    }
-
-    protected boolean isElementPresent(WebElement webElement) {
-        try {
-            webElement.isDisplayed();
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
+        BrowserManager.closeBrowser();
     }
 }
