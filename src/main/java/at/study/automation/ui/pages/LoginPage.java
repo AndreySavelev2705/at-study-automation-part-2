@@ -1,6 +1,7 @@
 package at.study.automation.ui.pages;
 
 import at.study.automation.model.user.User;
+import io.qameta.allure.Step;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
@@ -27,6 +28,7 @@ public class LoginPage extends Page {
      * @param login - логин, который будет использоваться при авторизации
      * @param password - пароль, который будет использоваться при авторизации
      */
+    @Step("Авторизация пользователя с логином {0} и паролем {1}")
     public void login(String login, String password) {
         loginInput.sendKeys(login);
         passwordInput.sendKeys(password);

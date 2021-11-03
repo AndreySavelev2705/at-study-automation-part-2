@@ -4,6 +4,7 @@ import at.study.automation.ui.browser.Browser;
 import at.study.automation.ui.browser.BrowserManager;
 import at.study.automation.ui.pages.*;
 import at.study.automation.ui.pages.ProjectsPage;
+import io.qameta.allure.Step;
 import org.testng.annotations.AfterMethod;
 
 public class BaseUiTest {
@@ -17,12 +18,13 @@ public class BaseUiTest {
     protected ProjectFilters projectFilters;
     protected AddNewUser addNewUser;
 
-
+    @Step("Открыт браузер на главной странице")
     protected void openBrowser() {
         browser = BrowserManager.getBrowser();
         initPages();
     }
 
+    @Step("Открыт браузер на странице {0}")
     protected void openBrowser(String uri) {
         browser = BrowserManager.getBrowser(uri);
         initPages();
@@ -39,7 +41,7 @@ public class BaseUiTest {
         addNewUser = Page.getPages(AddNewUser.class);
     }
 
-    @AfterMethod
+    @AfterMethod(description = "Закрытие браузера")
     public void tearDown() {
         BrowserManager.closeBrowser();
     }
