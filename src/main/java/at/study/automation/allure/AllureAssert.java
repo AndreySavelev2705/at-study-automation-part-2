@@ -27,11 +27,21 @@ public class AllureAssert {
 
     @Step("Проверка истинность истина:")
     public static void assertTrue(boolean elementPresent) {
-        Assert.assertFalse(elementPresent);
+        Assert.assertTrue(elementPresent);
     }
 
     @Step("Проверка истинность истина: {1}")
     public static void assertTrue(boolean elementPresent, String message) {
         Assert.assertTrue(elementPresent);
+    }
+
+    @Step("Проверка на null ложь: {1}")
+    public static void assertNotNull(Object object, String message) {
+        Assert.assertNotNull(object);
+    }
+
+    @Step("Проверка на null ложь: {1}")
+    public static void assertNull(Object object, String message) {
+        Assert.assertNull(object);
     }
 }

@@ -4,6 +4,7 @@ import at.study.automation.db.requests.RoleRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.Entity;
 import at.study.automation.utils.StringUtils;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,8 +42,15 @@ public class Role extends Entity implements Creatable<Role> {
             "  delete_issues: []\n";
 
     @Override
+    // TODO: Залогировать для отчета
+    @Step("Создана роль в бд")
     public Role create() {
         new RoleRequests().create(this);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

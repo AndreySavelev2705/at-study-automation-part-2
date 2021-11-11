@@ -6,6 +6,8 @@ import at.study.automation.api.client.RestRequest;
 import at.study.automation.api.client.RestResponse;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
+import io.qameta.allure.Step;
+import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
@@ -36,10 +38,12 @@ public class RestAssuredClient implements RestApiClient {
     }
 
     @Override
+    @Step("Выполнение API-запроса")
     public RestResponse execute(RestRequest request) {
         RequestSpecification spec = given(specification)
                 .queryParams(request.getQueryParameters())
-                .headers(request.getHeaders());
+                .headers(request.getHeaders())
+                .filter(new AllureRestAssured());
         if (request.getBody() != null) {
             spec.body(request.getBody());
         }

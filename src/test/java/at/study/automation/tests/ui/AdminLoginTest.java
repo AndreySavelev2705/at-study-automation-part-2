@@ -1,6 +1,5 @@
 package at.study.automation.tests.ui;
 
-import at.study.automation.allure.AllureAssert;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
@@ -9,10 +8,13 @@ import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static at.study.automation.allure.AllureAssert.*;
+import static at.study.automation.ui.browser.BrowserUtils.click;
+
 public class AdminLoginTest extends BaseUiTest {
     private User admin;
 
-    @BeforeMethod(description = "В системе заведен пользователь с праавами Администратора. Открыт браузер на главной странице.")
+    @BeforeMethod(description = "В системе заведен пользователь с праавами администратора. Открыт браузер на главной странице.")
     public void prepareFixtures() {
         admin = new User() {{
             setIsAdmin(true);
@@ -21,67 +23,67 @@ public class AdminLoginTest extends BaseUiTest {
         openBrowser();
     }
 
-    @Test (description = "Вход администратором. Проверка элемента \"Моя учетная запись\"")
+    @Test(description = "Авторизация администратором")
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void positiveAdminLoginTest() {
-        headerPage.loginButton.click();
+        click(headerPage.loginButton, "Войти");
         loginPage.login(admin);
 
-        AllureAssert.assertEquals(
+        assertEquals(
                 homePage.homePageHeader.getText(),
                 "Домашняя страница",
                 "Текст элемента \"Домашняя страница\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.userActive.getText(),
                 "Вошли как " + admin.getLogin(),
                 "Текст элемента \"Вошли как \"" + admin.getLogin()
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.homePage.getText(),
                 "Домашняя страница",
                 "Текст элемента \"Домашняя страница\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.myPage.getText(),
                 "Моя страница",
                 "Текст элемента \"Моя страница\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.projects.getText(),
                 "Проекты",
                 "Текст элемента \"Проекты\""
-                );
-        AllureAssert.assertEquals(
+        );
+        assertEquals(
                 headerPage.help.getText(),
                 "Помощь",
                 "Текст элемента \"Помощь\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.myAccount.getText(),
                 "Моя учётная запись",
                 "Текст элемента \"Моя учетная запись\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.logout.getText(),
                 "Выйти",
                 "Текст элемента \"Выйти\""
         );
-        AllureAssert.assertEquals(
+        assertEquals(
                 headerPage.administration.getText(),
                 "Администрирование",
                 "Текст элемента \"Администрирование\""
         );
-        AllureAssert.assertFalse(
+        assertFalse(
                 BrowserUtils.isElementPresent(headerPage.loginButton),
                 "Элемент не отображается"
         );
-        AllureAssert.assertFalse(
+        assertFalse(
                 BrowserUtils.isElementPresent(headerPage.register),
                 "Элемент не отображается"
         );
-        AllureAssert.assertTrue(
+        assertTrue(
                 BrowserUtils.isElementPresent(headerPage.search),
                 "Элемент отображается"
         );

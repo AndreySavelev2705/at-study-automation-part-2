@@ -14,14 +14,19 @@ public class UserTablePage extends Page {
 
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='created_on']")
     public List<WebElement> creationDates;
+
     @FindBy(xpath = "//div[@class='autoscroll']/table[@class='list users']")
     public WebElement usersTable;
+
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='username']")
     public List<WebElement> usersLogins;
+
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='firstname']")
     public List<WebElement> usersFirstNames;
+
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='lastname']")
     public List<WebElement> usersLastNames;
+
     @FindBy(xpath = "//div[@id='content']//a[@class='icon icon-add']")
     public WebElement addNewUser;
 

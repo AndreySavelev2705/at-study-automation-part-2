@@ -6,13 +6,15 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
+import static at.study.automation.ui.browser.BrowserUtils.click;
 import static at.study.automation.ui.browser.BrowserUtils.getElementsText;
 import static at.study.automation.utils.CompareUtils.assertListSortedByDateAsc;
 import static at.study.automation.utils.CompareUtils.assertListSortedByDateDesc;
 
 public class UserTableDataSortingTest extends BaseUiTest {
 
-    @BeforeMethod
+    @BeforeMethod(description = "Создание пользователя с правами администратора и переход на страницу \"Пользователи\". " +
+            "Открыт браузер на главной странице")
     public void prepareFixtures() {
         User admin = new User() {{
             setIsAdmin(true);
@@ -20,17 +22,17 @@ public class UserTableDataSortingTest extends BaseUiTest {
 
         openBrowser("/login");
         loginPage.login(admin);
-        headerPage.administration.click();
-        administrationPage.users.click();
+        click(headerPage.administration, "Администрирование");
+        click(administrationPage.users, "Пользователи");
     }
 
-    @Test
+    @Test(description = "Администрирование. Пользователи. Проверка сортировки списка дат в таблице пользователей")
     public void testUsersuTableDateSorting() {
-        userTablePage.button("Создано").click();
+        click(userTablePage.button("Создано"), "Создано");
         List<String> creationDatesByDesc = getElementsText(userTablePage.creationDates);
         assertListSortedByDateDesc(creationDatesByDesc);
 
-        userTablePage.button("Создано").click();
+        click(userTablePage.button("Создано"), "Создано");
         List<String> creationDatesByAsc = getElementsText(userTablePage.creationDates);
         assertListSortedByDateAsc(creationDatesByAsc);
     }

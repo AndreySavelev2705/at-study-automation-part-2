@@ -71,7 +71,7 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
      * @return возвращает текущего пользователя
      */
     @Override
-    @Step("Создан пользоователь в бд")
+    @Step("Создан пользователь в бд")
     public User create() {
         new UserRequests().create(this);
 
@@ -109,9 +109,14 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
         return this;
     }
 
-    @Step("Добавление пользователю проекта {0} и его ролей {1} на этом проекте")
+    @Step("Добавление пользователю проекта с именем {0} и его ролей {1} на проекте")
     public void addProject(Project project, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
         projects.put(project, roles);
+    }
+
+    @Override
+    public String toString() {
+        return login;
     }
 }

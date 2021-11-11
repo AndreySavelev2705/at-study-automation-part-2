@@ -11,12 +11,16 @@ import at.study.automation.api.rest_assured.RestAssuredRequest;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
-import org.testng.Assert;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
 
+import static at.study.automation.allure.AllureAssert.*;
+import static at.study.automation.allure.AllureUtils.*;
 import static at.study.automation.api.rest_assured.GsonProvider.GSON;
 
 public class CreateUserByNotAdminTest {
@@ -25,31 +29,44 @@ public class CreateUserByNotAdminTest {
     private UserInfoDto dto;
     private final String USER_ENDPOINT = "users.json";
 
-    @BeforeMethod
+    @BeforeMethod(description = "В системе заведен пользователь без прав администратора. " +
+            "У пользователя есть доступ к API и ключ API. " +
+            "В памяти создан пользователь, чьи данные будут использоваться для составления тела запроса. " +
+            "Создан api-клиент для отправки звпроса на сервер пользователем без прав администратора.")
     public void prepareFixtures() {
         User notAdmin = new User() {{
             setTokens(Collections.singletonList(new Token(this)));
         }}.create();
 
-        dto = new UserInfoDto(
-                new UserDto()
-                        .setLogin("SavelevAutoLogin" + StringUtils.randomEnglishString(10))
-                        .setLastName("SavelevAuto" + StringUtils.randomEnglishString(6))
-                        .setFirstName("SavelevAuto" + StringUtils.randomEnglishString(8))
-                        .setMail(StringUtils.randomEmail())
-                        .setPassword(StringUtils.randomEnglishString(8))
-                        .setStatus(1)
+        dto = initDto(
+                new UserInfoDto(
+                        new UserDto()
+                                .setLogin("SavelevAutoLogin" + StringUtils.randomEnglishString(10))
+                                .setLastName("SavelevAuto" + StringUtils.randomEnglishString(6))
+                                .setFirstName("SavelevAuto" + StringUtils.randomEnglishString(8))
+                                .setMail(StringUtils.randomEmail())
+                                .setPassword(StringUtils.randomEnglishString(8))
+                                .setStatus(1)
+                )
         );
 
-        apiClient = new RestAssuredClient(notAdmin);
+        apiClient = createApiClient(new RestAssuredClient(notAdmin));
     }
 
-    @Test
+    @Test(description = "Создание пользователя. Пользователь без прав администратора")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Савельев Андрей Владимирович")
     public void createUserTest() {
-        RestRequest request = new RestAssuredRequest(RestMethod.POST, USER_ENDPOINT, null, null, GSON.toJson(dto));
+        RestRequest request = generatingRequest(
+                new RestAssuredRequest(RestMethod.POST, USER_ENDPOINT, null, null, GSON.toJson(dto))
+        );
 
         RestResponse response = apiClient.execute(request);
 
-        Assert.assertEquals(response.getStatusCode(), 403);
+        assertEquals(
+                response.getStatusCode(),
+                403,
+                "Статус код = 403. Статус коды совпадают"
+        );
     }
 }

@@ -3,12 +3,14 @@ package at.study.automation.db.requests;
 import at.study.automation.db.connection.PostgresConnection;
 import at.study.automation.model.role.Permissions;
 import at.study.automation.model.role.Role;
+import io.qameta.allure.Step;
 
 import java.util.List;
 
 public class RoleRequests extends BaseRequests implements Create<Role>, Update<Role>, Delete<Role> {
 
     @Override
+    @Step("Создание роли с набором пермишенов в бд")
     public void create(Role role) {
         String query = "INSERT INTO public.roles\n" +
                 "(id, \"name\", \"position\", assignable, builtin, permissions, issues_visibility, " +

@@ -5,6 +5,7 @@ import at.study.automation.model.user.Language;
 import at.study.automation.model.user.MailNotification;
 import at.study.automation.model.user.Status;
 import at.study.automation.model.user.User;
+import io.qameta.allure.Step;
 
 import java.util.List;
 import java.util.Map;
@@ -83,6 +84,7 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
     }
 
     @Override
+    @Step("Получение пользователя из бд по его Id")
     public User read(Integer id) {
         String query = "SELECT * FROM users WHERE id = ?";
         List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, id);
@@ -93,6 +95,7 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         return null;
     }
 
+    @Step("Получение пользователя из бд по его логину")
     public User read(String login) {
         String query = "SELECT * FROM users WHERE login = ?";
         List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, login);

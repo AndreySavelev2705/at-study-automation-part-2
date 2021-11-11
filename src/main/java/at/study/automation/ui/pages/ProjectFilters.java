@@ -14,6 +14,7 @@ public class ProjectFilters extends Page {
 
     @FindBy(xpath = "//table[@id='filters-table']/tbody/tr[@class='filter']/td[@class='operator']/select[@id='operators_status']/option")
     public List<WebElement> operatorsStatus;
+
     @FindBy(xpath = "//table[@id='filters-table']/tbody/tr[@class='filter']/td[@class='values']//select[@class='value']/option")
     public List<WebElement> valuesStatus;
 

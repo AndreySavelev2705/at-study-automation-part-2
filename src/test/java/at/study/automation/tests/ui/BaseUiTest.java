@@ -16,7 +16,7 @@ public class BaseUiTest {
     protected UserTablePage userTablePage;
     protected ProjectsPage projectsPage;
     protected ProjectFilters projectFilters;
-    protected AddNewUser addNewUser;
+    protected CreateNewUserPage createNewUserPage;
 
     @Step("Открыт браузер на главной странице")
     protected void openBrowser() {
@@ -38,7 +38,7 @@ public class BaseUiTest {
         userTablePage = Page.getPages(UserTablePage.class);
         projectsPage = Page.getPages(ProjectsPage.class);
         projectFilters = Page.getPages(ProjectFilters.class);
-        addNewUser = Page.getPages(AddNewUser.class);
+        createNewUserPage = Page.getPages(CreateNewUserPage.class);
     }
 
     @AfterMethod(description = "Закрытие браузера")

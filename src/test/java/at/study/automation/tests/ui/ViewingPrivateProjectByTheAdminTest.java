@@ -3,16 +3,23 @@ package at.study.automation.tests.ui;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.browser.BrowserUtils;
-import org.testng.Assert;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static at.study.automation.allure.AllureAssert.assertEquals;
+import static at.study.automation.allure.AllureAssert.assertTrue;
+import static at.study.automation.ui.browser.BrowserUtils.click;
 
 public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
 
     private User admin;
     private Project project;
 
-    @BeforeMethod
+    @BeforeMethod(description = "В системе заведен пользователь с правами администратора, " +
+            "Создан приватный проект, не привязанный к пользователю. Открыт браузер на главной странице.")
     public void prepareFixtures() {
         admin = new User() {{
             setIsAdmin(true);
@@ -26,16 +33,33 @@ public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
     }
 
     // TODO: Нужно дорабатывать
-    @Test
+    @Test(description = "Видимость проекта. Приватный проект. Администратор")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Савельев Андрей Владимирович")
     public void viewingPrivateProjectByTheAdminTest() {
-        headerPage.loginButton.click();
+        click(headerPage.loginButton, "Войти");
         loginPage.login(admin);
 
-        Assert.assertEquals(headerPage.homePage.getText(), "Домашняя страница");
+        assertEquals(
+                homePage.homePageHeader.getText(),
+                "Домашняя страница",
+                "Текст элемента \"Домашняя страница\""
+        );
 
-        headerPage.projects.click();
+        click(headerPage.projects, "Проекты");
 
-        Assert.assertTrue(BrowserUtils.isElementPresent(projectsPage.getProject(project.getName())));
-        Assert.assertEquals(projectsPage.getProjectDescription(project.getDescription()).getText(), project.getDescription());
+        assertTrue(
+                BrowserUtils.isElementPresent(projectsPage.getProject(project.getName())),
+                "Элемент отображается"
+        );
+        assertEquals(
+                projectsPage.getProject(project.getName()).getText(),
+                project.getName(),
+                "Имя проекта " + "\"" + project.getName() + "\""
+        );
+        assertEquals(projectsPage.getProjectDescription(project.getDescription()).getText(),
+                project.getDescription(),
+                "Описание проекта " + "\"" + project.getDescription() + "\""
+        );
     }
 }

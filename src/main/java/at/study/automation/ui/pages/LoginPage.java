@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import static at.study.automation.ui.browser.BrowserUtils.click;
+
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
 public class LoginPage extends Page {
 
@@ -32,7 +34,7 @@ public class LoginPage extends Page {
     public void login(String login, String password) {
         loginInput.sendKeys(login);
         passwordInput.sendKeys(password);
-        signInButton.click();
+        click(signInButton, "Вход");
     }
 
     /**

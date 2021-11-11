@@ -3,6 +3,7 @@ package at.study.automation.model.user;
 import at.study.automation.db.requests.TokenRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -30,6 +31,8 @@ public class Token extends CreatableEntity implements Creatable<Token> {
     }
 
     @Override
+    // TODO: Залогировать для отчета
+    @Step("Создан токен в бд")
     public Token create() {
         new TokenRequests().create(this);
         return this;

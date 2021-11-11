@@ -1,6 +1,7 @@
 package at.study.automation.ui.browser;
 
 import at.study.automation.property.Property;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
@@ -38,5 +39,15 @@ public class BrowserUtils {
         } finally {
             BrowserManager.getBrowser().getDriver().manage().timeouts().implicitlyWait(Property.getIntegerProperty("element.timeout"), TimeUnit.SECONDS);
         }
+    }
+
+    @Step("Нажатие на элемент {1}")
+    public static void click(WebElement element, String description) {
+        element.click();
+    }
+
+    @Step("Ввод: {1}")
+    public static void sendKeys(WebElement element, String text, String description) {
+        element.sendKeys(element.getText(), text);
     }
 }

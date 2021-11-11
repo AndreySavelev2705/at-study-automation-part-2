@@ -3,6 +3,7 @@ package at.study.automation.model.user;
 import at.study.automation.db.requests.EmailRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,6 +26,8 @@ public class Email extends CreatableEntity implements Creatable<Email> {
     }
 
     @Override
+    // TODO: Залогировать для отчета
+    @Step("Создан email в бд")
     public Email create() {
         new EmailRequests().create(this);
         return this;

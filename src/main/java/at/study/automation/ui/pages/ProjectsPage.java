@@ -14,8 +14,10 @@ public class ProjectsPage extends Page {
 
     @FindBy(xpath = "//div[@id='projects-index']//li[@class='root']")
     public List<WebElement> projects;
+
     @FindBy(xpath = "//div[@id='query_form_with_buttons']//a[@class='icon icon-checked']")
     public WebElement submit;
+
     @FindBy(xpath = "//div[@id='main']//h2[text()='Проекты']")
     public WebElement projectsLabel;
 

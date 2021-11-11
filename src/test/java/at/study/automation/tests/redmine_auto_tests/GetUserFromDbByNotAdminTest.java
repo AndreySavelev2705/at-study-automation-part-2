@@ -4,16 +4,24 @@ import at.study.automation.api.client.RestApiClient;
 import at.study.automation.api.client.RestMethod;
 import at.study.automation.api.client.RestRequest;
 import at.study.automation.api.client.RestResponse;
+import at.study.automation.api.dto.users.UserDto;
 import at.study.automation.api.dto.users.UserInfoDto;
 import at.study.automation.api.rest_assured.RestAssuredClient;
 import at.study.automation.api.rest_assured.RestAssuredRequest;
 import at.study.automation.model.user.Token;
 import at.study.automation.model.user.User;
-import org.testng.Assert;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Step;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.Collections;
+
+import static at.study.automation.allure.AllureAssert.*;
+import static at.study.automation.allure.AllureUtils.generatingRequest;
+import static at.study.automation.allure.AllureUtils.initDtoFromResponse;
 
 public class GetUserFromDbByNotAdminTest {
 
@@ -22,7 +30,10 @@ public class GetUserFromDbByNotAdminTest {
     private User notAdmin;
     private User user;
 
-    @BeforeMethod
+    @BeforeMethod(description = "В системе заведен пользователь без прав администратора. " +
+            "У пользователя есть доступ к API и ключ API. " +
+            "Заведен еще один пользователь в системе. " +
+            "Создан api-клиент для отправки звпроса на сервер пользователем без прав администратора.")
     public void prepareFixtures() {
         notAdmin = new User() {{
             setTokens(Collections.singletonList(new Token(this)));
@@ -33,33 +44,60 @@ public class GetUserFromDbByNotAdminTest {
         apiClient = new RestAssuredClient(notAdmin);
     }
 
-    @Test
+    @Test(description = "Получение пользователей. Пользователь без прав администратора")
+    @Severity(SeverityLevel.BLOCKER)
+    @Owner("Савельев Андрей Владимирович")
     public void getUserFromDbByNotAdminTest() {
         getUserWithApiKeyFromDb(notAdmin.getId());
         getUserFromDb(user.getId());
     }
 
+    @Step("Получение пользователя с Api-ключом из бд")
     private void getUserWithApiKeyFromDb(Integer userId) {
-        RestRequest request = new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null);
+        RestRequest request = generatingRequest(
+                new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null)
+        );
 
         RestResponse response = apiClient.execute(request);
 
-        UserInfoDto dto = response.getPayload(UserInfoDto.class);
+        UserDto dto = initDtoFromResponse(response.getPayload(UserInfoDto.class).getUser());
 
-        Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertFalse(dto.getUser().getIsAdmin());
-        Assert.assertTrue(dto.getUser().getApiKey().matches("^[0-9a-fA-F]*$"));
+        assertEquals(
+                response.getStatusCode(),
+                200,
+                "Статус код = 200. Статус коды совпадают");
+        assertFalse(
+                dto.getIsAdmin(),
+                "Прав администратора нет"
+        );
+        assertTrue(dto.getApiKey().matches(
+                "^[0-9a-fA-F]*$"),
+                "Api-ключ имеет шестнадцатеричный формат"
+        );
     }
 
+    @Step("Получение пользователя без Api-ключа из бд")
     private void getUserFromDb(Integer userId) {
-        RestRequest request = new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null);
+        RestRequest request = generatingRequest(
+                new RestAssuredRequest(RestMethod.GET, String.format(userEndpoint, userId), null, null, null)
+        );
 
         RestResponse response = apiClient.execute(request);
 
-        UserInfoDto dto = response.getPayload(UserInfoDto.class);
+        UserDto dto = initDtoFromResponse(response.getPayload(UserInfoDto.class).getUser());
 
-        Assert.assertEquals(response.getStatusCode(), 200);
-        Assert.assertNull(dto.getUser().getIsAdmin());
-        Assert.assertNull(dto.getUser().getApiKey());
+        assertEquals(
+                response.getStatusCode(),
+                200,
+                "Статус код = 200. Статус коды совпадают"
+        );
+        assertNull(
+                dto.getIsAdmin(),
+                "Прав администратора нет"
+        );
+        assertNull(
+                dto.getApiKey(),
+                "Api-ключ отсутствует"
+        );
     }
 }

@@ -7,6 +7,7 @@ import at.study.automation.model.CreatableEntity;
 import at.study.automation.model.role.Role;
 import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
+import io.qameta.allure.Step;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,6 +37,8 @@ public class Project extends CreatableEntity implements Creatable<Project> {
     private Map<User, List<Role>> members = new HashMap<>();
 
     @Override
+    // TODO: Залогировать для отчета
+    @Step("Создан проект в бд")
     public Project create() {
         new ProjectRequests().create(this);
         for (User user : members.keySet()) {
@@ -46,8 +49,15 @@ public class Project extends CreatableEntity implements Creatable<Project> {
         return this;
     }
 
+    // TODO: Залогировать для отчета
+    @Step("Добавление проекту пользователя {0} и его ролей {1} на этом проекте")
     public void addUser(User user, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
         members.put(user,roles);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
