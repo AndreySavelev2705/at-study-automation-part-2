@@ -114,13 +114,13 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
                 .setFirstName((String) data.get("firstname"))
                 .setLastName((String) data.get("lastname"))
                 .setIsAdmin((Boolean) data.get("admin"))
-                .setStatus(Status.getStatusByStatusCode((Integer) data.get("status")))
+                .setStatus(Status.of((Integer) data.get("status")))
                 .setLastLoginOn(null)
                 .setLanguage(Language.getLanguageByLanguageCode((String) data.get("language")))
                 .setAuthSourceId(null)
                 .setType((String)data.get("type"))
                 .setIdentityUrl(null)
-                .setMailNotification(MailNotification.getEmailNotificationByDescription(data.get("mail_notification").toString().toUpperCase()))
+                .setMailNotification(MailNotification.of(data.get("mail_notification").toString().toUpperCase()))
                 .setSail((String)data.get("salt"))
                 .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
                 .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp

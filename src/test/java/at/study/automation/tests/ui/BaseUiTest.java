@@ -31,14 +31,14 @@ public class BaseUiTest {
     }
 
     private void initPages() {
-        headerPage = Page.getPages(HeaderPage.class);
-        loginPage = Page.getPages(LoginPage.class);
-        homePage = Page.getPages(HomePage.class);
-        administrationPage = Page.getPages(AdministrationPage.class);
-        userTablePage = Page.getPages(UserTablePage.class);
-        projectsPage = Page.getPages(ProjectsPage.class);
-        projectFilters = Page.getPages(ProjectFilters.class);
-        createNewUserPage = Page.getPages(CreateNewUserPage.class);
+        headerPage = Page.getPage(HeaderPage.class);
+        loginPage = Page.getPage(LoginPage.class);
+        homePage = Page.getPage(HomePage.class);
+        administrationPage = Page.getPage(AdministrationPage.class);
+        userTablePage = Page.getPage(UserTablePage.class);
+        projectsPage = Page.getPage(ProjectsPage.class);
+        projectFilters = Page.getPage(ProjectFilters.class);
+        createNewUserPage = Page.getPage(CreateNewUserPage.class);
     }
 
     @AfterMethod(description = "Закрытие браузера")

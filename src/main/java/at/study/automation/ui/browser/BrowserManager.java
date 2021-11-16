@@ -24,4 +24,6 @@ public class BrowserManager {
         browser.getDriver().quit();
         browser = null;
     }
+
+
 }
