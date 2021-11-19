@@ -68,6 +68,12 @@ public class EmailRequests extends BaseRequests implements Create<Email>,ReadAll
         return from(queryResult.get(0), user);
     }
 
+    public Email readByUserId(Integer userId) {
+        String query = "SELECT * FROM public.email_addresses WHERE user_id = ?";
+        List<Map<String, Object>> queryResult = PostgresConnection.INSTANCE.executeQuery(query, userId);
+        return from(queryResult.get(0), new UserRequests().read(userId));
+    }
+
     /**
      * Метод обновляет данные почты в бд по полученному id, на основе полученного в параметрах метода
      *

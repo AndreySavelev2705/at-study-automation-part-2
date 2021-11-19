@@ -15,11 +15,6 @@ public enum MailNotification {
     public final String description;
 
     public static MailNotification of(String description) {
-//        for (MailNotification mailNotification : MailNotification.values()) {
-//            if (mailNotification.name().equals(description)) {
-//                return mailNotification;
-//            }
-//        }
 
         return Stream.of(values())
                 .filter(mailNotification -> mailNotification.description.equals(description))

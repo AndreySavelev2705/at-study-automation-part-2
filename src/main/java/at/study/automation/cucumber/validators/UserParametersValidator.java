@@ -12,7 +12,8 @@ public class UserParametersValidator {
                 "Администратор",
                 "Статус",
                 "Уведомления о новых событиях",
-                "E-Mail"
+                "E-Mail",
+                "Api-ключ"
         );
 
         boolean allKeysAreValid = allowedKeys.containsAll(keys);

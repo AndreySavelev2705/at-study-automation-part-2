@@ -120,7 +120,7 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
                 .setAuthSourceId(null)
                 .setType((String)data.get("type"))
                 .setIdentityUrl(null)
-                .setMailNotification(MailNotification.of(data.get("mail_notification").toString().toUpperCase()))
+                .setMailNotification(MailNotification.valueOf(data.get("mail_notification").toString().toUpperCase()))
                 .setSail((String)data.get("salt"))
                 .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
                 .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp

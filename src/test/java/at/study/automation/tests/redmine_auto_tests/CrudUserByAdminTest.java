@@ -120,10 +120,12 @@ public class CrudUserByAdminTest {
                 "Дата создания существует и не null");
         assertNull(
                 userFromResponse.getLastLoginOn(),
-                "Дата последнего логина не существует и равна null");
+                "Дата последнего логина не существует и равна null"
+        );
         assertTrue(
                 userFromResponse.getApiKey().matches("^[0-9a-fA-F]*$"),
-                "Api-ключ имеет шестнадцатеричный формат");
+                "Api-ключ имеет шестнадцатеричный формат"
+        );
         assertEquals(
                 userFromResponse.getStatus(),
                 dto.getUser().getStatus(),

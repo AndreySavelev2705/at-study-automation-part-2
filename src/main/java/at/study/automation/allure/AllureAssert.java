@@ -35,9 +35,19 @@ public class AllureAssert {
         Assert.assertTrue(elementPresent);
     }
 
+    @Step("Проверка на null ложь: ")
+    public static void assertNotNull(Object object) {
+        Assert.assertNotNull(object);
+    }
+
     @Step("Проверка на null ложь: {1}")
     public static void assertNotNull(Object object, String message) {
         Assert.assertNotNull(object);
+    }
+
+    @Step("Проверка на null ложь: ")
+    public static void assertNull(Object object) {
+        Assert.assertNull(object);
     }
 
     @Step("Проверка на null ложь: {1}")
