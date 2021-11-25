@@ -64,7 +64,7 @@ public class CrudUserByAdminTest {
         Integer createdUserId = createAndValidateUser();
 
         createAndValidateDuplicatedUser();
-        createAndValidateUserWithShortPassword();
+        createAndValidateUserWithShortPasswordAndBadEmail();
         updateAndValidateUserWithNewStatus(createdUserId);
         getUserWithNewStatus(createdUserId);
         deleteUser(createdUserId);
@@ -169,11 +169,13 @@ public class CrudUserByAdminTest {
         );
     }
 
-    @Step("Создание и проверка пользователя повторно с тем же телом запроса, но с коротким паролем")
-    private void createAndValidateUserWithShortPassword() {
+    @Step("Создание и проверка пользователя повторно с тем же телом запроса, но с коротким паролем и невалидным email")
+    private void createAndValidateUserWithShortPasswordAndBadEmail() {
         String currentPassword = getPassword(dto.getUser().getPassword());
+        String currentEmail = getEmail(dto.getUser().getMail());
 
         setPassword(dto, "kj3k");
+        setEmail(dto, "lsdkfjg9834sa");
 
         RestRequest request = generatingRequest(
                 new RestAssuredRequest(RestMethod.POST, "users.json", null, null, GSON.toJson(dto))
@@ -190,7 +192,7 @@ public class CrudUserByAdminTest {
         );
         assertEquals(
                 errorInfoDto.getErrors().get(0),
-                "Email уже существует"
+                "Email имеет неверное значение"
         );
         assertEquals(
                 errorInfoDto.getErrors().get(1),
@@ -202,6 +204,7 @@ public class CrudUserByAdminTest {
         );
 
         setPassword(dto, currentPassword);
+        setEmail(dto, currentEmail);
     }
 
     @Step("Изменение у существующего пользователя статуса")

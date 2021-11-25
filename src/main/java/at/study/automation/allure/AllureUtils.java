@@ -49,4 +49,14 @@ public class AllureUtils {
     public static void setStatus(UserInfoDto dto, Integer statusCode) {
         dto.getUser().setStatus(statusCode);
     }
+
+    @Step("Получение пароля")
+    public static String getEmail(String email) {
+        return email;
+    }
+
+    @Step("Изменение пароля")
+    public static void setEmail(UserInfoDto dto, String email) {
+        dto.getUser().setMail(email);
+    }
 }
