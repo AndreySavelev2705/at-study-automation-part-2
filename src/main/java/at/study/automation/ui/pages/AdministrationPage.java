@@ -1,11 +1,13 @@
 package at.study.automation.ui.pages;
 
+import at.study.automation.cucumber.validators.annotations.PageName;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@PageName("Админисртирование")
 public class AdministrationPage extends Page {
 
     @FindBy(xpath = "//div[@id='admin-menu']//a[contains(@class, 'projects')]")

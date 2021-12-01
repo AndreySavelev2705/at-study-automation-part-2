@@ -5,6 +5,7 @@ import at.study.automation.context.Context;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.pages.HeaderPage;
 import at.study.automation.ui.pages.LoginPage;
+import cucumber.api.java.ru.Если;
 import cucumber.api.java.ru.И;
 
 import static at.study.automation.ui.pages.LoginPage.*;
@@ -28,5 +29,9 @@ public class UiSteps {
                 getPage(HeaderPage.class).myAccount.getText(),
                 expectedText
         );
+    }
+
+    @Если("На странице {string} нажать на элемент {string}")
+    public void clickOnElementOnPage(String pageName, String elementName) {
     }
 }

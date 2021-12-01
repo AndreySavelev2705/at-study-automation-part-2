@@ -1,5 +1,6 @@
 package at.study.automation.ui.pages;
 
+import at.study.automation.cucumber.validators.annotations.PageName;
 import at.study.automation.ui.browser.BrowserManager;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PACKAGE)
+@PageName("Страница авторизации")
 public class ProjectFilters extends Page {
 
     @FindBy(xpath = "//table[@id='filters-table']/tbody/tr[@class='filter']/td[@class='operator']/select[@id='operators_status']/option")
