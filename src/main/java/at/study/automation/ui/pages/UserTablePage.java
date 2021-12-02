@@ -19,6 +19,10 @@ public class UserTablePage extends Page {
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='created_on']")
     public List<WebElement> creationDates;
 
+    @ElementName("Создано")
+    @FindBy(xpath = "//th[@title='Сортировать по \"Создано\"']/a")
+    private WebElement created;
+
     @ElementName("Пользователи")
     @FindBy(xpath = "//div[@class='autoscroll']/table[@class='list users']")
     public WebElement usersTable;
