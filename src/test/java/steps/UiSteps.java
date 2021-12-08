@@ -3,9 +3,12 @@ package steps;
 import at.study.automation.allure.AllureAssert;
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.PageObjectHelper;
+import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.pages.HeaderPage;
+import at.study.automation.ui.pages.HomePage;
 import at.study.automation.ui.pages.LoginPage;
+import at.study.automation.ui.pages.ProjectsPage;
 import cucumber.api.java.ru.*;
 import org.openqa.selenium.WebElement;
 
@@ -40,7 +43,15 @@ public class UiSteps {
     @И("Текст элемента Домашняя страница - \"(.+)\"")
     public void assertHomePageText(String expectedText) {
         AllureAssert.assertEquals(
-                getPage(HeaderPage.class).homePage.getText(),
+                getPage(HomePage.class).homePageHeader.getText(),
+                expectedText
+        );
+    }
+
+    @И("Текст элемента Проекты - \"(.+)\"")
+    public void assertProjectsPageText(String expectedText) {
+        AllureAssert.assertEquals(
+                getPage(ProjectsPage.class).projectsLabel.getText(),
                 expectedText
         );
     }
@@ -160,8 +171,13 @@ public class UiSteps {
     }
 
     @Когда("Нажать на кнопку \"(.+)\"")
-    public void clickOnButton(String buttonName) {
+    public void clickOnLoginButton(String buttonName) {
         click(getPage(HeaderPage.class).loginButton, buttonName);
+    }
+
+    @Когда("На главной странице нажать \"(.+)\"")
+    public void clickOnProjectsButton(String buttonName) {
+        click(getPage(HeaderPage.class).projects, buttonName);
     }
 
     @Тогда("Отображается сообщение \"(.+)\"")
@@ -188,6 +204,39 @@ public class UiSteps {
                 getPage(HeaderPage.class).register.getText(),
                 expectedText,
                 "Текст элемента \"" + expectedText + "\""
+        );
+    }
+
+    @И("На странице отображается проект \"(.+)\"")
+    public void assertProjectIsDeployed(String projectName) {
+        Project project = Context.getStash().get(projectName, Project.class);
+
+        assertTrue(
+                isElementPresent(
+                        getPage(ProjectsPage.class).getProject(project.getName())),
+                "Элемент отображается"
+        );
+    }
+
+    @И("Имя проекта совпадает с именем проекта \"(.+)\"")
+    public void assertProjectNameText(String projectName) {
+        Project project = Context.getStash().get(projectName, Project.class);
+
+        assertEquals(
+                getPage(ProjectsPage.class).getProject(project.getName()).getText(),
+                project.getName(),
+                "Имя проекта " + "\"" + project.getName() + "\""
+        );
+    }
+
+    @И("Описание проекта совпадает с описанием проекта \"(.+)\"")
+    public void assertProjectDescriptionText(String projectName) {
+        Project project = Context.getStash().get(projectName, Project.class);
+
+        assertEquals(
+                getPage(ProjectsPage.class).getProjectDescription(project.getDescription()).getText(),
+                project.getDescription(),
+                "Описание проекта " + "\"" + project.getDescription() + "\""
         );
     }
 }

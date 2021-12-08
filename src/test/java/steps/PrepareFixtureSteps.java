@@ -2,8 +2,10 @@ package steps;
 
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.validators.UserParametersValidator;
+import at.study.automation.model.project.Project;
 import at.study.automation.model.user.*;
 import cucumber.api.java.ru.Пусть;
+import cucumber.api.java.ru.Также;
 import io.cucumber.datatable.DataTable;
 
 import java.util.ArrayList;
@@ -66,5 +68,14 @@ public class PrepareFixtureSteps {
 
         user.create();
         Context.getStash().put(userStashId, user);
+    }
+
+    @Также("Существует приватный проект \"(.+)\"")
+    public void createProject(String projectName) {
+        Project project = new Project() {{
+            setIsPublic(false);
+        }}.create();
+
+        Context.getStash().put(projectName, project);
     }
 }
