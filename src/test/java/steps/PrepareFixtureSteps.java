@@ -3,7 +3,6 @@ package steps;
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.validators.UserParametersValidator;
 import at.study.automation.model.user.*;
-import cucumber.api.java.ru.И;
 import cucumber.api.java.ru.Пусть;
 import io.cucumber.datatable.DataTable;
 
@@ -16,7 +15,6 @@ public class PrepareFixtureSteps {
 
     @Пусть("Имеется список E-Mail адресов \"(.+) \":")
     public void createEmails(String emailsStashId, DataTable dataTable) {
-        // TODO: EmailValidator
 
         List<Map<String, String>> maps = dataTable.asMaps();
         List<Email> emails = new ArrayList<>();
@@ -38,7 +36,7 @@ public class PrepareFixtureSteps {
     }
 
     @Пусть("В системе есть пользователь \"(.+)\" с параметрами:")
-    public void createAdminUser(String userStashId, Map<String, String> parameters) {
+    public void createUser(String userStashId, Map<String, String> parameters) {
         UserParametersValidator.validateUserParameters(parameters.keySet());
 
         User user = new User();
@@ -68,30 +66,5 @@ public class PrepareFixtureSteps {
 
         user.create();
         Context.getStash().put(userStashId, user);
-    }
-
-    @Пусть("В системе есть пользователь не администратор \"(.+)\" с параметрами:")
-    public void createNotAdminUser(String userStashId, Map<String, String> parameters) {
-        UserParametersValidator.validateUserParameters(parameters.keySet());
-
-        User user = new User();
-
-        if (parameters.containsKey("Администратор")) {
-            Boolean isAdmin = Boolean.parseBoolean((parameters.get("Администратор")));
-            user.setIsAdmin(isAdmin);
-        }
-        if (parameters.containsKey("Api-ключ")) {
-            user.setTokens(Collections.singletonList(new Token(user)));
-        }
-
-        user.create();
-        Context.getStash().put(userStashId, user);
-    }
-
-    @И("Создан еще один пользователь \"(.+)\" без прав администратора и без Api-ключа")
-    public void createDefaultUser(String defaultUserStashId) {
-        User user = new User().create();
-
-        Context.getStash().put(defaultUserStashId, user);
     }
 }

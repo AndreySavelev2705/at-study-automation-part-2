@@ -4,7 +4,6 @@ import at.study.automation.model.project.Project;
 import at.study.automation.model.role.Permissions;
 import at.study.automation.model.role.Role;
 import at.study.automation.model.user.User;
-import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -17,6 +16,7 @@ import java.util.List;
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertFalse;
 import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.pages.ProjectsPage.isElementPresent;
 
 public class ProjectsVisibilityByUserTest extends BaseUiTest {
     private User user;
@@ -87,7 +87,7 @@ public class ProjectsVisibilityByUserTest extends BaseUiTest {
                 "Описание проекта " + "\"" + project1.getDescription() + "\""
         );
         assertFalse(
-                BrowserUtils.isElementPresent(project2.getName()),
+                isElementPresent(project2.getName()),
                 "Элемент не отображается"
         );
         assertEquals(

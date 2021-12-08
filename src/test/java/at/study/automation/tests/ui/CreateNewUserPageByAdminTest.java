@@ -15,12 +15,15 @@ import static at.study.automation.ui.browser.BrowserUtils.*;
 public class CreateNewUserPageByAdminTest extends BaseUiTest {
 
     private User admin;
+    private User userForCreating;
 
     @BeforeMethod(description = "В системе заведен пользователь с прапвами администратора. Открыт браузер на главной странице.")
     public void prepareFixtures() {
         admin = new User() {{
             setIsAdmin(true);
         }}.create();
+
+        userForCreating = new User();
 
         openBrowser();
     }
@@ -54,26 +57,28 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
                 "Структура хлебных крошек"
         );
 
-        User userFroCreating = new User();
-
-        sendKeys(createNewUserPage.userLogin, userFroCreating.getLogin(), "Пользователь");
-        sendKeys(createNewUserPage.userFirstName, userFroCreating.getFirstName(), "Имя");
-        sendKeys(createNewUserPage.userLastName, userFroCreating.getLastName(), "Фамилия");
-        sendKeys(createNewUserPage.userMail, StringUtils.randomEmail(), "Email");
-        click(createNewUserPage.generatePassword, "Создание пароля");
-        click(createNewUserPage.create, "Создать");
+        createUser(userForCreating);
 
         assertEquals(
                 createNewUserPage.flashNotice.getText(),
-                "Пользователь " + userFroCreating.getLogin() + " создан.",
+                "Пользователь " + userForCreating.getLogin() + " создан.",
                 "Сообщение \"Пользователь создан\""
         );
 
-        User newUser = new UserRequests().read(userFroCreating.getLogin());
+        User newUser = new UserRequests().read(userForCreating.getLogin());
         assertEquals(
                 newUser.getLogin(),
-                userFroCreating.getLogin(),
+                userForCreating.getLogin(),
                 "Проверка, что пользователь создан в бд"
         );
+    }
+
+    private void createUser(User userForCreating) {
+        sendKeys(createNewUserPage.userLogin, userForCreating.getLogin(), "Пользователь");
+        sendKeys(createNewUserPage.userFirstName, userForCreating.getFirstName(), "Имя");
+        sendKeys(createNewUserPage.userLastName, userForCreating.getLastName(), "Фамилия");
+        sendKeys(createNewUserPage.userMail, StringUtils.randomEmail(), "Email");
+        click(createNewUserPage.generatePassword, "Создание пароля");
+        click(createNewUserPage.create, "Создать");
     }
 }

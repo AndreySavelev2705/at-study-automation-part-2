@@ -58,7 +58,13 @@ public class TokenRequests extends BaseRequests implements Create<Token>, ReadAl
         );
     }
 
-    // Делаем из мапы, с результатом запроса из бд, объект класса Token и возвращаем его
+    /**
+     * Метод делает из мапы, с результатом запроса из бд, объект класса Token и возвращаем его
+     *
+     * @param data мапа, с результатом запроса из бд
+     * @param user пользователь для которого этот токен предназначен
+     * @return возвращает объект класса Token
+     */
     private Token from(Map<String, Object> data, User user) {
         return (Token) new Token(user)
         .setAction(

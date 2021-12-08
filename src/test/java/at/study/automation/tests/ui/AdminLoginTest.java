@@ -1,7 +1,6 @@
 package at.study.automation.tests.ui;
 
 import at.study.automation.model.user.User;
-import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -10,6 +9,7 @@ import org.testng.annotations.Test;
 
 import static at.study.automation.allure.AllureAssert.*;
 import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 
 public class AdminLoginTest extends BaseUiTest {
     private User admin;
@@ -76,15 +76,15 @@ public class AdminLoginTest extends BaseUiTest {
                 "Текст элемента \"Администрирование\""
         );
         assertFalse(
-                BrowserUtils.isElementPresent(headerPage.loginButton),
+                isElementPresent(headerPage.loginButton),
                 "Элемент не отображается"
         );
         assertFalse(
-                BrowserUtils.isElementPresent(headerPage.register),
+                isElementPresent(headerPage.register),
                 "Элемент не отображается"
         );
         assertTrue(
-                BrowserUtils.isElementPresent(headerPage.search),
+                isElementPresent(headerPage.search),
                 "Элемент отображается"
         );
     }

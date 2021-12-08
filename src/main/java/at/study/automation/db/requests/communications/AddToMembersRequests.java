@@ -23,7 +23,7 @@ public class AddToMembersRequests {
     }
 
     @Step("Связывание участника проекта с Id {0} и его ролью с Id {1} на этом проекте")
-    public void addMemberRoles(Integer memberId, Integer roleId) {
+    public void addMemberRole(Integer memberId, Integer roleId) {
         String query = "INSERT INTO public.member_roles\n" +
                 "(id, member_id, role_id, inherited_from)\n" +
                 "VALUES(DEFAULT, ?, ?, ?);\n";

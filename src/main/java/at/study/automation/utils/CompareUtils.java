@@ -85,7 +85,7 @@ public class CompareUtils {
         Assert.assertEquals(usersLastNames, usersLastNamesCopy);
     }
 
-    //@Step("Проверка признака отсортированности списка")
+    @Step("Проверка признака отсортированности списка")
     public static boolean isListSorted(List<String> list) {
         List<String> listCopy = new ArrayList<>(list);
         Collections.sort(listCopy);

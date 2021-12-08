@@ -2,7 +2,6 @@ package at.study.automation.tests.ui;
 
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
-import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -12,6 +11,7 @@ import org.testng.annotations.Test;
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertTrue;
 import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 
 public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
 
@@ -49,7 +49,7 @@ public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
         click(headerPage.projects, "Проекты");
 
         assertTrue(
-                BrowserUtils.isElementPresent(projectsPage.getProject(project.getName())),
+                isElementPresent(projectsPage.getProject(project.getName())),
                 "Элемент отображается"
         );
         assertEquals(

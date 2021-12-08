@@ -2,7 +2,6 @@ package at.study.automation.tests.ui;
 
 import at.study.automation.model.user.Status;
 import at.study.automation.model.user.User;
-import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -12,6 +11,7 @@ import org.testng.annotations.Test;
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertFalse;
 import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 
 public class UnacceptedUserLoginTest extends BaseUiTest {
 
@@ -41,7 +41,7 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
                 "Текст элемента \"Ваша учётная запись создана и ожидает подтверждения администратора.\""
         );
         assertFalse(
-                BrowserUtils.isElementPresent(headerPage.myPage),
+                isElementPresent(headerPage.myPage),
                 "Элемент не отображается"
         );
         assertEquals(

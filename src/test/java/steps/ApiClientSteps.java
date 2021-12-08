@@ -10,10 +10,10 @@ import cucumber.api.java.ru.И;
 public class ApiClientSteps {
 
     @И("Создан api-клиент \"(.+)\" для пользователя \"(.+)\"")
-    public void createApiClient(String apiKeyStashId, String userStashId) {
+    public void createApiClient(String apiClientStashId, String userStashId) {
         User notAdmin  = Context.getStash().get(userStashId, User.class);
         RestApiClient apiClient = AllureUtils.createApiClient(new RestAssuredClient(notAdmin));
 
-        Context.getStash().put(apiKeyStashId, apiClient);
+        Context.getStash().put(apiClientStashId, apiClient);
     }
 }

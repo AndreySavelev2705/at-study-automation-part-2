@@ -44,7 +44,7 @@ public class Project extends CreatableEntity implements Creatable<Project> {
         for (User user : members.keySet()) {
             Integer memberId = new AddToMembersRequests().addMember(user.getId(), this.getId());
             List<Role> roles = members.get(user);
-            roles.forEach(role -> new AddToMembersRequests().addMemberRoles(memberId, role.getId()));
+            roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
         }
         return this;
     }
