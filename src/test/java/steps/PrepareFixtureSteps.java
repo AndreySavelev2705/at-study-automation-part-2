@@ -1,8 +1,11 @@
 package steps;
 
 import at.study.automation.context.Context;
+import at.study.automation.cucumber.validators.RoleParametersValidator;
 import at.study.automation.cucumber.validators.UserParametersValidator;
 import at.study.automation.model.project.Project;
+import at.study.automation.model.role.Permissions;
+import at.study.automation.model.role.Role;
 import at.study.automation.model.user.*;
 import cucumber.api.java.ru.Пусть;
 import cucumber.api.java.ru.Также;
@@ -70,12 +73,50 @@ public class PrepareFixtureSteps {
         Context.getStash().put(userStashId, user);
     }
 
+    @Пусть("В системе существует набор ролей - \"(.+)\" с разрешениями:")
+    public void createRole(String roleStashId, Map<String, String> parameters) {
+        RoleParametersValidator.validateUserParameters(parameters.keySet());
+
+        Role role = new Role();
+        List<Permissions> permissions = null;
+
+        if (parameters.containsKey("Просмотр задач")) {
+            permissions = Collections.singletonList(
+                    Permissions.VIEW_ISSUES
+            );
+        }
+
+        role.setPermissions(permissions);
+        role.create();
+        Context.getStash().put(roleStashId, role);
+    }
+
     @Также("Существует приватный проект \"(.+)\"")
-    public void createProject(String projectName) {
+    public void createPrivateProject(String projectNameStashId) {
+
         Project project = new Project() {{
             setIsPublic(false);
         }}.create();
 
+        Context.getStash().put(projectNameStashId, project);
+    }
+
+    @Также("Существует проект \"(.+)\"")
+    public void createProject(String projectName) {
+        Project project = new Project().create();
+
         Context.getStash().put(projectName, project);
+    }
+
+    @Также("У пользователя \"(.+)\" с набором ролей \"(.+)\" есть доступ только к проекту \"(.+)\"")
+    public void linkingProjectAndUserAndRoles(String userStashId, String roleStashId, String projectNameStashId) {
+        Role role = Context.getStash().get(roleStashId, Role.class);
+        Project project = Context.getStash().get(projectNameStashId, Project.class);
+        User user = Context.getStash().get(userStashId, User.class);
+
+        project.setIsPublic(false);
+        user.addProject(project, Collections.singletonList(role));
+        project.addUser(user, Collections.singletonList(role));
+        //project.create();
     }
 }

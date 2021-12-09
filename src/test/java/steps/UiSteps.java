@@ -218,6 +218,17 @@ public class UiSteps {
         );
     }
 
+    @И("На странице не отображается проект \"(.+)\"")
+    public void assertProjectIsNotDeployed(String projectName) {
+        Project project = Context.getStash().get(projectName, Project.class);
+
+        AllureAssert.assertFalse(
+                isElementPresent(
+                        getPage(ProjectsPage.class).getProject(project.getName())),
+                "Элемент не отображается"
+        );
+    }
+
     @И("Имя проекта совпадает с именем проекта \"(.+)\"")
     public void assertProjectNameText(String projectName) {
         Project project = Context.getStash().get(projectName, Project.class);

@@ -42,6 +42,7 @@ public class PostgresConnection implements DatabaseConnection {
     @SneakyThrows
     @Step("Выполнение запроса к БД")
     public List<Map<String, Object>> executeQuery(String query, Object... parameters) {
+
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             // Тут ? заменяется на параметр из массива с параметрами в аргументе метода
@@ -72,8 +73,7 @@ public class PostgresConnection implements DatabaseConnection {
         } catch (PSQLException exception) {
             if (exception.getMessage().equals("Запрос не вернул результатов.")) {
                 return null;
-            }
-            else {
+            } else {
                 throw exception;
             }
         }

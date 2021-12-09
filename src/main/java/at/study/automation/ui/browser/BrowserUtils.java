@@ -2,6 +2,7 @@ package at.study.automation.ui.browser;
 
 import at.study.automation.property.Property;
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
@@ -20,6 +21,18 @@ public class BrowserUtils {
     public static boolean isElementPresent(WebElement webElement) {
         try {
             BrowserManager.getBrowser().getDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            return webElement.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        } finally {
+            BrowserManager.getBrowser().getDriver().manage().timeouts().implicitlyWait(Property.getIntegerProperty("element.timeout"), TimeUnit.SECONDS);
+        }
+    }
+
+    public static boolean isElementPresent(String projectName) {
+        try {
+            BrowserManager.getBrowser().getDriver().manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+            WebElement webElement = BrowserManager.getBrowser().getDriver().findElement(By.xpath("//div[@id='projects-index']//a[text()='" + projectName + "']"));
             return webElement.isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
