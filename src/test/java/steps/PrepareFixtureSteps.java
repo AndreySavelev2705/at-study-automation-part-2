@@ -3,6 +3,7 @@ package steps;
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.validators.RoleParametersValidator;
 import at.study.automation.cucumber.validators.UserParametersValidator;
+import at.study.automation.db.requests.communications.AddToMembersRequests;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.role.Permissions;
 import at.study.automation.model.role.Role;
@@ -114,9 +115,12 @@ public class PrepareFixtureSteps {
         Project project = Context.getStash().get(projectNameStashId, Project.class);
         User user = Context.getStash().get(userStashId, User.class);
 
-        project.setIsPublic(false);
+;
         user.addProject(project, Collections.singletonList(role));
         project.addUser(user, Collections.singletonList(role));
-        //project.create();
+
+        Integer memberId = new AddToMembersRequests().addMember(user.getId(), project.getId());
+        List<Role> roles = project.getMembers().get(user);
+        roles.forEach(role1 -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
     }
 }

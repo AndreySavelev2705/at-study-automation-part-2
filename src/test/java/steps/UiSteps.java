@@ -213,7 +213,7 @@ public class UiSteps {
 
         assertTrue(
                 isElementPresent(
-                        getPage(ProjectsPage.class).getProject(project.getName())),
+                        project.getName()),
                 "Элемент отображается"
         );
     }
@@ -224,7 +224,7 @@ public class UiSteps {
 
         AllureAssert.assertFalse(
                 isElementPresent(
-                        getPage(ProjectsPage.class).getProject(project.getName())),
+                        project.getName()),
                 "Элемент не отображается"
         );
     }

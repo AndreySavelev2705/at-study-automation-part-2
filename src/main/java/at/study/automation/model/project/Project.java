@@ -4,6 +4,7 @@ import at.study.automation.db.requests.ProjectRequests;
 import at.study.automation.db.requests.communications.AddToMembersRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
+import at.study.automation.model.Updateable;
 import at.study.automation.model.role.Role;
 import at.study.automation.model.user.User;
 import at.study.automation.utils.StringUtils;
@@ -21,7 +22,7 @@ import java.util.Map;
 @Setter
 @Getter
 @Accessors(chain = true)
-public class Project extends CreatableEntity implements Creatable<Project> {
+public class Project extends CreatableEntity implements Creatable<Project>, Updateable<Project> {
 
     private String name = "Savelev_project_for_testing" + StringUtils.randomEnglishString(5);
     private String description = "Savelev_project_for_testing" + StringUtils.randomEnglishString(5);
@@ -50,10 +51,21 @@ public class Project extends CreatableEntity implements Creatable<Project> {
         return this;
     }
 
+    @Override
+    @Step("Обновлен проект в бд")
+    public Project update() {
+
+        int id = this.id;
+
+        new ProjectRequests().update(id, this);
+
+        return this;
+    }
+
     @Step("Добавление проекту пользователя {0} и его ролей {1} на этом проекте")
     public void addUser(User user, List<Role> roles) {
         // TODO: Реализовать с помощью SQL-Запроса
-        members.put(user,roles);
+        members.put(user, roles);
     }
 
     @Override
