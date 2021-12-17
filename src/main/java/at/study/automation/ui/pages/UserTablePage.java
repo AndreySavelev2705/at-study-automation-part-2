@@ -27,7 +27,7 @@ public class UserTablePage extends Page {
     @FindBy(xpath = "//div[@class='autoscroll']/table[@class='list users']")
     public WebElement usersTable;
 
-    @ElementName("Логины")
+    @ElementName("Пользователь")
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='username']")
     public List<WebElement> usersLogins;
 

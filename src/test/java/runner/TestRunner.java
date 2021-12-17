@@ -19,7 +19,8 @@ import java.lang.reflect.Method;
         },
         glue = {"steps"},
         features = "src/test/resources/features",
-        tags = {"@ui and not @smoke"}
+        //tags = {"@ui and not @smoke"}
+        tags = {"@ui"}
 )
 public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
 
@@ -60,6 +61,6 @@ public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
     @AfterMethod(alwaysRun = true)
     public void afterMethod(Method name, Object[] testData) {
         Context.clearStash();
-        BrowserManager.closeBrowser();;
+        BrowserManager.closeBrowser();
     }
 }

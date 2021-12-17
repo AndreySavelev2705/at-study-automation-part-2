@@ -1,7 +1,6 @@
 package at.study.automation.tests.ui;
 
 import at.study.automation.model.user.User;
-import at.study.automation.ui.browser.BrowserUtils;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -12,7 +11,7 @@ import java.util.List;
 
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertTrue;
-import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.*;
 import static at.study.automation.utils.CompareUtils.assertListSortedByUserNameAsc;
 import static at.study.automation.utils.CompareUtils.assertListSortedByUserNameDesc;
 
@@ -37,7 +36,7 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
     @Test(description = "Администрирование. Сортировка списка пользователей по пользователь")
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
-    public void userTableUserNamessSortingByAdminTest() {
+    public void userTableUserNamesSortingByAdminTest() {
         click(headerPage.loginButton, "Войти");
 
         loginPage.login(admin);
@@ -57,16 +56,16 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
         administrationPage.users.click();
 
         assertTrue(
-                BrowserUtils.isElementPresent(userTablePage.usersTable),
+                isElementPresent(userTablePage.usersTable),
                 "Таблица с пользователями отображается"
         );
 
         click(userTablePage.button("Пользователь"), "Пользователь: сортировка убыванию");
-        List<String> usersByDesc = BrowserUtils.getElementsText(userTablePage.usersLogins);
+        List<String> usersByDesc = getElementsText(userTablePage.usersLogins);
         assertListSortedByUserNameDesc(usersByDesc);
 
         click(userTablePage.button("Пользователь"), "Пользователь: сортировка по возрастанию");
-        List<String> usersByAsc = BrowserUtils.getElementsText(userTablePage.usersLogins);
+        List<String> usersByAsc = getElementsText(userTablePage.usersLogins);
         assertListSortedByUserNameAsc(usersByAsc);
     }
 }

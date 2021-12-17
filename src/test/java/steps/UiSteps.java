@@ -5,10 +5,7 @@ import at.study.automation.context.Context;
 import at.study.automation.cucumber.PageObjectHelper;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
-import at.study.automation.ui.pages.HeaderPage;
-import at.study.automation.ui.pages.HomePage;
-import at.study.automation.ui.pages.LoginPage;
-import at.study.automation.ui.pages.ProjectsPage;
+import at.study.automation.ui.pages.*;
 import cucumber.api.java.ru.*;
 import org.openqa.selenium.WebElement;
 
@@ -17,7 +14,7 @@ import java.util.List;
 import static at.study.automation.allure.AllureAssert.*;
 import static at.study.automation.ui.browser.BrowserUtils.*;
 import static at.study.automation.ui.pages.LoginPage.getPage;
-import static at.study.automation.utils.CompareUtils.assertListSortedByDateDesc;
+import static at.study.automation.utils.CompareUtils.*;
 
 public class UiSteps {
 
@@ -153,17 +150,17 @@ public class UiSteps {
         );
     }
 
-    @Если("На странице (.+) нажать на элемент (.+)")
+    @Если("На странице \"(.+)\" нажать на элемент \"(.+)\"")
     public void clickOnElementOnPage(String pageName, String elementName) {
         PageObjectHelper.findElement(pageName, elementName).click();
     }
 
-    @И("На странице (.+) в поле (.+) ввести текст (.+)")
+    @И("На странице \"(.+)\" в поле \"(.+)\" ввести текст \"(.+)\"")
     public void sendKeysToElementOnPage(String pageName, String elementName, String charSequence) {
         PageObjectHelper.findElement(pageName, elementName).sendKeys(charSequence);
     }
 
-    @И("На странице (.+) тексты элементов (.+) отсортированы по дате по убыванию")
+    @И("На странице \"(.+)\" тексты элементов \"(.+)\" отсортированы по дате по убыванию")
     public void assertElementsTextsIsSortedByDateDesc(String pageName, String elementsName) {
         List<WebElement> elements = PageObjectHelper.findElements(pageName, elementsName);
         List<String> elementsText = getElementsText(elements);
@@ -172,6 +169,7 @@ public class UiSteps {
 
     @Когда("Нажать на кнопку \"(.+)\"")
     public void clickOnLoginButton(String buttonName) {
+
         click(getPage(HeaderPage.class).loginButton, buttonName);
     }
 
@@ -249,5 +247,83 @@ public class UiSteps {
                 project.getDescription(),
                 "Описание проекта " + "\"" + project.getDescription() + "\""
         );
+    }
+
+    @Тогда("На странице \"(.+)\" отображается таблица \"(.+)\" с пользователями")
+    public void assertUsersTableIsDeployed(String pageNameStashId, String tableName) {
+        UserTablePage userTablePage = getPage(UserTablePage.class);
+
+        assertTrue(
+                isElementPresent(userTablePage.usersTable),
+                "Таблица с пользователями отображается"
+        );
+
+        Context.getStash().put(pageNameStashId, userTablePage);
+    }
+
+    @Тогда("В шапке таблицы \"(.+)\" нажать на Пользователь \"(.+)\"")
+    public void sortingUserTable(String tableName, String columnName) {
+        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
+
+        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+        List<String> usersBy = getElementsText(userTablePage.usersLogins);
+
+        Context.getStash().put(columnName, usersBy);
+    }
+
+    @Тогда("В шапке таблицы \"(.+)\" нажать на Фамилия \"(.+)\"")
+    public void sortingUserLastNameTable(String tableName, String columnName) {
+        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
+
+        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+        List<String> usersBy = getElementsText(userTablePage.usersLastNames);
+
+        Context.getStash().put(columnName, usersBy);
+    }
+
+    @Тогда("В шапке таблицы \"(.+)\" нажать на Имя \"(.+)\"")
+    public void sortingUserFirstNameTable(String tableName, String columnName) {
+        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
+
+        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+        List<String> usersBy = getElementsText(userTablePage.usersFirstNames);
+
+        Context.getStash().put(columnName, usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю \"(.+)\" по возрастанию")
+    public void sortingUserTableAsc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserNameAsc(usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю \"(.+)\" по убыванию")
+    public void sortingUserTableDesc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserNameDesc(usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю фамилия \"(.+)\" по возрастанию")
+    public void sortingUserLastNameTableAsc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserLastNameAsc(usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю фамилия \"(.+)\" по убыванию")
+    public void sortingUserLastNameTableDesc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserLastNameDesc(usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю имя \"(.+)\" по возрастанию")
+    public void sortingUserFirstNameTableAsc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserFirstNameAsc(usersBy);
+    }
+
+    @Тогда("Таблица \"(.+)\" отсортирована по полю имя \"(.+)\" по убыванию")
+    public void sortingUserFirstNameTableDesc(String tableName, String columnName) {
+        List usersBy = Context.getStash().get(columnName, List.class);
+        assertListSortedByUserFirstNameDesc(usersBy);
     }
 }
