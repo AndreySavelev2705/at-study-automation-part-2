@@ -47,7 +47,7 @@ public class BrowserUtils {
     }
 
     @Step("Ввод: {1}")
-    public static void sendKeys(WebElement element, String text, String description) {
+    public static void sendKeys(WebElement element, String text) {
         element.sendKeys(element.getText(), text);
     }
 }

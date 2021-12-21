@@ -74,10 +74,10 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
     }
 
     private void createUser(User userForCreating) {
-        sendKeys(createNewUserPage.userLogin, userForCreating.getLogin(), "Пользователь");
-        sendKeys(createNewUserPage.userFirstName, userForCreating.getFirstName(), "Имя");
-        sendKeys(createNewUserPage.userLastName, userForCreating.getLastName(), "Фамилия");
-        sendKeys(createNewUserPage.userMail, StringUtils.randomEmail(), "Email");
+        sendKeys(createNewUserPage.userLogin, userForCreating.getLogin());
+        sendKeys(createNewUserPage.userFirstName, userForCreating.getFirstName());
+        sendKeys(createNewUserPage.userLastName, userForCreating.getLastName());
+        sendKeys(createNewUserPage.userMail, StringUtils.randomEmail());
         click(createNewUserPage.generatePassword, "Создание пароля");
         click(createNewUserPage.create, "Создать");
     }

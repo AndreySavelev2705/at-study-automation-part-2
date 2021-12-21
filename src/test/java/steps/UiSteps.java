@@ -3,9 +3,11 @@ package steps;
 import at.study.automation.allure.AllureAssert;
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.PageObjectHelper;
+import at.study.automation.db.requests.UserRequests;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.pages.*;
+import at.study.automation.utils.StringUtils;
 import cucumber.api.java.ru.*;
 import org.openqa.selenium.WebElement;
 
@@ -49,6 +51,22 @@ public class UiSteps {
     public void assertProjectsPageText(String expectedText) {
         AllureAssert.assertEquals(
                 getPage(ProjectsPage.class).projectsLabel.getText(),
+                expectedText
+        );
+    }
+
+    @И("Текст элемента Администрирование - \"(.+)\"")
+    public void assertAdministrationPageText(String expectedText) {
+        AllureAssert.assertEquals(
+                getPage(AdministrationPage.class).administrationHeader.getText(),
+                expectedText
+        );
+    }
+
+    @И("Текст элемента Новый пользователь - \"(.+)\"")
+    public void assertNewUserPageText(String expectedText) {
+        AllureAssert.assertEquals(
+                getPage(CreateNewUserPage.class).breadCrumbs.getText(),
                 expectedText
         );
     }
@@ -173,9 +191,14 @@ public class UiSteps {
         click(getPage(HeaderPage.class).loginButton, buttonName);
     }
 
-    @Когда("На главной странице нажать \"(.+)\"")
+    @Когда("На главной странице нажать проекты \"(.+)\"")
     public void clickOnProjectsButton(String buttonName) {
         click(getPage(HeaderPage.class).projects, buttonName);
+    }
+
+    @Когда("На главной странице нажать администрирование \"(.+)\"")
+    public void clickOnAdministrationButton(String buttonName) {
+        click(getPage(HeaderPage.class).administration, buttonName);
     }
 
     @Тогда("Отображается сообщение \"(.+)\"")
@@ -326,4 +349,40 @@ public class UiSteps {
         List usersBy = Context.getStash().get(columnName, List.class);
         assertListSortedByUserFirstNameDesc(usersBy);
     }
+
+    @Тогда("На странице \"(.+)\" заполнить поле \"(.+)\"")
+    public void fillInTheField(String pageName, String elementName) {
+        WebElement webElement = PageObjectHelper.findElement(pageName, elementName);
+
+        if (elementName.equals("Email")) {
+            sendKeys(webElement, StringUtils.randomEmail());
+        }
+        sendKeys(webElement, StringUtils.randomEnglishString(10));
+    }
+
+    @Затем("На той же странице \"(.+)\" нажать на элемент \"(.+)\" для создания нового пользователя \"(.+)\"")
+    public void clickOnElementOnPageNewUser(String pageName, String elementName, String userStashId) {
+        PageObjectHelper.findElement(pageName, elementName).click();
+
+        String login = getPage(CreateNewUserPage.class).flashNotice.getText().substring(13,23);
+
+        User user = new UserRequests().read(login);
+
+        Context.getStash().put(userStashId, user);
+    }
+
+    @И("На странице \"Новый пользователь\" отображается сообщение что создан пользователь \"(.+)\"")
+    public void assertNewUserCreatedText(String userStashId) {
+
+        CreateNewUserPage createNewUserPage = getPage(CreateNewUserPage.class);
+
+        User userForCreating = Context.getStash().get(userStashId, User.class);
+
+        assertEquals(
+                createNewUserPage.flashNotice.getText(),
+                "Пользователь " + userForCreating.getLogin() + " создан.",
+                "Сообщение \"Пользователь создан\""
+        );
+    }
 }
+
