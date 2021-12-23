@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class PrepareFixtureSteps {
 
-    @Пусть("Имеется список E-Mail адресов \"(.+) \":")
+    @Пусть("Имеется список E-Mail адресов \"(.+)\":")
     public void createEmails(String emailsStashId, DataTable dataTable) {
 
         List<Map<String, String>> maps = dataTable.asMaps();

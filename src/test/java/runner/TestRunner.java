@@ -35,7 +35,7 @@ public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
         super.runScenario(pickleWrapper, featureWrapper);
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     @Override
     public Object[][] scenarios() {
         System.out.println("Total scenarios: " + super.scenarios().length);
