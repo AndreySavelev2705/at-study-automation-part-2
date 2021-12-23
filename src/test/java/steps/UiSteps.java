@@ -31,88 +31,128 @@ public class UiSteps {
         getPage(LoginPage.class).login(login, password);
     }
 
-    @И("Тогда текст элемента Моя учетная запись - \"(.+)\"")
-    public void assertMyAccountText(String expectedText) {
-        AllureAssert.assertEquals(
-                getPage(HeaderPage.class).myAccount.getText(),
-                expectedText
-        );
-    }
+    @И("На странице \"(.+)\" отображается элемент \"(.+)\"")
+    public void assertPageElementIsDeployed(String pageName, String elementName) {
 
-    @И("Текст элемента Домашняя страница - \"(.+)\"")
-    public void assertHomePageText(String expectedText) {
-        AllureAssert.assertEquals(
-                getPage(HomePage.class).homePageHeader.getText(),
-                expectedText
-        );
-    }
-
-    @И("Текст элемента Проекты - \"(.+)\"")
-    public void assertProjectsPageText(String expectedText) {
-        AllureAssert.assertEquals(
-                getPage(ProjectsPage.class).projectsLabel.getText(),
-                expectedText
-        );
-    }
-
-    @И("Текст элемента Администрирование - \"(.+)\"")
-    public void assertAdministrationPageText(String expectedText) {
-        AllureAssert.assertEquals(
-                getPage(AdministrationPage.class).administrationHeader.getText(),
-                expectedText
-        );
-    }
-
-    @И("Текст элемента Новый пользователь - \"(.+)\"")
-    public void assertNewUserPageText(String expectedText) {
-        AllureAssert.assertEquals(
-                getPage(CreateNewUserPage.class).breadCrumbs.getText(),
-                expectedText
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Домашняя страница - \"(.+)\"")
-    public void assertHomePageInHeaderPageText(String expectedText) {
-        assertEquals(
-                getPage(HeaderPage.class).homePage.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Моя страница - \"(.+)\"")
-    public void assertMyPageText(String expectedText) {
-        assertEquals(
+        if (pageName.equals("Домашняя страница") && elementName.equals("Домашняя страница")) {
+            assertEquals(
+                    getPage(HomePage.class).homePageHeader.getText(),
+                    elementName
+            );
+            return;
+        }
+        if (pageName.equals("Проекты") && elementName.equals("Проекты")) {
+            assertEquals(
+                    getPage(ProjectsPage.class).projectsLabel.getText(),
+                    elementName
+            );
+            return;
+        }
+        if (pageName.equals("Администрирование") && elementName.equals("Администрирование")) {
+            assertEquals(
+                    getPage(AdministrationPage.class).administrationHeader.getText(),
+                    elementName
+            );
+            return;
+        }
+        if (pageName.equals("Новый пользователь") && elementName.equals("Пользователи » Новый пользователь")) {
+            assertEquals(
+                    getPage(CreateNewUserPage.class).breadCrumbs.getText(),
+                    elementName
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Моя страница")) {
+            assertEquals(
                 getPage(HeaderPage.class).myPage.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Проекты - \"(.+)\"")
-    public void assertProjectsText(String expectedText) {
-        assertEquals(
+                elementName,
+                "Текст элемента \"" + elementName + "\""
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Проекты")) {
+            assertEquals(
                 getPage(HeaderPage.class).projects.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
-        );
+                    elementName,
+                "Текст элемента \"" + elementName + "\""
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Помощь")) {
+            assertEquals(
+                    getPage(HeaderPage.class).help.getText(),
+                    elementName,
+                    "Текст элемента \"" + elementName + "\""
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Моя учётная запись")) {
+            AllureAssert.assertEquals(
+                getPage(HeaderPage.class).myAccount.getText(),
+                    elementName
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Выйти")) {
+            assertEquals(
+                    getPage(HeaderPage.class).logout.getText(),
+                    elementName,
+                    "Текст элемента \"" + elementName + "\""
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Поиск")) {
+            assertTrue(
+                isElementPresent(getPage(HeaderPage.class).search),
+                "Элемент отображается"
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Регистрация")) {
+            assertTrue(
+                    isElementPresent(getPage(HeaderPage.class).search),
+                    "Элемент отображается"
+            );
+            return;
+        }
+        else throw new RuntimeException();
     }
 
-    @Также("В заголовке страницы текст элемента Помощь - \"(.+)\"")
-    public void assertHelpText(String expectedText) {
-        assertEquals(
-                getPage(HeaderPage.class).help.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
+    @И("На странице \"(.+)\" не отображается элемент \"(.+)\"")
+    public void assertPageElementIsNotDeployed(String pageName, String elementName) {
+
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Администрирование")) {
+            assertFalse(
+                isElementPresent(getPage(HeaderPage.class).administration),
+                "Элемент не отображается"
         );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Войти")) {
+            assertFalse(
+                    isElementPresent(getPage(HeaderPage.class).loginButton),
+                    "Элемент не отображается"
+            );
+            return;
+        }
+        if (pageName.equals("Заголовок страницы") && elementName.equals("Регистрация")) {
+            assertFalse(
+                    isElementPresent(getPage(HeaderPage.class).register),
+                    "Элемент не отображается"
+            );
+            return;
+        }
+        else throw new RuntimeException();
     }
 
-    @Также("В заголовке страницы текст элемента Выйти - \"(.+)\"")
-    public void assertLogoutText(String expectedText) {
-        assertEquals(
-                getPage(HeaderPage.class).logout.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
+    @И("На странице \"Проекты\" отображается проект \"(.+)\"")
+    public void assertProjectIsDeployed(String elementName) {
+        Project project = Context.getStash().get(elementName, Project.class);
+
+        assertTrue(
+                isElementPresent(
+                        project.getName()),
+                "Элемент отображается"
         );
     }
 
@@ -125,7 +165,6 @@ public class UiSteps {
         );
     }
 
-
     @Также("В заголовке страницы текст элемента Вошли как \"(.+)\" верный логин текущего администратора")
     public void assertEnteredAs(String userStashId) {
         User admin = Context.getStash().get(userStashId, User.class);
@@ -133,38 +172,6 @@ public class UiSteps {
                 getPage(HeaderPage.class).userActive.getText(),
                 "Вошли как " + admin.getLogin(),
                 "Текст элемента \"Вошли как \"" + admin.getLogin()
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Администрирование не отображается")
-    public void assertAdministrationFalse() {
-        assertFalse(
-                isElementPresent(getPage(HeaderPage.class).administration),
-                "Элемент не отображается"
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Войти не отображается")
-    public void assertLoginButtonFalse() {
-        assertFalse(
-                isElementPresent(getPage(HeaderPage.class).loginButton),
-                "Элемент не отображается"
-        );
-    }
-
-    @Также("В заголовке страницы текст элемента Регистрация не отображается")
-    public void assertRegisterButtonFalse() {
-        assertFalse(
-                isElementPresent(getPage(HeaderPage.class).register),
-                "Элемент не отображается"
-        );
-    }
-
-    @Также("На странице элемент Поиск отображается")
-    public void assertSearchFalse() {
-        assertTrue(
-                isElementPresent(getPage(HeaderPage.class).search),
-                "Элемент отображается"
         );
     }
 
@@ -191,11 +198,6 @@ public class UiSteps {
         click(getPage(HeaderPage.class).loginButton, buttonName);
     }
 
-    @Когда("На главной странице нажать проекты \"(.+)\"")
-    public void clickOnProjectsButton(String buttonName) {
-        click(getPage(HeaderPage.class).projects, buttonName);
-    }
-
     @Когда("На главной странице нажать администрирование \"(.+)\"")
     public void clickOnAdministrationButton(String buttonName) {
         click(getPage(HeaderPage.class).administration, buttonName);
@@ -206,7 +208,7 @@ public class UiSteps {
         assertEquals(
                 getPage(LoginPage.class).errorFlash.getText(),
                 message,
-                "Текст элемента \""+ message + "\""
+                "Текст элемента \"" + message + "\""
         );
     }
 
@@ -216,26 +218,6 @@ public class UiSteps {
                 getPage(HeaderPage.class).loginButton.getText(),
                 expectedText,
                 "Текст элемента \"" + expectedText + "\""
-        );
-    }
-
-    @И("В заголовке страницы текст элемента Регистрация - \"(.+)\"")
-    public void assertRegisterText(String expectedText) {
-        assertEquals(
-                getPage(HeaderPage.class).register.getText(),
-                expectedText,
-                "Текст элемента \"" + expectedText + "\""
-        );
-    }
-
-    @И("На странице отображается проект \"(.+)\"")
-    public void assertProjectIsDeployed(String projectName) {
-        Project project = Context.getStash().get(projectName, Project.class);
-
-        assertTrue(
-                isElementPresent(
-                        project.getName()),
-                "Элемент отображается"
         );
     }
 
@@ -272,7 +254,7 @@ public class UiSteps {
         );
     }
 
-    @Тогда("На странице \"(.+)\" отображается таблица \"(.+)\" с пользователями")
+    @Тогда("На странице \"(.+)\" отображается таблица \"(.+)\"")
     public void assertUsersTableIsDeployed(String pageNameStashId, String tableName) {
         UserTablePage userTablePage = getPage(UserTablePage.class);
 
@@ -284,70 +266,77 @@ public class UiSteps {
         Context.getStash().put(pageNameStashId, userTablePage);
     }
 
-    @Тогда("В шапке таблицы \"(.+)\" нажать на Пользователь \"(.+)\"")
+    @Тогда("В шапке таблицы \"(.+)\" нажать на \"(.+)\"")
     public void sortingUserTable(String tableName, String columnName) {
-        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
 
-        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
-        List<String> usersBy = getElementsText(userTablePage.usersLogins);
+        if (tableName.equals("Пользователи") && columnName.equals("Пользователь")) {
+            UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
 
-        Context.getStash().put(columnName, usersBy);
-    }
+            click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+            List<String> usersBy = getElementsText(userTablePage.usersLogins);
 
-    @Тогда("В шапке таблицы \"(.+)\" нажать на Фамилия \"(.+)\"")
-    public void sortingUserLastNameTable(String tableName, String columnName) {
-        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
+            Context.getStash().put(columnName, usersBy);
+            return;
+        }
+        if (tableName.equals("Пользователи") && columnName.equals("Фамилия")) {
+            UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
 
-        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
-        List<String> usersBy = getElementsText(userTablePage.usersLastNames);
+            click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+            List<String> usersBy = getElementsText(userTablePage.usersLastNames);
 
-        Context.getStash().put(columnName, usersBy);
-    }
+            Context.getStash().put(columnName, usersBy);
+            return;
+        }
+        if (tableName.equals("Пользователи") && columnName.equals("Имя")) {
+            UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
 
-    @Тогда("В шапке таблицы \"(.+)\" нажать на Имя \"(.+)\"")
-    public void sortingUserFirstNameTable(String tableName, String columnName) {
-        UserTablePage userTablePage = Context.getStash().get(tableName, UserTablePage.class);
+            click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
+            List<String> usersBy = getElementsText(userTablePage.usersFirstNames);
 
-        click(userTablePage.button(columnName), columnName + ": сортировка убыванию");
-        List<String> usersBy = getElementsText(userTablePage.usersFirstNames);
-
-        Context.getStash().put(columnName, usersBy);
+            Context.getStash().put(columnName, usersBy);
+            return;
+        }
     }
 
     @Тогда("Таблица \"(.+)\" отсортирована по полю \"(.+)\" по возрастанию")
-    public void sortingUserTableAsc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserNameAsc(usersBy);
+    public void sortingTableAsc(String tableName, String columnName) {
+        if (tableName.equals("Пользователи") && columnName.equals("Пользователь")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserNameAsc(usersBy);
+            return;
+        }
+        if (tableName.equals("Пользователи") && columnName.equals("Фамилия")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserLastNameAsc(usersBy);
+            return;
+        }
+
+        if (tableName.equals("Пользователи") && columnName.equals("Имя")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserFirstNameAsc(usersBy);
+            return;
+        }
+        throw new RuntimeException();
     }
 
     @Тогда("Таблица \"(.+)\" отсортирована по полю \"(.+)\" по убыванию")
-    public void sortingUserTableDesc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserNameDesc(usersBy);
-    }
-
-    @Тогда("Таблица \"(.+)\" отсортирована по полю фамилия \"(.+)\" по возрастанию")
-    public void sortingUserLastNameTableAsc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserLastNameAsc(usersBy);
-    }
-
-    @Тогда("Таблица \"(.+)\" отсортирована по полю фамилия \"(.+)\" по убыванию")
-    public void sortingUserLastNameTableDesc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserLastNameDesc(usersBy);
-    }
-
-    @Тогда("Таблица \"(.+)\" отсортирована по полю имя \"(.+)\" по возрастанию")
-    public void sortingUserFirstNameTableAsc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserFirstNameAsc(usersBy);
-    }
-
-    @Тогда("Таблица \"(.+)\" отсортирована по полю имя \"(.+)\" по убыванию")
-    public void sortingUserFirstNameTableDesc(String tableName, String columnName) {
-        List usersBy = Context.getStash().get(columnName, List.class);
-        assertListSortedByUserFirstNameDesc(usersBy);
+    public void sortingTableDesc(String tableName, String columnName) {
+        if (tableName.equals("Пользователи") && columnName.equals("Пользователь")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserNameDesc(usersBy);
+            return;
+        }
+        if (tableName.equals("Пользователи") && columnName.equals("Фамилия")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserLastNameDesc(usersBy);
+            return;
+        }
+        if (tableName.equals("Пользователи") && columnName.equals("Имя")) {
+            List usersBy = Context.getStash().get(columnName, List.class);
+            assertListSortedByUserLastNameDesc(usersBy);
+            return;
+        }
+        throw new RuntimeException();
     }
 
     @Тогда("На странице \"(.+)\" заполнить поле \"(.+)\"")
@@ -364,7 +353,7 @@ public class UiSteps {
     public void clickOnElementOnPageNewUser(String pageName, String elementName, String userStashId) {
         PageObjectHelper.findElement(pageName, elementName).click();
 
-        String login = getPage(CreateNewUserPage.class).flashNotice.getText().substring(13,23);
+        String login = getPage(CreateNewUserPage.class).flashNotice.getText().substring(13, 23);
 
         User user = new UserRequests().read(login);
 
