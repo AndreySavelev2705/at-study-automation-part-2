@@ -2,6 +2,7 @@ package at.study.automation.db.requests.communications;
 
 import at.study.automation.db.connection.PostgresConnection;
 import io.qameta.allure.Step;
+import lombok.SneakyThrows;
 
 import java.time.LocalDateTime;
 
@@ -22,6 +23,7 @@ public class AddToMembersRequests {
         ).get(0).get("id");
     }
 
+    @SneakyThrows
     @Step("Связывание участника проекта с Id {0} и его ролью с Id {1} на этом проекте")
     public void addMemberRole(Integer memberId, Integer roleId) {
         String query = "INSERT INTO public.member_roles\n" +
