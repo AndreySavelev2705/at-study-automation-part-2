@@ -73,6 +73,9 @@ public class PostgresConnection implements DatabaseConnection {
         } catch (PSQLException exception) {
             if (exception.getMessage().equals("Запрос не вернул результатов.")) {
                 return null;
+            } else
+            if (exception.getMessage().equals("No results were returned by the query")){
+                return null;
             } else {
                 throw exception;
             }
