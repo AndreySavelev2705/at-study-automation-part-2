@@ -37,7 +37,7 @@ public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void viewingPrivateProjectByTheAdminTest() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
         loginPage.login(admin);
 
         assertEquals(
@@ -46,7 +46,7 @@ public class ViewingPrivateProjectByTheAdminTest extends BaseUiTest {
                 "Текст элемента \"Домашняя страница\""
         );
 
-        click(headerPage.projects, "Проекты");
+        click(headerPage.projects);
 
         assertTrue(
                 isElementPresent(projectsPage.getProject(project.getName())),

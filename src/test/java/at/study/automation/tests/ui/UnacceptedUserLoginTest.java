@@ -31,7 +31,7 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void testUnacceptedUserLogin() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
         loginPage.login(unacceptedUser);
 
 

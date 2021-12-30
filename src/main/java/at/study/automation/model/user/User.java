@@ -1,6 +1,7 @@
 package at.study.automation.model.user;
 
 import at.study.automation.db.requests.UserRequests;
+import at.study.automation.db.requests.communications.AddToMembersRequests;
 import at.study.automation.model.Creatable;
 import at.study.automation.model.CreatableEntity;
 import at.study.automation.model.Deleteable;
@@ -111,8 +112,9 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
 
     @Step("Добавление пользователю проекта с именем {0} и его ролей {1} на проекте")
     public void addProject(Project project, List<Role> roles) {
-        // TODO: Реализовать с помощью SQL-Запроса
         projects.put(project, roles);
+        Integer memberId = new AddToMembersRequests().addMember(this.id, project.getId());
+        roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
     }
 
     @Override

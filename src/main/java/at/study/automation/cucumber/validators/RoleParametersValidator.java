@@ -2,16 +2,15 @@ package at.study.automation.cucumber.validators;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 public class RoleParametersValidator {
 
-    public static void validateUserParameters(Set<String> keys) {
+    public static void validateUserParameters(List<String> permissions) {
         List<String> allowedKeys = Arrays.asList(
                 "Просмотр задач"
         );
 
-        boolean allKeysAreValid = allowedKeys.containsAll(keys);
+        boolean allKeysAreValid = allowedKeys.containsAll(permissions);
 
         if (!allKeysAreValid) {
             throw new IllegalArgumentException("Среди переданных разрешений для роли есть недопустимые параметры");

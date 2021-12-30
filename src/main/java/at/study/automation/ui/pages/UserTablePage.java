@@ -31,11 +31,11 @@ public class UserTablePage extends Page {
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='username']")
     public List<WebElement> usersLogins;
 
-    @ElementName("Имена")
+    @ElementName("Имя")
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='firstname']")
     public List<WebElement> usersFirstNames;
 
-    @ElementName("Фамилии")
+    @ElementName("Фамилия")
     @FindBy(xpath = "//table[@class='list users']/tbody//td[@class='lastname']")
     public List<WebElement> usersLastNames;
 
@@ -45,5 +45,12 @@ public class UserTablePage extends Page {
 
     public WebElement button(String text) {
         return BrowserManager.getBrowser().getDriver().findElement(By.xpath("//table[@class='list users']/thead//th[.='" + text + "']"));
+    }
+
+    public WebElement getColumnHead(String columnHeadName) {
+
+        return BrowserManager.getBrowser()
+                .getDriver()
+                .findElement(By.xpath("//div[@class='autoscroll']//a[text()='" + columnHeadName + "']"));
     }
 }

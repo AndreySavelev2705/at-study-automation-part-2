@@ -17,17 +17,10 @@ public class CompareUtils {
         LocalDateTime d2 = LocalDateTime.parse(s2, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
         return d2.compareTo(d1);
     };
-
     private static final Comparator<String> DATE_ASC_COMPARATOR = DATE_DESC_COMPARATOR.reversed();
 
-    private static final Comparator<String> USER_NAME_DESC_COMPARATOR = (s1, s2) -> s2.compareToIgnoreCase(s1);
-    private static final Comparator<String> USER_NAME_ASC_COMPARATOR = USER_NAME_DESC_COMPARATOR.reversed();
-
-    private static final Comparator<String> USER_FIRST_NAME_DESC_COMPARATOR = (s1, s2) -> s2.compareToIgnoreCase(s1);
-    private static final Comparator<String> USER_FIRST_NAME_ASC_COMPARATOR = USER_FIRST_NAME_DESC_COMPARATOR.reversed();
-
-    private static final Comparator<String> USER_LAST_NAME_DESC_COMPARATOR = (s1, s2) -> s2.compareToIgnoreCase(s1);
-    private static final Comparator<String> USER_LAST_NAME_ASC_COMPARATOR = USER_LAST_NAME_DESC_COMPARATOR.reversed();
+    private static final Comparator<String> COLUMN_DESC_COMPARATOR = (s1, s2) -> s2.compareToIgnoreCase(s1);
+    private static final Comparator<String> COLUMN_ASC_COMPARATOR = COLUMN_DESC_COMPARATOR.reversed();
 
     @Step("Проверка сортировки списка дат по убыванию")
     public static void assertListSortedByDateDesc(List<String> dates) {
@@ -44,45 +37,17 @@ public class CompareUtils {
     }
 
     @Step("Проверка сортировки списка логинов по убыванию")
-    public static void assertListSortedByUserNameDesc(List<String> usersNames) {
+    public static void assertListSortedByDesc(List<String> usersNames) {
         List<String> usersNamesCopy = new ArrayList<>(usersNames);
-        usersNamesCopy.sort(USER_NAME_DESC_COMPARATOR);
+        usersNamesCopy.sort(COLUMN_DESC_COMPARATOR);
         Assert.assertEquals(usersNames, usersNamesCopy);
     }
 
     @Step("Проверка сортировки списка логинов по возрастанию")
-    public static void assertListSortedByUserNameAsc(List<String> usersNames) {
+    public static void assertListSortedByAsc(List<String> usersNames) {
         List<String> usersNamesCopy = new ArrayList<>(usersNames);
-        usersNamesCopy.sort(USER_NAME_ASC_COMPARATOR);
+        usersNamesCopy.sort(COLUMN_ASC_COMPARATOR);
         Assert.assertEquals(usersNames, usersNamesCopy);
-    }
-
-    @Step("Проверка сортировки списка имен по убыванию")
-    public static void assertListSortedByUserFirstNameDesc(List<String> usersFirstNames) {
-        List<String> usersFirstNamesCopy = new ArrayList<>(usersFirstNames);
-        usersFirstNamesCopy.sort(USER_FIRST_NAME_DESC_COMPARATOR);
-        Assert.assertEquals(usersFirstNames, usersFirstNamesCopy);
-    }
-
-    @Step("Проверка сортировки списка имен по возрастанию")
-    public static void assertListSortedByUserFirstNameAsc(List<String> usersFirstNames) {
-        List<String> usersFirstNamesCopy = new ArrayList<>(usersFirstNames);
-        usersFirstNamesCopy.sort(USER_FIRST_NAME_ASC_COMPARATOR);
-        Assert.assertEquals(usersFirstNames, usersFirstNamesCopy);
-    }
-
-    @Step("Проверка сортировки списка фамилий по убыванию")
-    public static void assertListSortedByUserLastNameDesc(List<String> usersLastNames) {
-        List<String> usersLastNamesCopy = new ArrayList<>(usersLastNames);
-        usersLastNamesCopy.sort(USER_LAST_NAME_DESC_COMPARATOR);
-        Assert.assertEquals(usersLastNames, usersLastNamesCopy);
-    }
-
-    @Step("Проверка сортировки списка фамилий по возрастанию")
-    public static void assertListSortedByUserLastNameAsc(List<String> usersLastNames) {
-        List<String> usersLastNamesCopy = new ArrayList<>(usersLastNames);
-        usersLastNamesCopy.sort(USER_LAST_NAME_ASC_COMPARATOR);
-        Assert.assertEquals(usersLastNames, usersLastNamesCopy);
     }
 
     @Step("Проверка признака отсортированности списка")
@@ -90,5 +55,15 @@ public class CompareUtils {
         List<String> listCopy = new ArrayList<>(list);
         Collections.sort(listCopy);
         return listCopy.equals(list);
+    }
+
+    public static Comparator<String> getComparator(String comparatorType) {
+        switch (comparatorType) {
+            case ("по возрастанию"):
+                return COLUMN_ASC_COMPARATOR;
+            case ("по убыванию"):
+                return COLUMN_DESC_COMPARATOR;
+        }
+        throw new IllegalArgumentException ("Такого компаратора не существует");
     }
 }

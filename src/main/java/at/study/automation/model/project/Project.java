@@ -36,16 +36,16 @@ public class Project extends CreatableEntity implements Creatable<Project>, Upda
     private Boolean inheritMembers = true;
     private Integer defaultVersionId;
     private Integer defaultAssignedToId;
-    private Map<User, List<Role>> members = new HashMap<>();
+    private Map<User, List<Role>> users = new HashMap<>();
 
     @Override
     @Step("Создан проект в бд")
     public Project create() {
         new ProjectRequests().create(this);
 
-        for (User user : members.keySet()) {
+        for (User user : users.keySet()) {
             Integer memberId = new AddToMembersRequests().addMember(user.getId(), this.getId());
-            List<Role> roles = members.get(user);
+            List<Role> roles = users.get(user);
             roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
         }
         return this;
@@ -64,9 +64,10 @@ public class Project extends CreatableEntity implements Creatable<Project>, Upda
 
     @Step("Добавление проекту пользователя {0} и его ролей {1} на этом проекте")
     public void addUser(User user, List<Role> roles) {
-        // TODO: Реализовать с помощью SQL-Запроса
-        members.put(user, roles);
+        user.addProject(this, roles);
+        users.put(user, roles);
     }
+
 
     @Override
     public String toString() {

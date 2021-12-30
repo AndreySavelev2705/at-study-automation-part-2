@@ -2,8 +2,11 @@ package at.study.automation.model.role;
 
 import lombok.AllArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 @AllArgsConstructor
-public enum Permissions {
+public enum Permission {
 
     ADD_PROJECT("Создание проекта"),
     EDIT_PROJECT("Редактирование проектов"),
@@ -75,4 +78,16 @@ public enum Permissions {
     MANAGE_WIKI("Управление Wiki");
 
     public final String statusCode;
+
+    public static Permission from(String description) {
+
+        List<Permission> permissions = Arrays.asList(Permission.values());
+
+        for (Permission permission : permissions) {
+            if (permission.statusCode.equals(description)) {
+                return permission;
+            }
+        }
+        return null;
+    }
 }

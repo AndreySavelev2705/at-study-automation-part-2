@@ -3,9 +3,8 @@ package steps;
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.validators.RoleParametersValidator;
 import at.study.automation.cucumber.validators.UserParametersValidator;
-import at.study.automation.db.requests.communications.AddToMembersRequests;
 import at.study.automation.model.project.Project;
-import at.study.automation.model.role.Permissions;
+import at.study.automation.model.role.Permission;
 import at.study.automation.model.role.Role;
 import at.study.automation.model.user.*;
 import cucumber.api.java.ru.Пусть;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toList;
 
 public class PrepareFixtureSteps {
 
@@ -74,53 +75,52 @@ public class PrepareFixtureSteps {
         Context.getStash().put(userStashId, user);
     }
 
-    @Пусть("В системе существует набор ролей - \"(.+)\" с разрешениями:")
-    public void createRole(String roleStashId, Map<String, String> parameters) {
-        RoleParametersValidator.validateUserParameters(parameters.keySet());
+    @Пусть("В системе существует роль \"(.+)\" с правами:")
+    public void createRole(String roleStashId, List<String> permissions) {
+        RoleParametersValidator.validateUserParameters(permissions);
 
         Role role = new Role();
-        List<Permissions> permissions = null;
 
-        if (parameters.containsKey("Просмотр задач")) {
-            permissions = Collections.singletonList(
-                    Permissions.VIEW_ISSUES
-            );
-        }
-
-        role.setPermissions(permissions);
+        role.setPermissions(
+                permissions.stream().map(description -> Permission.from(description)).collect(toList())
+        );
         role.create();
         Context.getStash().put(roleStashId, role);
     }
 
-    @Также("Существует приватный проект \"(.+)\"")
-    public void createPrivateProject(String projectNameStashId) {
+    @Пусть("Список ролей \"(.+)\" содержит роли:")
+    public void createRolesList(String rolesStashId, List<String> roleNameStashIds) {
+        List<Role> roles = new ArrayList<>();
 
-        Project project = new Project() {{
-            setIsPublic(false);
-        }}.create();
+        for (String roleNameStashId : roleNameStashIds) {
+            Role role = Context.getStash().get(roleNameStashId, Role.class);
+            roles.add(role);
+        }
 
-        Context.getStash().put(projectNameStashId, project);
+        Context.getStash().put(rolesStashId, roles);
     }
 
-    @Также("Существует проект \"(.+)\"")
-    public void createProject(String projectName) {
-        Project project = new Project().create();
+    @Также("Существует проект \"(.+)\" с параметрами:")
+    public void createProject(String projectStashId, Map<String, String> parameters) {
+        Project project;
 
-        Context.getStash().put(projectName, project);
+        if (parameters.containsValue("false")) {
+            project = new Project() {{
+                setIsPublic(false);
+            }}.create();
+        } else {
+            project = new Project().create();
+        }
+
+        Context.getStash().put(projectStashId, project);
     }
 
-    @Также("У пользователя \"(.+)\" с набором ролей \"(.+)\" есть доступ только к проекту \"(.+)\"")
-    public void linkingProjectAndUserAndRoles(String userStashId, String roleStashId, String projectNameStashId) {
-        Role role = Context.getStash().get(roleStashId, Role.class);
+    @Также("Пользователь \"(.+)\" имеет доступ к проекту \"(.+)\" со списком ролей \"(.+)\"")
+    public void linkingProjectAndUserAndRoles(String userStashId, String projectNameStashId, String roleStashId) {
+        List<Role> roles = Context.getStash().get(roleStashId, List.class);
         Project project = Context.getStash().get(projectNameStashId, Project.class);
         User user = Context.getStash().get(userStashId, User.class);
 
-;
-        user.addProject(project, Collections.singletonList(role));
-        project.addUser(user, Collections.singletonList(role));
-
-        Integer memberId = new AddToMembersRequests().addMember(user.getId(), project.getId());
-        List<Role> roles = project.getMembers().get(user);
-        roles.forEach(role1 -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
+        user.addProject(project, roles);
     }
 }

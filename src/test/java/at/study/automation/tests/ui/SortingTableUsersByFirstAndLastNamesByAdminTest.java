@@ -37,7 +37,7 @@ public class SortingTableUsersByFirstAndLastNamesByAdminTest extends BaseUiTest 
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void sortingTableUsersByFirstAndLastNamesByAdminTest() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
         loginPage.login(admin);
 
         assertEquals(
@@ -46,14 +46,14 @@ public class SortingTableUsersByFirstAndLastNamesByAdminTest extends BaseUiTest 
                 "Текст элемента \"Домашняя страница\""
         );
 
-        click(headerPage.administration, "Администрирование");
+        click(headerPage.administration);
         assertEquals(
                 administrationPage.administrationHeader.getText(),
                 "Администрирование",
                 "Текст элемента \"Администрирование\""
         );
 
-        click(administrationPage.users, "Пользователи");
+        click(administrationPage.users);
         assertTrue(
                 BrowserUtils.isElementPresent(userTablePage.usersTable),
                 "Таблица с пользователями отображается"
@@ -71,26 +71,26 @@ public class SortingTableUsersByFirstAndLastNamesByAdminTest extends BaseUiTest 
                 "Таблица с пользователями не отсортирована по фамилии"
         );
 
-        click(userTablePage.button("Фамилия"), "Фамилия: сортировка по возрастанию");
-        click(userTablePage.button("Фамилия"), "Фамилия: сортировка по убыванию");
+        click(userTablePage.button("Фамилия"));
+        click(userTablePage.button("Фамилия"));
 
         lastNames = BrowserUtils.getElementsText(userTablePage.usersLastNames);
-        assertListSortedByUserLastNameDesc(lastNames);
+        assertListSortedByDesc(lastNames);
 
-        click(userTablePage.button("Фамилия"), "Фамилия: сортировка по возрастанию");
+        click(userTablePage.button("Фамилия"));
 
         lastNames = BrowserUtils.getElementsText(userTablePage.usersLastNames);
-        assertListSortedByUserLastNameAsc(lastNames);
+        assertListSortedByAsc(lastNames);
 
-        click(userTablePage.button("Имя"), "Имя: сортировка по возрастанию");
-        click(userTablePage.button("Имя"), "Имя: сортировка по убыванию");
-
-        firstNames = BrowserUtils.getElementsText(userTablePage.usersFirstNames);
-        assertListSortedByUserFirstNameDesc(firstNames);
-
-        click(userTablePage.button("Имя"), "Имя: сортировка по возрастанию");
+        click(userTablePage.button("Имя"));
+        click(userTablePage.button("Имя"));
 
         firstNames = BrowserUtils.getElementsText(userTablePage.usersFirstNames);
-        assertListSortedByUserFirstNameAsc(firstNames);
+        assertListSortedByDesc(firstNames);
+
+        click(userTablePage.button("Имя"));
+
+        firstNames = BrowserUtils.getElementsText(userTablePage.usersFirstNames);
+        assertListSortedByAsc(firstNames);
     }
 }

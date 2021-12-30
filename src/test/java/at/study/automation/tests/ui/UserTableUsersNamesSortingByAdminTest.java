@@ -12,8 +12,8 @@ import java.util.List;
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertTrue;
 import static at.study.automation.ui.browser.BrowserUtils.*;
-import static at.study.automation.utils.CompareUtils.assertListSortedByUserNameAsc;
-import static at.study.automation.utils.CompareUtils.assertListSortedByUserNameDesc;
+import static at.study.automation.utils.CompareUtils.assertListSortedByAsc;
+import static at.study.automation.utils.CompareUtils.assertListSortedByDesc;
 
 public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
     private User admin;
@@ -29,6 +29,7 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
         User user2 = new User().create();
         User user3 = new User().create();
         User user4 = new User().create();
+        User user5 = new User().create();
 
         openBrowser();
     }
@@ -37,7 +38,7 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void userTableUserNamesSortingByAdminTest() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
 
         loginPage.login(admin);
         assertEquals(
@@ -60,12 +61,12 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
                 "Таблица с пользователями отображается"
         );
 
-        click(userTablePage.button("Пользователь"), "Пользователь: сортировка убыванию");
+        click(userTablePage.button("Пользователь"));
         List<String> usersByDesc = getElementsText(userTablePage.usersLogins);
-        assertListSortedByUserNameDesc(usersByDesc);
+        assertListSortedByDesc(usersByDesc);
 
-        click(userTablePage.button("Пользователь"), "Пользователь: сортировка по возрастанию");
+        click(userTablePage.button("Пользователь"));
         List<String> usersByAsc = getElementsText(userTablePage.usersLogins);
-        assertListSortedByUserNameAsc(usersByAsc);
+        assertListSortedByAsc(usersByAsc);
     }
 }

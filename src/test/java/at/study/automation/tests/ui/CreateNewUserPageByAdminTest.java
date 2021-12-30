@@ -32,7 +32,7 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void addNewUserByAdminTest() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
 
         loginPage.login(admin);
         assertEquals(
@@ -41,16 +41,16 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
                 "Текст элемента \"Домашняя страница\""
         );
 
-        click(headerPage.administration, "Администрирование");
+        click(headerPage.administration);
         assertEquals(
                 administrationPage.administrationHeader.getText(),
                 "Администрирование",
                 "Текст элемента \"Администрирование\""
         );
 
-        click(administrationPage.users, "Пользователи");
+        click(administrationPage.users);
 
-        click(userTablePage.addNewUser, "Новый пользователь");
+        click(userTablePage.addNewUser);
         assertEquals(
                 createNewUserPage.breadCrumbs.getText(),
                 "Пользователи » Новый пользователь",
@@ -78,7 +78,7 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
         sendKeys(createNewUserPage.userFirstName, userForCreating.getFirstName());
         sendKeys(createNewUserPage.userLastName, userForCreating.getLastName());
         sendKeys(createNewUserPage.userMail, StringUtils.randomEmail());
-        click(createNewUserPage.generatePassword, "Создание пароля");
-        click(createNewUserPage.create, "Создать");
+        click(createNewUserPage.generatePassword);
+        click(createNewUserPage.create);
     }
 }

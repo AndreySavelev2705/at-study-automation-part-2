@@ -22,17 +22,17 @@ public class UserTableDataSortingTest extends BaseUiTest {
 
         openBrowser("/login");
         loginPage.login(admin);
-        click(headerPage.administration, "Администрирование");
-        click(administrationPage.users, "Пользователи");
+        click(headerPage.administration);
+        click(administrationPage.users);
     }
 
     @Test(description = "Администрирование. Пользователи. Проверка сортировки списка дат в таблице пользователей")
     public void testUsersuTableDateSorting() {
-        click(userTablePage.button("Создано"), "Создано");
+        click(userTablePage.button("Создано"));
         List<String> creationDatesByDesc = getElementsText(userTablePage.creationDates);
         assertListSortedByDateDesc(creationDatesByDesc);
 
-        click(userTablePage.button("Создано"), "Создано");
+        click(userTablePage.button("Создано"));
         List<String> creationDatesByAsc = getElementsText(userTablePage.creationDates);
         assertListSortedByDateAsc(creationDatesByAsc);
     }

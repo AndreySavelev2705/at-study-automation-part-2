@@ -42,7 +42,7 @@ public class BrowserUtils {
     }
 
     @Step("Нажатие на элемент {1}")
-    public static void click(WebElement element, String description) {
+    public static void click(WebElement element) {
         element.click();
     }
 

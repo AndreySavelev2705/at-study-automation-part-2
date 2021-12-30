@@ -1,7 +1,7 @@
 package at.study.automation.tests.ui;
 
 import at.study.automation.model.project.Project;
-import at.study.automation.model.role.Permissions;
+import at.study.automation.model.role.Permission;
 import at.study.automation.model.role.Role;
 import at.study.automation.model.user.User;
 import io.qameta.allure.Owner;
@@ -33,8 +33,8 @@ public class ProjectsVisibilityByUserTest extends BaseUiTest {
             "Открыт браузер на главной странице.")
     public void prepareFixtures() {
 
-        List<Permissions> permissions = Collections.singletonList(
-                Permissions.VIEW_ISSUES
+        List<Permission> permissions = Collections.singletonList(
+                Permission.VIEW_ISSUES
         );
 
         Role role = new Role() {{
@@ -65,7 +65,7 @@ public class ProjectsVisibilityByUserTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void projectsVisibilityByUserTest() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
         loginPage.login(user);
 
         assertEquals(
@@ -74,7 +74,7 @@ public class ProjectsVisibilityByUserTest extends BaseUiTest {
                 "Текст элемента \"Домашняя страница\""
         );
 
-        click(headerPage.projects, "Проекты");
+        click(headerPage.projects);
 
         assertEquals(
                 projectsPage.getProject(project1.getName()).getText(),

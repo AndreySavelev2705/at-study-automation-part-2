@@ -22,7 +22,7 @@ public class Role extends Entity implements Creatable<Role> {
     private Integer position;
     private Boolean assignable = false;
     private Builtin builtin = Builtin.CURRENT_ROLE;
-    private List<Permissions> permissions = new ArrayList<>();
+    private List<Permission> permissions = new ArrayList<>();
     private VisibilityOfTasks visibilityOfTasks = VisibilityOfTasks.ALL;
     private UsersVisibility usersVisibility = UsersVisibility.ALL;
     private TimeEntriesVisibility timeEntriesVisibility = TimeEntriesVisibility.ALL;

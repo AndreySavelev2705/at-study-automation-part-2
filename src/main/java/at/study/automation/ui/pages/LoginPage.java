@@ -41,7 +41,7 @@ public class LoginPage extends Page {
     public void login(String login, String password) {
         loginInput.sendKeys(login);
         passwordInput.sendKeys(password);
-        click(signInButton, "Вход");
+        click(signInButton);
     }
 
     /**

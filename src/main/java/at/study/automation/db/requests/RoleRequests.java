@@ -1,7 +1,7 @@
 package at.study.automation.db.requests;
 
 import at.study.automation.db.connection.PostgresConnection;
-import at.study.automation.model.role.Permissions;
+import at.study.automation.model.role.Permission;
 import at.study.automation.model.role.Role;
 import io.qameta.allure.Step;
 
@@ -64,7 +64,7 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
         );
     }
 
-    private String convertPermissionsToString(List<Permissions> permissions) {
+    private String convertPermissionsToString(List<Permission> permissions) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("---\n");

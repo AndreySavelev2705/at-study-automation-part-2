@@ -26,7 +26,7 @@ public class ActiveUserLoginTest extends BaseUiTest {
     @Severity(SeverityLevel.BLOCKER)
     @Owner("Савельев Андрей Владимирович")
     public void testActiveUserLogin() {
-        click(headerPage.loginButton, "Войти");
+        click(headerPage.loginButton);
         loginPage.login(activeUser);
 
         assertEquals(

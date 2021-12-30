@@ -14,21 +14,21 @@ import java.util.stream.Stream;
 
 public class PageObjectHelper {
 
-    /**
+    /** Метод ищет элемент на указанной странице
      *
-     * @param pageName
-     * @param elementName
-     * @return
+     * @param pageName - имя страницы на которой нужно найти элемент
+     * @param elementName - имя элемента, который нужно найти
+     * @return возвращает найденый элемент
      */
     public static WebElement findElement(String pageName, String elementName) {
         return getElement(getPage(pageName), elementName);
     }
 
-    /**
+    /** Метод ищет список элементов на указанной странице
      *
-     * @param pageName
-     * @param elementsName
-     * @return
+     * @param pageName - имя страницы на которой нужно найти список элементов
+     * @param elementsName - имя списка элементов
+     * @return возвращает список элементов
      */
     public static List<WebElement> findElements(String pageName, String elementsName) {
         return getElements(getPage(pageName), elementsName);
