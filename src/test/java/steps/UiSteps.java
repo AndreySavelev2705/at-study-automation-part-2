@@ -2,11 +2,13 @@ package steps;
 
 import at.study.automation.context.Context;
 import at.study.automation.cucumber.PageObjectHelper;
-import at.study.automation.db.requests.UserRequests;
 import at.study.automation.model.project.Project;
 import at.study.automation.model.user.User;
 import at.study.automation.ui.browser.BrowserUtils;
-import at.study.automation.ui.pages.*;
+import at.study.automation.ui.pages.HeaderPage;
+import at.study.automation.ui.pages.LoginPage;
+import at.study.automation.ui.pages.ProjectsPage;
+import at.study.automation.ui.pages.UserTablePage;
 import at.study.automation.utils.CompareUtils;
 import at.study.automation.utils.StringUtils;
 import cucumber.api.java.ru.*;
@@ -158,25 +160,18 @@ public class UiSteps {
         assertEquals(columnContentText, columnContentTextCopy);
     }
 
-    @Тогда("На странице \"(.+)\" заполнить поле \"(.+)\"")
+    @Тогда("На странице \"(.+)\" заполнить поле \"(.+)\" случайными английскими символами")
     public void fillInTheField(String pageName, String elementName) {
         WebElement webElement = PageObjectHelper.findElement(pageName, elementName);
 
-        if (elementName.equals("Email")) {
-            sendKeys(webElement, StringUtils.randomEmail());
-        }
         sendKeys(webElement, StringUtils.randomEnglishString(10));
     }
 
-    @Затем("На той же странице \"(.+)\" нажать на элемент \"(.+)\" для создания нового пользователя \"(.+)\"")
-    public void clickOnElementOnPageNewUser(String pageName, String elementName, String userStashId) {
-        PageObjectHelper.findElement(pageName, elementName).click();
+    @Тогда("На странице \"(.+)\" заполнить поле \"(.+)\" случайным E-Mail адресом")
+    public void fillInTheFieldEmail(String pageName, String elementName) {
+        WebElement webElement = PageObjectHelper.findElement(pageName, elementName);
 
-        String login = getPage(CreateNewUserPage.class).flashNotice.getText().substring(13, 23);
-
-        User user = new UserRequests().read(login);
-
-        Context.getStash().put(userStashId, user);
+        sendKeys(webElement, StringUtils.randomEmail());
     }
 }
 
