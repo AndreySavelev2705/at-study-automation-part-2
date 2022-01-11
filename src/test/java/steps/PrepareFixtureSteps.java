@@ -1,6 +1,7 @@
 package steps;
 
 import at.study.automation.context.Context;
+import at.study.automation.cucumber.validators.ProjectParametersValidator;
 import at.study.automation.cucumber.validators.RoleParametersValidator;
 import at.study.automation.cucumber.validators.UserParametersValidator;
 import at.study.automation.model.project.Project;
@@ -100,8 +101,11 @@ public class PrepareFixtureSteps {
         Context.getStash().put(rolesStashId, roles);
     }
 
+    // TODO дописать валида2цию ключа передаваемого параметра проекта
     @Также("Существует проект \"(.+)\" с параметрами:")
     public void createProject(String projectStashId, Map<String, String> parameters) {
+        ProjectParametersValidator.validateUserParameters(parameters.keySet());
+
         Project project;
 
         if (parameters.containsValue("false")) {
