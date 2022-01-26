@@ -38,37 +38,55 @@ public class Project extends CreatableEntity implements Creatable<Project>, Upda
     private Integer defaultAssignedToId;
     private Map<User, List<Role>> users = new HashMap<>();
 
+    /**
+     * Метод создает запись проекта в бд в таблице public.projects, на основе полученного в параметрах
+     * объекта типа Project.
+     *
+     * @param - объект на основе которого в бд создается запись об проекте.
+     */
     @Override
     @Step("Создан проект в бд")
     public Project create() {
         new ProjectRequests().create(this);
 
         for (User user : users.keySet()) {
-            Integer memberId = new AddToMembersRequests().addMember(user.getId(), this.getId());
+            Integer memberId = new AddToMembersRequests().addMember(user, this);
             List<Role> roles = users.get(user);
-            roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
+            roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role));
         }
         return this;
     }
 
+    /**
+     * Метод обновляет данные проекта в бд в таблице public.projects.
+     *
+     * @return возвращает обновленный проект.
+     */
     @Override
     @Step("Обновлен проект в бд")
     public Project update() {
-
-        int id = this.id;
-
-        new ProjectRequests().update(id, this);
+        new ProjectRequests().update(this.id, this);
 
         return this;
     }
 
+    /**
+     * Метод добавляет в проект пользователя и его роли на этом проекте.
+     *
+     * @param user  - юзер, которому будет доступен проект.
+     * @param roles - роли для пользователя на проекте.
+     */
     @Step("Добавление проекту пользователя {0} и его ролей {1} на этом проекте")
     public void addUser(User user, List<Role> roles) {
         user.addProject(this, roles);
         users.put(user, roles);
     }
 
-
+    /**
+     * Метод возвращает имя проекта.
+     *
+     * @return возвращает имя проекта.
+     */
     @Override
     public String toString() {
         return name;

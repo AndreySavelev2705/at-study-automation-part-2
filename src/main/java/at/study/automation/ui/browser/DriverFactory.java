@@ -21,6 +21,11 @@ public class DriverFactory {
     private static final Boolean ENABLE_VIDEO = Property.getBooleanProperty("enable.video");
     private static final String SELENOID_HUB_URL = Property.getStringProperty("selenoid.hub.url");
 
+    /**
+     * Метод позволяет получить драйвер браузера, указанного в файле конфигурации.
+     *
+     * @return возвращает драйвер браузера.
+     */
     @SneakyThrows
     static WebDriver getDriver() {
 
@@ -37,8 +42,8 @@ public class DriverFactory {
             capabilities.setCapability("selenoid:options", selenoidOptions);
 
             return new RemoteWebDriver(
-                new URL(SELENOID_HUB_URL),
-                capabilities
+                    new URL(SELENOID_HUB_URL),
+                    capabilities
             );
         } else {
             switch (BROWSER_NAME) {

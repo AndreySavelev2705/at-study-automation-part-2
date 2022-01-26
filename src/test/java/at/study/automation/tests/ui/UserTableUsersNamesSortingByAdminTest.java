@@ -21,7 +21,7 @@ public class UserTableUsersNamesSortingByAdminTest extends BaseUiTest {
     @BeforeMethod(description = "В системе заведен пользователь с правами администратора, " +
             "а также несколько пользователей без прав администратора. Открыт браузер на главной странице.")
     public void prepareFixtures() {
-        admin = new User(){{
+        admin = new User() {{
             setIsAdmin(true);
         }}.create();
 

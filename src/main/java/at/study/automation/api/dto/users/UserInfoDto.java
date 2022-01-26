@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @AllArgsConstructor
-public class UserInfoDto{
+public class UserInfoDto {
 
     private UserDto user;
 }

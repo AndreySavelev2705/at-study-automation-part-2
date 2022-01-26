@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenRequests extends BaseRequests implements Create<Token>, ReadAll<Token>  {
+public class TokenRequests extends BaseRequests implements Create<Token>, ReadAll<Token> {
     private User user;
 
     /**
-     * Метод создает запись токена в бд в таблице Token, на основе полученного в параметрах
-     * объекта типа Token
+     * Метод создает запись токена в бд в таблице public.tokens, на основе полученного в параметрах
+     * объекта типа Token.
      *
-     * @param token - параметр метода типа Token на основе которого создается токен в бд
+     * @param token - параметр метода типа Token на основе которого создается запись о токене в бд.
      */
     @Override
     public void create(Token token) {
@@ -40,9 +40,9 @@ public class TokenRequests extends BaseRequests implements Create<Token>, ReadAl
     }
 
     /**
-     * Метод считывает все записи с токенами клиента из базы данных
+     * Метод считывает все записи с токенами клиента из базы данных в таблице public.tokens.
      *
-     * @return возвращает список с токенами конкретного юзера
+     * @return возвращает список с токенами конкретного юзера.
      */
     @Override
     public List<Token> readAll() {
@@ -54,25 +54,24 @@ public class TokenRequests extends BaseRequests implements Create<Token>, ReadAl
         );
         return queryResult.stream()
                 .map(data -> from(data, user))
-                .collect(Collectors.toList()
-        );
+                .collect(Collectors.toList());
     }
 
     /**
-     * Метод делает из мапы, с результатом запроса из бд, объект класса Token и возвращаем его
+     * Метод делает из мапы, с результатом запроса из бд в таблице public.tokens, объект класса Token, связывает его с юзером и возвращаем его.
      *
-     * @param data мапа, с результатом запроса из бд
-     * @param user пользователь для которого этот токен предназначен
-     * @return возвращает объект класса Token
+     * @param data мапа с записью. из таблицы public.tokens в бд.
+     * @param user юзер с которым нужно связать объект типа Token.
+     * @return возвращает, привязанный к юзеру, инициализированный объект типа Token.
      */
     private Token from(Map<String, Object> data, User user) {
         return (Token) new Token(user)
-        .setAction(
-                Token.TokenType.valueOf(data.get("action").toString().toUpperCase())
-        )
-        .setValue("value")
-        .setCreatedOn(toLocalDate(data.get("created_on")))
-        .setCreatedOn(toLocalDate(data.get("updated_on")))
-        .setId((Integer) data.get("id"));
+                .setAction(
+                        Token.TokenType.valueOf(data.get("action").toString().toUpperCase())
+                )
+                .setValue("value")
+                .setCreatedOn(toLocalDate(data.get("created_on")))
+                .setCreatedOn(toLocalDate(data.get("updated_on")))
+                .setId((Integer) data.get("id"));
     }
 }

@@ -8,7 +8,12 @@ import io.qameta.allure.Step;
 import java.util.List;
 
 public class RoleRequests extends BaseRequests implements Create<Role>, Update<Role>, Delete<Role> {
-
+    /**
+     * Метод создает запись роли в бд в таблице public.roles, на основе полученного в параметрах
+     * объекта типа Role.
+     *
+     * @param role - объект на основе которого в бд создается запись об роли.
+     */
     @Override
     @Step("Создание роли с набором пермишенов в бд")
     public void create(Role role) {
@@ -33,6 +38,11 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
         role.setId(id);
     }
 
+    /**
+     * Метод удаляет роль с id полученным в параметрах.
+     *
+     * @param id - id адреса почты в бд, который нужно удалить.
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM public.roles\n" +
@@ -40,6 +50,12 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
         PostgresConnection.INSTANCE.executeQuery(query, id);
     }
 
+    /**
+     * Метод обновляет данные роли в бд по полученному id, на основе полученной в параметрах метода роли.
+     *
+     * @param id   - id роли в бд, которую нужно обновить.
+     * @param role - объект, на основе которого обновляется роль в бд.
+     */
     @Override
     public void update(Integer id, Role role) {
         String query = "UPDATE public.roles\n" +
@@ -64,6 +80,12 @@ public class RoleRequests extends BaseRequests implements Create<Role>, Update<R
         );
     }
 
+    /**
+     * Метод преобразует список пераишенов в строку.
+     *
+     * @param permissions - список пермишенов, который нужно преобразовать в строку.
+     * @return возвращает строку, в которой содержаться в виде текста пермишены.
+     */
     private String convertPermissionsToString(List<Permission> permissions) {
         StringBuilder sb = new StringBuilder();
 

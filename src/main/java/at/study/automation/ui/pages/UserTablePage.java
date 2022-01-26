@@ -43,14 +43,13 @@ public class UserTablePage extends Page {
     @FindBy(xpath = "//div[@id='content']//a[@class='icon icon-add']")
     public WebElement addNewUser;
 
+    /**
+     * Метод нажимает на веб-элемент, текст которого соответствует переданному в параметрах метода тексту.
+     *
+     * @param text - текст, на основе которого будет происходить поиск веб-элемента.
+     * @return возвращает найденный веб-элемент.
+     */
     public WebElement button(String text) {
         return BrowserManager.getBrowser().getDriver().findElement(By.xpath("//table[@class='list users']/thead//th[.='" + text + "']"));
-    }
-
-    public WebElement getColumnHead(String columnHeadName) {
-
-        return BrowserManager.getBrowser()
-                .getDriver()
-                .findElement(By.xpath("//div[@class='autoscroll']//a[text()='" + columnHeadName + "']"));
     }
 }

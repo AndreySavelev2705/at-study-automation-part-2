@@ -32,7 +32,7 @@ public class DeleteUserFromDbByNotAdminTest {
     @BeforeMethod(description = "В системе заведен пользователь без прав администратора. " +
             "У пользователя есть доступ к API и ключ API. " +
             "Заведен еще один пользователь в системе. " +
-            "Создан api-клиент для отправки звпроса на сервер пользователем без прав администратора.")
+            "Создан api-клиент для отправки запроса на сервер пользователем без прав администратора.")
     public void prepareFixtures() {
         notAdmin = new User() {{
             setTokens(Collections.singletonList(new Token(this)));
@@ -76,7 +76,8 @@ public class DeleteUserFromDbByNotAdminTest {
     private void deleteUserFromDb(Integer userId) {
         RestRequest request = generatingRequest(
                 new RestAssuredRequest(RestMethod.DELETE, String.format(userEndpoint, userId), null, null, null)
-        );;
+        );
+        ;
 
         RestResponse response = apiClient.execute(request);
 

@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface DatabaseConnection {
 
-    List<Map<String, Object>> executeQuery(String query, Object...parameters);
+    List<Map<String, Object>> executeQuery(String query, Object... parameters);
 }

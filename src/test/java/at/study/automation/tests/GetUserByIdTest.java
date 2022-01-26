@@ -53,6 +53,5 @@ public class GetUserByIdTest {
         assertEquals(responseUser.getLastName(), createdUser.getLastName());
         assertEquals(responseUser.getFirstName(), createdUser.getFirstName());
         assertEquals(responseUser.getStatus().intValue(), Status.LOCKED.statusCode);
-
     }
 }

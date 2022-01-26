@@ -17,7 +17,7 @@ public class UnacceptedUserLoginTest extends BaseUiTest {
 
     private User unacceptedUser;
 
-    @BeforeMethod(description = "Создание пользователя без прав администратора со статусом \"Неподтвержден\". " +
+    @BeforeMethod(description = "Создание пользователя без прав администратора со статусом \"Не подтвержден\". " +
             "Открыт браузер на главной странице")
     public void prepareFixtures() {
         unacceptedUser = new User() {{

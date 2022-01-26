@@ -57,6 +57,12 @@ public class CompareUtils {
         return listCopy.equals(list);
     }
 
+    /**
+     * Метод позволяет получить компаратор для проверки того как отсортированы данные.
+     *
+     * @param comparatorType - тип на основе которого выбирается компаратор.
+     * @return возвращает компаратор, по переданному в параметрах метода типу компаратора.
+     */
     public static Comparator<String> getComparator(String comparatorType) {
         switch (comparatorType) {
             case ("по возрастанию"):

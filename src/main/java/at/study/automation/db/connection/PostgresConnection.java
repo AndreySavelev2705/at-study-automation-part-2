@@ -22,10 +22,13 @@ public class PostgresConnection implements DatabaseConnection {
     private String password = Property.getStringProperty("db.password");
     private Connection connection;
 
-    public PostgresConnection() {
+    private PostgresConnection() {
         connect();
     }
 
+    /**
+     * Метод устанавливает подключение к базе данных на основе данных в файле конфигурации.
+     */
     @SneakyThrows
     @Step("Подключение к БД")
     private void connect() {
@@ -38,6 +41,16 @@ public class PostgresConnection implements DatabaseConnection {
         connection = DriverManager.getConnection(url, connectionProperties);
     }
 
+    /**
+     * Метод выполняет запрос в базу данных.
+     *
+     * @param query      - запрос в базу данных.
+     * @param parameters - параметры, которые нужно подставить в запрос в базу данных.
+     * @return возвращает список из мап с результатом запроса в базу данных.
+     * Каждая мапа - это строка из бд.
+     * В качестве ключа - имя столбца в базе данных.
+     * В качестве значения - содержимое поля, которое соответствует ключу.
+     */
     @Override
     @SneakyThrows
     @Step("Выполнение запроса к БД")
@@ -45,11 +58,11 @@ public class PostgresConnection implements DatabaseConnection {
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            // Тут ? заменяется на параметр из массива с параметрами в аргументе метода
+
             for (int i = 0; i < parameters.length; i++) {
                 statement.setObject(i + 1, parameters[i]);
             }
-            // Содержит курсор для передвижения по строкам вниз результирующей таблицы через метод next();
+
             Allure.addAttachment("SQL-запрос", statement.toString());
             ResultSet rs = statement.executeQuery();
 
@@ -73,8 +86,7 @@ public class PostgresConnection implements DatabaseConnection {
         } catch (PSQLException exception) {
             if (exception.getMessage().equals("No results were returned by the query.")) {
                 return null;
-            } else
-            if (exception.getMessage().equals("Запрос не вернул результатов.")){
+            } else if (exception.getMessage().equals("Запрос не вернул результатов.")) {
                 return null;
             } else {
                 throw exception;

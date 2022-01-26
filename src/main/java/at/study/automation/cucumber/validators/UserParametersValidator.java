@@ -6,6 +6,11 @@ import java.util.Set;
 
 public class UserParametersValidator {
 
+    /**
+     * Метод проверяет валидность переданного в него множества с ключами.
+     *
+     * @param keys - множество, хранящее в себе ключи, над которыми нужно провести валидацию.
+     */
     public static void validateUserParameters(Set<String> keys) {
         List<String> allowedKeys = Arrays.asList(
                 "Администратор",
@@ -18,7 +23,7 @@ public class UserParametersValidator {
         boolean allKeysAreValid = allowedKeys.containsAll(keys);
 
         if (!allKeysAreValid) {
-            throw new IllegalArgumentException("Среди переданных параметров пользователя есть недопустимые параметры");
+            throw new IllegalArgumentException("Среди переданных параметров пользователя есть недопустимые параметры.");
         }
     }
 }

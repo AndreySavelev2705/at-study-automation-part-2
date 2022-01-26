@@ -20,7 +20,7 @@ public class RestAssuredClient implements RestApiClient {
 
     protected RequestSpecification specification;
 
-    public  RestAssuredClient() {
+    public RestAssuredClient() {
         this.specification = given()
                 .baseUri(getStringProperty("url"))
                 .contentType(ContentType.JSON);
@@ -31,12 +31,22 @@ public class RestAssuredClient implements RestApiClient {
         String token = user.getTokens().stream()
                 .filter(tkn -> tkn.getAction() == Token.TokenType.API)
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("У пользователя нет API-токена"))
+                .orElseThrow(() -> new IllegalStateException("У пользователя нет API-токена."))
                 .getValue();
 
         specification.header("X-Redmine-API-Key", token);
     }
 
+    /**
+     * Метод позволяет выполнить API-запрос и возвращает ответ этого запроса.
+     *
+     * @param request - объект запроса, который будет участвовать в формировании спецификации, формирующей параметры самого запроса.
+     * @return - возвращает описанное с нашей стороны представление объекта-ответа, сформированный на основе объекта типа Response.
+     * RequestSpecification spec - копия спецификации, которая будет дополняться на основе полученного в параметрах объекта-запроса.
+     * spec.log().all() - логирование структуры запроса.
+     * Response response - ответ на выполненный запрос.
+     * response.then().log().all() - логирование ответа на выполненный запрос.
+     */
     @Override
     @Step("Выполнение API-запроса")
     public RestResponse execute(RestRequest request) {
@@ -59,6 +69,12 @@ public class RestAssuredClient implements RestApiClient {
         return new RestAssuredResponse(response);
     }
 
+    /**
+     * Метод конвертирует наше представление метода HTTP-протокола, переданное в параметрах, в метод типа Method.
+     *
+     * @param method - объект метода из нашего представления методов HTTP-протокола.
+     * @return - возвращает аналог нашего метода типа Method.
+     */
     private Method toRestAssuredMethod(RestMethod method) {
         return Method.valueOf(method.name());
     }

@@ -52,9 +52,9 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
 
     /**
      * Создает хэшированный пароль, используя библиотеку "commons-codec", на основе содержимого полей @salt и @password,
-     * что подразумивается алгоритмом кодирования системы Redmine.
+     * что подразумевается алгоритмом кодирования системы Redmine.
      *
-     * @return строка, содержащая
+     * @return строка, содержащая хэшированный пароль.
      */
     public User setPassword(String password) {
         this.password = password;
@@ -67,9 +67,9 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
     }
 
     /**
-     * Метод создает пользователя и добавляет его в бд
+     * Метод создает юзера и добавляет его в таблицу public.users в бд.
      *
-     * @return возвращает текущего пользователя
+     * @return возвращает текущего юзера.
      */
     @Override
     @Step("Создан пользователь в бд")
@@ -86,9 +86,9 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
     }
 
     /**
-     * Метод удаляет пользователя из бд по его айдишнику
+     * Метод удаляет юзера из таблицы public.users в бд по его id.
      *
-     * @return возвращает текущего пользователя
+     * @return возвращает текущего юзера.
      */
     @Override
     @Step("Удаление пользователя из бд")
@@ -98,10 +98,10 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
     }
 
     /**
-     * Метод обновляет дпнные уже существующего в бд пользователя по его айди,
-     * на основе даннх из переданного в параметрах метода
+     * Метод обновляет данные уже существующего в таблице public.users в бд юзера по его id,
+     * на основе даннsх из переданного в параметрах метода.
      *
-     * @return возвращает текущего пользователя
+     * @return возвращает текущего юзера.
      */
     @Override
     @Step("Обновление данных пользователя в бд")
@@ -110,13 +110,24 @@ public class User extends CreatableEntity implements Creatable<User>, Updateable
         return this;
     }
 
-    @Step("Добавление пользователю проекта с именем {0} и его ролей {1} на проекте")
+    /**
+     * Метод добавляет юзеру проект и его роли на этом проекте в таблицы public.members и public.member_roles в бд.
+     *
+     * @param project - проект, к которому у юзера будет доступ.
+     * @param roles   - роли юзера на проекте.
+     */
+    @Step("Добавление юзеру проекта с именем {0} и его ролей {1} на проекте")
     public void addProject(Project project, List<Role> roles) {
         projects.put(project, roles);
-        Integer memberId = new AddToMembersRequests().addMember(this.id, project.getId());
-        roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role.getId()));
+        Integer memberId = new AddToMembersRequests().addMember(this, project);
+        roles.forEach(role -> new AddToMembersRequests().addMemberRole(memberId, role));
     }
 
+    /**
+     * Метод возвращает логин юзера.
+     *
+     * @return возвращает логин юзера.
+     */
     @Override
     public String toString() {
         return login;

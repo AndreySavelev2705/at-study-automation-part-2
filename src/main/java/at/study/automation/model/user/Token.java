@@ -30,8 +30,12 @@ public class Token extends CreatableEntity implements Creatable<Token> {
         user.getTokens().add(this);
     }
 
+    /**
+     * Метод позволяет создать запись о токене в бд в таблице public.tokens.
+     *
+     * @return возвращает текущий объект.
+     */
     @Override
-    // TODO: Залогировать для отчета
     @Step("Создан токен в бд")
     public Token create() {
         new TokenRequests().create(this);

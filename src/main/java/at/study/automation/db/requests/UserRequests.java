@@ -12,6 +12,12 @@ import java.util.Map;
 
 public class UserRequests extends BaseRequests implements Create<User>, Update<User>, Delete<User>, Read<User> {
 
+    /**
+     * Метод создает запись юзера в бд в таблице public.users, на основе полученного в параметрах
+     * объекта типа User.
+     *
+     * @param user - объект на основе которого в бд создается запись о юзере.
+     */
     @Override
     public void create(User user) {
         String query = "INSERT INTO public.users\n" +
@@ -44,6 +50,11 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         user.setId(userId);
     }
 
+    /**
+     * Метод удаляет данные юзера в бд в таблице public.users по полученному id.
+     *
+     * @param id - id адреса почты в бд, который нужно удалить.
+     */
     @Override
     public void delete(Integer id) {
         String query = "DELETE FROM public.users\n" +
@@ -51,6 +62,12 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         PostgresConnection.INSTANCE.executeQuery(query, id);
     }
 
+    /**
+     * Метод обновляет данные юзера в бд в таблице public.users по полученному id, на основе полученного в параметрах метода юзера.
+     *
+     * @param id   - id юзера в бд, который нужно обновить.
+     * @param user - объект, на основе которого обновляется user в бд.
+     */
     @Override
     public void update(Integer id, User user) {
         String query = "UPDATE public.users\n" +
@@ -83,6 +100,12 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         );
     }
 
+    /**
+     * Метод позволяет получить юзера конкретного юзера из бд в таблице public.users.
+     *
+     * @param id - id какого-то конкретного юзера из бд.
+     * @return возвращает объект типа User, который содержит ту же информацию, что и юзер из бд.
+     */
     @Override
     @Step("Получение пользователя из бд по его Id")
     public User read(Integer id) {
@@ -95,6 +118,12 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         return null;
     }
 
+    /**
+     * Метод позволяет получить юзера конкретного юзера из бд в таблице public.users.
+     *
+     * @param login - логин какого-то конкретного юзера из бд.
+     * @return возвращает объект типа User, который содержит ту же информацию, что и юзер из бд.
+     */
     @Step("Получение пользователя из бд по его логину")
     public User read(String login) {
         String query = "SELECT * FROM users WHERE login = ?";
@@ -106,11 +135,16 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
         return null;
     }
 
-    // Делаем из мапы, с результатом запроса из бд, объект класса User и возвращаем его
+    /**
+     * Метод делает из мапы, с результатом запроса из бд в таблице public.users, объект класса User и возвращаем его.
+     *
+     * @param data - мапа с записью. из таблицы public.email_users в бд.
+     * @return возвращает проинициализированного юзера.
+     */
     private User from(Map<String, Object> data) {
         return (User) new User()
-                .setLogin((String)data.get("login"))
-                .setHashedPassword((String)data.get("hashed_password"))
+                .setLogin((String) data.get("login"))
+                .setHashedPassword((String) data.get("hashed_password"))
                 .setFirstName((String) data.get("firstname"))
                 .setLastName((String) data.get("lastname"))
                 .setIsAdmin((Boolean) data.get("admin"))
@@ -118,10 +152,10 @@ public class UserRequests extends BaseRequests implements Create<User>, Update<U
                 .setLastLoginOn(null)
                 .setLanguage(Language.getLanguageByLanguageCode((String) data.get("language")))
                 .setAuthSourceId(null)
-                .setType((String)data.get("type"))
+                .setType((String) data.get("type"))
                 .setIdentityUrl(null)
                 .setMailNotification(MailNotification.valueOf(data.get("mail_notification").toString().toUpperCase()))
-                .setSail((String)data.get("salt"))
+                .setSail((String) data.get("salt"))
                 .setCreatedOn(toLocalDate(data.get("created_on"))) // тут возвращается объект типа Timestamp
                 .setUpdatedOn(toLocalDate(data.get("updated_on"))) // тут возвращается объект типа Timestamp
                 .setId((Integer) data.get("id"));

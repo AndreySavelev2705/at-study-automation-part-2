@@ -15,7 +15,6 @@ public class BaseUiTest {
     protected AdministrationPage administrationPage;
     protected UserTablePage userTablePage;
     protected ProjectsPage projectsPage;
-    protected ProjectFilters projectFilters;
     protected CreateNewUserPage createNewUserPage;
 
     @Step("Открыт браузер на главной странице")
@@ -37,7 +36,6 @@ public class BaseUiTest {
         administrationPage = Page.getPage(AdministrationPage.class);
         userTablePage = Page.getPage(UserTablePage.class);
         projectsPage = Page.getPage(ProjectsPage.class);
-        projectFilters = Page.getPage(ProjectFilters.class);
         createNewUserPage = Page.getPage(CreateNewUserPage.class);
     }
 

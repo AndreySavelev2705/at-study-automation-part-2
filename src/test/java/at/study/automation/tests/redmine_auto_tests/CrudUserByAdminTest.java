@@ -35,7 +35,7 @@ public class CrudUserByAdminTest {
     @BeforeMethod(description = "В системе заведен пользователь с правами администратора. " +
             "У пользователя есть доступ к API и ключ API. " +
             "В памяти создан пользователь, чьи данные будут использоваться для составления тела запроса. " +
-            "Создан api-клиент для отправки звпроса на сервер пользователем без прав администратора.")
+            "Создан api-клиент для отправки запроса на сервер пользователем без прав администратора.")
     public void prepareFixtures() {
 
         User admin = new User() {{
@@ -44,13 +44,13 @@ public class CrudUserByAdminTest {
         }}.create();
 
         dto = initDto(new UserInfoDto(
-                new UserDto()
-                        .setLogin("SavelevAutoLogin" + StringUtils.randomEnglishString(10))
-                        .setLastName("SavelevAuto" + StringUtils.randomEnglishString(6))
-                        .setFirstName("SavelevAuto" + StringUtils.randomEnglishString(8))
-                        .setMail(StringUtils.randomEmail())
-                        .setPassword(StringUtils.randomEnglishString(8))
-                        .setStatus(2)
+                        new UserDto()
+                                .setLogin("SavelevAutoLogin" + StringUtils.randomEnglishString(10))
+                                .setLastName("SavelevAuto" + StringUtils.randomEnglishString(6))
+                                .setFirstName("SavelevAuto" + StringUtils.randomEnglishString(8))
+                                .setMail(StringUtils.randomEmail())
+                                .setPassword(StringUtils.randomEnglishString(8))
+                                .setStatus(2)
                 )
         );
 

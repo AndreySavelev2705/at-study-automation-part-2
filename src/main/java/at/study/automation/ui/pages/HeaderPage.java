@@ -21,7 +21,7 @@ public class HeaderPage extends Page {
 
     @ElementName("Домашняя страница")
     @FindBy(xpath = "//div[@id='top-menu']//a[@class='home']")
-    public  WebElement homePage;
+    public WebElement homePage;
 
     @ElementName("Моя страница")
     @FindBy(xpath = "//div[@id='top-menu']//a[@class='my-page']")

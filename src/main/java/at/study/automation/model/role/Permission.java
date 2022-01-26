@@ -77,17 +77,23 @@ public enum Permission {
     PROTECT_WIKI_PAGES("Блокирование wiki-страниц"),
     MANAGE_WIKI("Управление Wiki");
 
-    public final String statusCode;
+    public final String description;
 
+    /**
+     * Метод ищет и возвращает пермишен по его описанию или выбрасывет исключение, если пермишен не найден.
+     *
+     * @param description - описание на основе которого будет проводиться поиск пермишена.
+     * @return возвращает пермишен, согласно описанию.
+     */
     public static Permission from(String description) {
 
         List<Permission> permissions = Arrays.asList(Permission.values());
 
         for (Permission permission : permissions) {
-            if (permission.statusCode.equals(description)) {
+            if (permission.description.equals(description)) {
                 return permission;
             }
         }
-        return null;
+        throw new IllegalArgumentException("По такому описанию не существует пермишена");
     }
 }

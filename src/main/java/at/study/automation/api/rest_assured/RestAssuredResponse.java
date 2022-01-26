@@ -24,6 +24,13 @@ public class RestAssuredResponse implements RestResponse {
         this.payload = response.getBody().asString();
     }
 
+    /**
+     * Метод позволяет получить из JSON-a объект переданного в параметрах класса.
+     *
+     * @param clazz - объект класса, в который нужно преобразовать JSON.
+     * @param <T>   - - указывает какой тип данных должен быть у каждого Т в методе.
+     * @return - возвращает объект того класса, который был передан в параметрах.
+     */
     @Override
     public <T> T getPayload(Class<T> clazz) {
         return GSON.fromJson(payload, clazz);

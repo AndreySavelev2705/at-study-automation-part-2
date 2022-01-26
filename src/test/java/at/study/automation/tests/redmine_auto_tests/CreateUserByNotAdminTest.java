@@ -32,7 +32,7 @@ public class CreateUserByNotAdminTest {
     @BeforeMethod(description = "В системе заведен пользователь без прав администратора. " +
             "У пользователя есть доступ к API и ключ API. " +
             "В памяти создан пользователь, чьи данные будут использоваться для составления тела запроса. " +
-            "Создан api-клиент для отправки звпроса на сервер пользователем без прав администратора.")
+            "Создан api-клиент для отправки запроса на сервер пользователем без прав администратора.")
     public void prepareFixtures() {
         User notAdmin = new User() {{
             setTokens(Collections.singletonList(new Token(this)));

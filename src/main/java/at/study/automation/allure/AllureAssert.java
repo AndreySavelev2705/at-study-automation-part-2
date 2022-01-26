@@ -45,12 +45,12 @@ public class AllureAssert {
         Assert.assertNotNull(object);
     }
 
-    @Step("Проверка на null ложь: ")
+    @Step("Проверка на null: ")
     public static void assertNull(Object object) {
         Assert.assertNull(object);
     }
 
-    @Step("Проверка на null ложь: {1}")
+    @Step("Проверка на null: {1}")
     public static void assertNull(Object object, String message) {
         Assert.assertNull(object);
     }

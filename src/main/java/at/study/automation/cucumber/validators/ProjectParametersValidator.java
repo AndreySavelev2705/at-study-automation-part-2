@@ -6,7 +6,12 @@ import java.util.Set;
 
 public class ProjectParametersValidator {
 
-    public static void validateUserParameters(Set<String> permissions) {
+    /**
+     * Метод проверяет валидность переданного в него множества с параметрами.
+     *
+     * @param permissions - множество, хранящее в себе параметры, над которыми нужно провести валидацию.
+     */
+    public static void validateProjectParameters(Set<String> permissions) {
         List<String> allowedKeys = Arrays.asList(
                 "Публичный"
         );
@@ -14,7 +19,7 @@ public class ProjectParametersValidator {
         boolean allKeysAreValid = allowedKeys.containsAll(permissions);
 
         if (!allKeysAreValid) {
-            throw new IllegalArgumentException("Среди переданных разрешений для роли есть недопустимые параметры");
+            throw new IllegalArgumentException("Среди переданных разрешений для проекта есть недопустимые параметры.");
         }
     }
 }

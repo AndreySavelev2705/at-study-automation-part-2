@@ -16,7 +16,7 @@ import java.util.List;
 import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureAssert.assertFalse;
 import static at.study.automation.ui.browser.BrowserUtils.click;
-import static at.study.automation.ui.pages.ProjectsPage.isElementPresent;
+import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 
 public class ProjectsVisibilityByUserTest extends BaseUiTest {
     private User user;
@@ -26,7 +26,7 @@ public class ProjectsVisibilityByUserTest extends BaseUiTest {
     private Project project3;
 
     @BeforeMethod(description = "В системе заведен пользователь без администратора, " +
-            "но подтвержденый администратором и не заблокированный. " +
+            "но подтвержденный администратором и не заблокированный. " +
             "В системе заведена роль пользователя с правами на просмотр задач. " +
             "В системе заведены 3 проекта: 2 приватных и 1 публичный. " +
             "Добавление пользователю доступа к одному приватному проекту. " +

@@ -17,7 +17,7 @@ public class CreateNewUserPageByAdminTest extends BaseUiTest {
     private User admin;
     private User userForCreating;
 
-    @BeforeMethod(description = "В системе заведен пользователь с прапвами администратора. Открыт браузер на главной странице.")
+    @BeforeMethod(description = "В системе заведен пользователь с правами администратора. Открыт браузер на главной странице.")
     public void prepareFixtures() {
         admin = new User() {{
             setIsAdmin(true);

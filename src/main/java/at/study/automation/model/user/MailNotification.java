@@ -14,6 +14,12 @@ public enum MailNotification {
 
     public final String description;
 
+    /**
+     * Метод возвращает объект задающий правило об уведомлениях на почту по переданному в параметрах описанию.
+     *
+     * @param description - описание по которому проходит поиск правила об уведомлениях на почту.
+     * @return возвращает объект задающий правило об уведомлениях на почту.
+     */
     public static MailNotification of(String description) {
 
         return Stream.of(values())

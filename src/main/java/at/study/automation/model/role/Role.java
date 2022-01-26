@@ -41,14 +41,23 @@ public class Role extends Entity implements Creatable<Role> {
             "  add_issue_notes: []\n" +
             "  delete_issues: []\n";
 
+    /**
+     * Метод создает запись о роли в таблице public.roles в бд.
+     *
+     * @return возвращает созданную роль.
+     */
     @Override
-    // TODO: Залогировать для отчета
     @Step("Создана роль в бд")
     public Role create() {
         new RoleRequests().create(this);
         return this;
     }
 
+    /**
+     * Метод возвращает имя роли.
+     *
+     * @return возвращает имя роли.
+     */
     @Override
     public String toString() {
         return name;

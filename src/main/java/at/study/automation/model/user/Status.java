@@ -15,20 +15,29 @@ public enum Status {
     public final int statusCode;
     private final String description;
 
+    /**
+     * Метод возвращает статус, согласно переданному в параметрах статус коду.
+     *
+     * @param statusCode - статус код на основе которого производится поиск статуса.
+     * @return возвращает статус.
+     */
     public static Status of(Integer statusCode) {
-
         return Arrays.stream(Status.values())
-                .filter(status -> statusCode == status.statusCode)
+                .filter(status -> statusCode.equals(status.statusCode))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Статус не найден."));
-
     }
 
+    /**
+     * Метод возвращает статус, согласно переданному в параметрах описания.
+     *
+     * @param description - описание на основе которого производится поиск статуса.
+     * @return возвращает статус.
+     */
     public static Status of(String description) {
         return Stream.of(values())
                 .filter(status -> description.equals(status.description))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Не найден объект Status с описание " + description));
-
     }
 }

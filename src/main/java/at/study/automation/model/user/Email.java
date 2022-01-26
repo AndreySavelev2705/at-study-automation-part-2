@@ -27,8 +27,12 @@ public class Email extends CreatableEntity implements Creatable<Email> {
         user.getEmails().add(this);
     }
 
+    /**
+     * Метод создает запись о почтовом адресе в таблице public.email_addresses в бд.
+     *
+     * @return возвращает почтовый адрес.
+     */
     @Override
-    // TODO: Залогировать для отчета
     @Step("Создан email в бд")
     public Email create() {
         new EmailRequests().create(this);

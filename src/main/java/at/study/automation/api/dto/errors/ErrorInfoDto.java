@@ -11,5 +11,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ErrorInfoDto {
 
-    List<String> errors;
+    private List<String> errors;
 }
