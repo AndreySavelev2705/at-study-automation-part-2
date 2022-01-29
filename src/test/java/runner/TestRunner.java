@@ -60,10 +60,6 @@ public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
     @AfterMethod(alwaysRun = true)
     public void afterMethod(Method name, Object[] testData) {
         Context.clearStash();
-        try {
-            BrowserManager.closeBrowser();
-        } catch (NullPointerException npe) {
-            return;
-        }
+        BrowserManager.closeBrowser();
     }
 }
