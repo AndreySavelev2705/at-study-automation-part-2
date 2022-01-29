@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
         },
         glue = {"steps"},
         features = "src/test/resources/features",
-        tags = {"@ui"}
+        tags = {"@api"}
 )
 public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
 
@@ -60,6 +60,10 @@ public class TestRunner extends AbstractTestNGCucumberTests implements ITest {
     @AfterMethod(alwaysRun = true)
     public void afterMethod(Method name, Object[] testData) {
         Context.clearStash();
-        BrowserManager.closeBrowser();
+        try {
+            BrowserManager.closeBrowser();
+        } catch (NullPointerException npe) {
+            return;
+        }
     }
 }
