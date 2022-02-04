@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 
 import java.util.Collections;
 
-import static at.study.automation.allure.AllureAssert.*;
+import static at.study.automation.allure.AllureAssert.assertEquals;
 import static at.study.automation.allure.AllureUtils.*;
 import static at.study.automation.api.rest_assured.GsonProvider.GSON;
 

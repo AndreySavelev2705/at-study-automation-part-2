@@ -33,7 +33,7 @@ public class BrowserManager {
      * Метод позволяет закрыть браузер.
      */
     public static void closeBrowser() {
-        if (browser.get() != null){
+        if (browser.get() != null) {
             browser.get().takeScreenshot();
             browser.get().getDriver().quit();
             browser.set(null);

@@ -3,7 +3,6 @@ package at.study.automation.tests.ui;
 import at.study.automation.ui.browser.Browser;
 import at.study.automation.ui.browser.BrowserManager;
 import at.study.automation.ui.pages.*;
-import at.study.automation.ui.pages.ProjectsPage;
 import io.qameta.allure.Step;
 import org.testng.annotations.AfterMethod;
 

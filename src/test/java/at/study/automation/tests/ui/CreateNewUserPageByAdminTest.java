@@ -10,7 +10,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static at.study.automation.allure.AllureAssert.assertEquals;
-import static at.study.automation.ui.browser.BrowserUtils.*;
+import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.sendKeys;
 
 public class CreateNewUserPageByAdminTest extends BaseUiTest {
 

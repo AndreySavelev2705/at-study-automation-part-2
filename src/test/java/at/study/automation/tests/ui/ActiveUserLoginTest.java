@@ -8,8 +8,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static at.study.automation.allure.AllureAssert.*;
-import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 import static at.study.automation.ui.browser.BrowserUtils.click;
+import static at.study.automation.ui.browser.BrowserUtils.isElementPresent;
 
 public class ActiveUserLoginTest extends BaseUiTest {
 

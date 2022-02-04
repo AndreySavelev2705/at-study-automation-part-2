@@ -70,6 +70,6 @@ public class CompareUtils {
             case ("по убыванию"):
                 return COLUMN_DESC_COMPARATOR;
         }
-        throw new IllegalArgumentException ("Такого компаратора не существует");
+        throw new IllegalArgumentException("Такого компаратора не существует");
     }
 }
